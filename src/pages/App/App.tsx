@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet';
-import { Pane } from 'evergreen-ui';
-import TopBar from 'components/TopBar/TopBar';
+import { majorScale, minorScale, Pane } from 'evergreen-ui';
 import './App.css';
+import TopBar from 'components/TopBar/TopBar';
+import Sidebar from 'components/Sidebar/Sidebar';
 
 const App = () => {
   return (
@@ -14,8 +15,22 @@ const App = () => {
           rel="stylesheet"
         />
       </Helmet>
-      <Pane margin={0}>
-        <TopBar />
+      <TopBar />
+      <Pane display="flex" flexGrow={1}>
+        <Sidebar />
+        <Pane
+          flexGrow={1}
+          display="flex"
+          padding={majorScale(4)}
+          background="gray100"
+        >
+          <Pane
+            flexGrow={1}
+            borderRadius={minorScale(1)}
+            background="white"
+            elevation={2}
+          />
+        </Pane>
       </Pane>
     </>
   );

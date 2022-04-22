@@ -24,12 +24,14 @@ const TopBar = () => (
     display="flex"
     justifyContent="space-between"
     padding={majorScale(2)}
-    borderBottom="default">
+    borderBottom="default"
+  >
     <Pane
       display="flex"
       alignItems="center"
       gap={minorScale(2)}
-      marginLeft={majorScale(1)}>
+      marginLeft={majorScale(1)}
+    >
       <Avatar name={data.appName} size={majorScale(4)} />
       <Heading size={500}>{data.appName}</Heading>
     </Pane>
@@ -47,11 +49,13 @@ const TopBar = () => (
             </Menu.Item>
           </Menu.Group>
         </Menu>
-      }>
+      }
+    >
       <Button
         height={majorScale(5)}
         iconAfter={CaretDownIcon}
-        appearance="minimal">
+        appearance="minimal"
+      >
         <Pane display="flex" alignItems="center" gap={minorScale(2)}>
           <Text color="muted">{data.userName}</Text>
           <Avatar name={data.userName} size={majorScale(4)} />

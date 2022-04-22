@@ -24,7 +24,6 @@
   "plugins": ["react", "@typescript-eslint", "prettier", "jest"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
-    "array-bracket-newline": "off",
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
