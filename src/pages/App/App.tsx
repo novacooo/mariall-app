@@ -1,4 +1,7 @@
 import { Helmet } from 'react-helmet';
+import { Pane } from 'evergreen-ui';
+import TopBar from 'components/TopBar/TopBar';
+import './App.css';
 
 const App = () => {
   return (
@@ -11,9 +14,9 @@ const App = () => {
           rel="stylesheet"
         />
       </Helmet>
-      <div>
-        <p>Hello World!</p>
-      </div>
+      <Pane margin={0}>
+        <TopBar />
+      </Pane>
     </>
   );
 };
