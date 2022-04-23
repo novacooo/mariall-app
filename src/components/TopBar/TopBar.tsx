@@ -4,7 +4,6 @@ import {
   Pane,
   majorScale,
   minorScale,
-  Heading,
   Popover,
   Menu,
   Position,
@@ -13,27 +12,26 @@ import {
   SettingsIcon,
   LogOutIcon,
 } from 'evergreen-ui';
+import { ReactComponent as Logo } from 'assets/logo_mariall.svg';
 
 const data = {
-  appName: 'mariall-app',
+  appName: 'Zarządzanie produkcją',
   userName: 'Jacek Nowak',
 };
 
 const TopBar = () => (
   <Pane
     display="flex"
+    alignItems="center"
     justifyContent="space-between"
     padding={majorScale(2)}
+    paddingLeft={majorScale(3)}
     borderBottom="default"
   >
-    <Pane
-      display="flex"
-      alignItems="center"
-      gap={minorScale(2)}
-      marginLeft={majorScale(1)}
-    >
-      <Avatar name={data.appName} size={majorScale(4)} />
-      <Heading size={500}>{data.appName}</Heading>
+    <Pane display="flex" alignItems="center" gap={majorScale(3)}>
+      <Logo height={majorScale(4)} />
+      <Pane width={1} height={majorScale(5)} background="gray300" />
+      <Text color="muted">{data.appName}</Text>
     </Pane>
     <Popover
       position={Position.BOTTOM_LEFT}
