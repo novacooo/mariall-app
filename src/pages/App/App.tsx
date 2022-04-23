@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet';
-import { majorScale, minorScale, Pane } from 'evergreen-ui';
 import './App.css';
 import TopBar from 'components/TopBar/TopBar';
 import Sidebar from 'components/Sidebar/Sidebar';
@@ -11,27 +10,14 @@ const App = () => {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap"
           rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
       </Helmet>
       <TopBar />
-      <Pane display="flex" flexGrow={1}>
+      <div>
         <Sidebar />
-        <Pane
-          flexGrow={1}
-          display="flex"
-          padding={majorScale(4)}
-          background="gray100"
-        >
-          <Pane
-            flexGrow={1}
-            borderRadius={minorScale(1)}
-            background="white"
-            elevation={2}
-          />
-        </Pane>
-      </Pane>
+      </div>
     </>
   );
 };

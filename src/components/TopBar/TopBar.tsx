@@ -1,66 +1,16 @@
-import {
-  Avatar,
-  Text,
-  Pane,
-  majorScale,
-  minorScale,
-  Popover,
-  Menu,
-  Position,
-  Button,
-  CaretDownIcon,
-  SettingsIcon,
-  LogOutIcon,
-} from 'evergreen-ui';
-import { ReactComponent as Logo } from 'assets/logo_mariall.svg';
+import { Button, Container, AppBar, styled } from '@mui/material';
 
-const data = {
-  appName: 'Zarządzanie produkcją',
-  userName: 'Jacek Nowak',
-};
+const StyledAppBar = styled(AppBar)`
+  background-color: white;
+  padding: 20px;
+  border-bottom: 1px solid red;
+`;
 
 const TopBar = () => (
-  <Pane
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    padding={majorScale(2)}
-    paddingLeft={majorScale(3)}
-    borderBottom="default"
-  >
-    <Pane display="flex" alignItems="center" gap={majorScale(3)}>
-      <Logo height={majorScale(4)} />
-      <Pane width={1} height={majorScale(5)} background="gray300" />
-      <Text color="muted">{data.appName}</Text>
-    </Pane>
-    <Popover
-      position={Position.BOTTOM_LEFT}
-      content={
-        <Menu>
-          <Menu.Group>
-            <Menu.Item icon={SettingsIcon}>Ustawienia</Menu.Item>
-          </Menu.Group>
-          <Menu.Divider />
-          <Menu.Group>
-            <Menu.Item intent="danger" icon={LogOutIcon}>
-              Wyloguj się
-            </Menu.Item>
-          </Menu.Group>
-        </Menu>
-      }
-    >
-      <Button
-        height={majorScale(5)}
-        iconAfter={CaretDownIcon}
-        appearance="minimal"
-      >
-        <Pane display="flex" alignItems="center" gap={minorScale(2)}>
-          <Text color="muted">{data.userName}</Text>
-          <Avatar name={data.userName} size={majorScale(4)} />
-        </Pane>
-      </Button>
-    </Popover>
-  </Pane>
+  <StyledAppBar position="static" elevation={0}>
+    <Container>
+      <Button variant="outlined">Toggle theme</Button>
+    </Container>
+  </StyledAppBar>
 );
-
 export default TopBar;
