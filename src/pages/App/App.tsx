@@ -15,9 +15,7 @@ const App = () => {
         />
       </Helmet>
       <TopBar />
-      <div>
-        <Sidebar />
-      </div>
+      <Sidebar />
     </>
   );
 };

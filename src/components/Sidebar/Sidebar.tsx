@@ -9,9 +9,6 @@ const tabsNames = [
 ];
 
 const Sidebar = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [tabs] = useState<string[]>(tabsNames);
-
   return <p>Sidebar</p>;
 };
 
