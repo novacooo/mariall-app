@@ -26,7 +26,6 @@ const SidebarItem = ({ children, active = false }: SidebarItemProps) => {
       px={3}
       py={2}
       rounded="md"
-      transition="background-color 0.2s"
       letterSpacing="wide"
       userSelect="none"
       _before={{
@@ -39,6 +38,7 @@ const SidebarItem = ({ children, active = false }: SidebarItemProps) => {
         bgColor: active ? bgColorActive : 'transparent',
         opacity: bgOpacity,
         rounded: 'md',
+        transition: 'background-color 0.2s',
       }}
       _hover={{
         cursor: 'pointer',
