@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-type AccentColorType =
+export type AccentColorType =
   | 'red'
   | 'orange'
   | 'yellow'

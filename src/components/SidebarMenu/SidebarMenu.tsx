@@ -19,7 +19,7 @@ const SidebarMenu = ({ children }: SidebarMenuProps) => {
       <Text
         fontSize="xs"
         textTransform="uppercase"
-        fontWeight="medium"
+        fontWeight="bold"
         color={headerColor}
         letterSpacing="wider"
         px={3}

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Flex,
   HStack,
@@ -8,7 +9,9 @@ import {
   MenuButton,
   MenuDivider,
   MenuItem,
+  MenuItemOption,
   MenuList,
+  MenuOptionGroup,
   StackDivider,
   Text,
   Tooltip,
@@ -33,13 +36,27 @@ import {
   TOOLTIP_TOGGLE_COLOR,
   TOOLTIP_TOGGLE_THEME,
 } from 'theme/translations';
+import { AccentColorType, useColorContext } from 'contexts/ColorContext';
 
 const data = {
   userName: 'Jacek Nowak',
 };
 
+const colors: AccentColorType[] = [
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'teal',
+  'blue',
+  'cyan',
+  'purple',
+  'pink',
+];
+
 const TopBar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { accentColor, changeAccentColor } = useColorContext();
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.600', 'gray.300');
@@ -65,13 +82,38 @@ const TopBar = () => {
         <Text color={textColor}>{PRODUCTION_APP_TITLE}</Text>
       </HStack>
       <HStack spacing={3}>
-        <Tooltip label={TOOLTIP_TOGGLE_COLOR}>
-          <IconButton
-            variant="outline"
-            aria-label={TOOLTIP_TOGGLE_COLOR}
-            icon={<BiPalette />}
-          />
-        </Tooltip>
+        <Menu closeOnSelect={false}>
+          <Tooltip label={TOOLTIP_TOGGLE_COLOR}>
+            <MenuButton
+              as={IconButton}
+              variant="outline"
+              aria-label={TOOLTIP_TOGGLE_COLOR}
+              icon={<BiPalette />}
+            />
+          </Tooltip>
+          <MenuList>
+            <MenuOptionGroup defaultValue={accentColor} type="radio">
+              {colors.map((color) => (
+                <MenuItemOption
+                  value={color}
+                  fontSize="sm"
+                  textTransform="capitalize"
+                  onClick={() => changeAccentColor(color)}
+                >
+                  <HStack>
+                    <Box
+                      width={3}
+                      height={3}
+                      rounded="full"
+                      bgColor={`${color}.400`}
+                    />
+                    <Text>{color}</Text>
+                  </HStack>
+                </MenuItemOption>
+              ))}
+            </MenuOptionGroup>
+          </MenuList>
+        </Menu>
         <Tooltip label={TOOLTIP_TOGGLE_THEME}>
           <IconButton
             onClick={toggleColorMode}
@@ -80,7 +122,7 @@ const TopBar = () => {
             icon={colorMode === 'light' ? <FiSun /> : <FiMoon />}
           />
         </Tooltip>
-        <Menu size="xs">
+        <Menu>
           <Tooltip label={SHOW_MENU}>
             <MenuButton
               as={Button}
