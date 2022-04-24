@@ -15,8 +15,14 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { SunIcon, MoonIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { FiLogOut, FiSettings } from 'react-icons/fi';
+import {
+  FiLogOut,
+  FiSettings,
+  FiSun,
+  FiMoon,
+  FiChevronDown,
+} from 'react-icons/fi';
+import { BiPalette } from 'react-icons/bi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
 import {
@@ -24,6 +30,7 @@ import {
   BUTTON_USER_SETTINGS,
   PRODUCTION_APP_TITLE,
   SHOW_MENU,
+  TOOLTIP_TOGGLE_COLOR,
   TOOLTIP_TOGGLE_THEME,
 } from 'theme/translations';
 
@@ -58,12 +65,19 @@ const TopBar = () => {
         <Text color={textColor}>{PRODUCTION_APP_TITLE}</Text>
       </HStack>
       <HStack spacing={3}>
+        <Tooltip label={TOOLTIP_TOGGLE_COLOR}>
+          <IconButton
+            variant="outline"
+            aria-label={TOOLTIP_TOGGLE_COLOR}
+            icon={<BiPalette />}
+          />
+        </Tooltip>
         <Tooltip label={TOOLTIP_TOGGLE_THEME}>
           <IconButton
             onClick={toggleColorMode}
             variant="outline"
             aria-label={TOOLTIP_TOGGLE_THEME}
-            icon={colorMode === 'light' ? <SunIcon /> : <MoonIcon />}
+            icon={colorMode === 'light' ? <FiSun /> : <FiMoon />}
           />
         </Tooltip>
         <Menu size="xs">
@@ -71,7 +85,7 @@ const TopBar = () => {
             <MenuButton
               as={Button}
               variant="outline"
-              rightIcon={<ChevronDownIcon />}
+              rightIcon={<FiChevronDown />}
             >
               <HStack spacing={2}>
                 <Text color={textColor} fontSize="xs">

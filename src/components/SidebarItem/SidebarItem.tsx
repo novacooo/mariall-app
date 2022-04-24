@@ -1,4 +1,5 @@
 import { Box, Text, useColorModeValue } from '@chakra-ui/react';
+import { useColorContext } from 'contexts/ColorContext';
 
 interface SidebarItemProps {
   children: string;
@@ -6,8 +7,16 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({ children, active = false }: SidebarItemProps) => {
-  const bgColorActive = useColorModeValue('teal.50', 'teal.900');
-  const textColorActive = useColorModeValue('teal.700', 'teal.100');
+  const { accentColor } = useColorContext();
+
+  const bgColorActive = useColorModeValue(
+    `${accentColor}.50`,
+    `${accentColor}.900`,
+  );
+  const textColorActive = useColorModeValue(
+    `${accentColor}.700`,
+    `${accentColor}.100`,
+  );
 
   return (
     <Box

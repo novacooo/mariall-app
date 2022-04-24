@@ -1,4 +1,5 @@
 import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { useColorContext } from 'contexts/ColorContext';
 import { MENU } from 'theme/translations';
 
 interface SidebarMenuProps {
@@ -6,7 +7,12 @@ interface SidebarMenuProps {
 }
 
 const SidebarMenu = ({ children }: SidebarMenuProps) => {
-  const headerColor = useColorModeValue('teal.500', 'teal.300');
+  const { accentColor } = useColorContext();
+
+  const headerColor = useColorModeValue(
+    `${accentColor}.500`,
+    `${accentColor}.300`,
+  );
 
   return (
     <Flex direction="column" gap={2}>
