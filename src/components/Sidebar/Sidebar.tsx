@@ -1,6 +1,7 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 import SidebarItem from 'components/SidebarItem/SidebarItem';
 import SidebarMenu from 'components/SidebarMenu/SidebarMenu';
+import { MENU } from 'theme/translations';
 
 const tabs = [
   'Zarządzanie pracownikami',
@@ -23,11 +24,18 @@ const Sidebar = () => {
       bgColor={bgColor}
       borderRightWidth={1}
     >
-      <SidebarMenu>
-        {tabs.map((tab, i) => (
-          <SidebarItem active={i === 2}>{tab}</SidebarItem>
-        ))}
-      </SidebarMenu>
+      <Flex direction="column" gap={5}>
+        <SidebarMenu name={MENU}>
+          {tabs.map((tab, i) => (
+            <SidebarItem active={i === 1}>{tab}</SidebarItem>
+          ))}
+        </SidebarMenu>
+        <SidebarMenu name="Testowe menu">
+          {tabs.map((tab) => (
+            <SidebarItem>{tab}</SidebarItem>
+          ))}
+        </SidebarMenu>
+      </Flex>
     </Flex>
   );
 };
