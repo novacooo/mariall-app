@@ -1,6 +1,8 @@
-import { Flex, Heading, useColorModeValue } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
+import SidebarItem from 'components/SidebarItem/SidebarItem';
+import SidebarMenu from 'components/SidebarMenu/SidebarMenu';
 
-const tabsNames = [
+const tabs = [
   'Zarządzanie pracownikami',
   'Zarządzanie produktami',
   'Aktualne wypłaty',
@@ -9,14 +11,23 @@ const tabsNames = [
 ];
 
 const Sidebar = () => {
-  const bgColor = useColorModeValue('white', 'gray.900');
+  const bgColor = useColorModeValue('white', 'gray.800');
 
   return (
-    <Flex direction="column" p={5} width="250px" flexGrow={1} bgColor={bgColor}>
-      <Heading>Menu</Heading>
-      {tabsNames.map((tab) => (
-        <p>{tab}</p>
-      ))}
+    <Flex
+      direction="column"
+      py={5}
+      px={3}
+      width="250px"
+      flexGrow={1}
+      bgColor={bgColor}
+      borderRightWidth={1}
+    >
+      <SidebarMenu>
+        {tabs.map((tab, i) => (
+          <SidebarItem active={i === 2}>{tab}</SidebarItem>
+        ))}
+      </SidebarMenu>
     </Flex>
   );
 };

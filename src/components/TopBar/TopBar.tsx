@@ -19,10 +19,16 @@ import { SunIcon, MoonIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { FiLogOut, FiSettings } from 'react-icons/fi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
+import {
+  BUTTON_LOGOUT,
+  BUTTON_USER_SETTINGS,
+  PRODUCTION_APP_TITLE,
+  SHOW_MENU,
+  TOOLTIP_TOGGLE_THEME,
+} from 'theme/translations';
 
 const data = {
   userName: 'Jacek Nowak',
-  appTitle: 'Zarządzanie produkcją',
 };
 
 const TopBar = () => {
@@ -30,6 +36,7 @@ const TopBar = () => {
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.600', 'gray.300');
+  const logoutTextColor = useColorModeValue('red.500', 'red.400');
 
   const logoHeight = 36;
 
@@ -39,10 +46,8 @@ const TopBar = () => {
       py={3}
       justify="space-between"
       align="center"
-      boxShadow="base"
       bgColor={bgColor}
-      position="relative"
-      // zIndex="10000"
+      borderBottomWidth={1}
     >
       <HStack spacing={5} divider={<StackDivider />}>
         {colorMode === 'light' ? (
@@ -50,22 +55,22 @@ const TopBar = () => {
         ) : (
           <LogoDark height={logoHeight} />
         )}
-        <Text color={textColor}>{data.appTitle}</Text>
+        <Text color={textColor}>{PRODUCTION_APP_TITLE}</Text>
       </HStack>
       <HStack spacing={3}>
-        <Tooltip label="Przełącz tryb">
+        <Tooltip label={TOOLTIP_TOGGLE_THEME}>
           <IconButton
             onClick={toggleColorMode}
-            variant="ghost"
-            aria-label="Toggle theme"
+            variant="outline"
+            aria-label={TOOLTIP_TOGGLE_THEME}
             icon={colorMode === 'light' ? <SunIcon /> : <MoonIcon />}
           />
         </Tooltip>
         <Menu size="xs">
-          <Tooltip label="Pokaż menu">
+          <Tooltip label={SHOW_MENU}>
             <MenuButton
               as={Button}
-              variant="ghost"
+              variant="outline"
               rightIcon={<ChevronDownIcon />}
             >
               <HStack spacing={2}>
@@ -78,11 +83,11 @@ const TopBar = () => {
           </Tooltip>
           <MenuList>
             <MenuItem icon={<FiSettings />} fontSize="sm">
-              Ustawienia użytkownika
+              {BUTTON_USER_SETTINGS}
             </MenuItem>
             <MenuDivider />
-            <MenuItem icon={<FiLogOut />} fontSize="sm" color="red.500">
-              Wyloguj się
+            <MenuItem icon={<FiLogOut />} fontSize="sm" color={logoutTextColor}>
+              {BUTTON_LOGOUT}
             </MenuItem>
           </MenuList>
         </Menu>
