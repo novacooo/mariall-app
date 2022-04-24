@@ -24,6 +24,7 @@ import {
   FiSun,
   FiMoon,
   FiChevronDown,
+  FiGrid,
 } from 'react-icons/fi';
 import { BiPalette } from 'react-icons/bi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
@@ -33,6 +34,7 @@ import {
   BUTTON_USER_SETTINGS,
   PRODUCTION_APP_TITLE,
   SHOW_MENU,
+  TOOLTIP_CHANGE_APP,
   TOOLTIP_TOGGLE_COLOR,
   TOOLTIP_TOGGLE_THEME,
 } from 'theme/translations';
@@ -79,7 +81,24 @@ const TopBar = () => {
         ) : (
           <LogoDark height={logoHeight} />
         )}
-        <Text color={textColor}>{PRODUCTION_APP_TITLE}</Text>
+        <HStack spacing={5}>
+          <Text
+            fontSize="xs"
+            color={textColor}
+            textTransform="uppercase"
+            fontWeight="medium"
+            letterSpacing="wider"
+          >
+            {PRODUCTION_APP_TITLE}
+          </Text>
+          <Tooltip label={TOOLTIP_CHANGE_APP}>
+            <IconButton
+              variant="outline"
+              aria-label={TOOLTIP_CHANGE_APP}
+              icon={<FiGrid />}
+            />
+          </Tooltip>
+        </HStack>
       </HStack>
       <HStack spacing={3}>
         <Menu closeOnSelect={false}>

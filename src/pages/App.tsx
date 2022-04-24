@@ -1,17 +1,14 @@
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from 'theme/theme';
-import MainTemplate from 'templates/MainTemplate';
-import TopBar from 'components/TopBar/TopBar';
-import Sidebar from 'components/Sidebar/Sidebar';
+import TabTemplate from 'templates/TabTemplate';
 
 const App = () => (
   <>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <ChakraProvider theme={theme}>
-      <MainTemplate>
-        <TopBar />
-        <Sidebar />
-      </MainTemplate>
+      <TabTemplate name="Zarządzanie produktami">
+        <p>TabTemplate</p>
+      </TabTemplate>
     </ChakraProvider>
   </>
 );

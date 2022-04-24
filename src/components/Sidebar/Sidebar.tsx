@@ -20,7 +20,6 @@ const Sidebar = () => {
       py={5}
       px={3}
       width="250px"
-      flexGrow={1}
       bgColor={bgColor}
       borderRightWidth={1}
     >
