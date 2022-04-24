@@ -28,7 +28,7 @@ const data = {
 const TopBar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const bgColor = useColorModeValue('white', 'gray.700');
+  const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.600', 'gray.300');
 
   const logoHeight = 36;
@@ -41,7 +41,8 @@ const TopBar = () => {
       align="center"
       boxShadow="base"
       bgColor={bgColor}
-      borderBottomWidth={1}
+      position="relative"
+      // zIndex="10000"
     >
       <HStack spacing={5} divider={<StackDivider />}>
         {colorMode === 'light' ? (
