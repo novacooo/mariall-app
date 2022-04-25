@@ -39,6 +39,8 @@ import {
   TOOLTIP_TOGGLE_THEME,
 } from 'theme/translations';
 import { AccentColorType, useColorContext } from 'contexts/ColorContext';
+import { useNavigate } from 'react-router-dom';
+import { routes } from 'routes';
 
 const data = {
   userName: 'Jacek Nowak',
@@ -59,6 +61,8 @@ const colors: AccentColorType[] = [
 const TopBar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { accentColor, changeAccentColor } = useColorContext();
+
+  const navigate = useNavigate();
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.600', 'gray.300');
@@ -161,7 +165,12 @@ const TopBar = () => {
               {BUTTON_USER_SETTINGS}
             </MenuItem>
             <MenuDivider />
-            <MenuItem icon={<FiLogOut />} fontSize="sm" color={logoutTextColor}>
+            <MenuItem
+              icon={<FiLogOut />}
+              fontSize="sm"
+              color={logoutTextColor}
+              onClick={() => navigate(routes.login)}
+            >
               {BUTTON_LOGOUT}
             </MenuItem>
           </MenuList>
