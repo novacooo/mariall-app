@@ -14,7 +14,7 @@ const App = () => (
         <Routes>
           <Route path={routes.menu} element={<MenuPage />} />
           <Route path={routes.login} element={<LoginPage />} />
-          <Route path={routes.panel} element={<PanelPage />} />
+          <Route path={`${routes.panel}/*`} element={<PanelPage />} />
         </Routes>
       </HashRouter>
     </ChakraProvider>

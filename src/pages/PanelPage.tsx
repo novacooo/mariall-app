@@ -1,9 +1,9 @@
-import TabTemplate from 'templates/TabTemplate';
+import PanelTemplate from 'templates/PanelTemplate';
 
 const PanelPage = () => (
-  <TabTemplate name="Zarządzanie produktami">
+  <PanelTemplate name="Zarządzanie produktami">
     <p>panel page</p>
-  </TabTemplate>
+  </PanelTemplate>
 );
 
 export default PanelPage;

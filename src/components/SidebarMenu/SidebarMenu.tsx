@@ -1,10 +1,4 @@
-import {
-  Divider,
-  Flex,
-  HStack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
 
 interface SidebarMenuProps {
   name: string;
@@ -16,19 +10,16 @@ const SidebarMenu = ({ name, children }: SidebarMenuProps) => {
 
   return (
     <Flex direction="column" gap={2}>
-      <HStack px={3}>
-        <Text
-          fontSize="xs"
-          textTransform="uppercase"
-          fontWeight="medium"
-          color={headerColor}
-          whiteSpace="nowrap"
-          letterSpacing="wider"
-        >
-          {name}
-        </Text>
-        <Divider />
-      </HStack>
+      <Text
+        fontSize="xs"
+        textTransform="uppercase"
+        fontWeight="medium"
+        color={headerColor}
+        letterSpacing="wider"
+        px={3}
+      >
+        {name}
+      </Text>
       <Flex direction="column" gap={1}>
         {children}
       </Flex>

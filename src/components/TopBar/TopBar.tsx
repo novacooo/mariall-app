@@ -100,6 +100,7 @@ const TopBar = () => {
               variant="outline"
               aria-label={TOOLTIP_CHANGE_APP}
               icon={<FiGrid />}
+              onClick={() => navigate(routes.menu)}
             />
           </Tooltip>
         </HStack>
@@ -118,6 +119,7 @@ const TopBar = () => {
             <MenuOptionGroup defaultValue={accentColor} type="radio">
               {colors.map((color) => (
                 <MenuItemOption
+                  key={color}
                   value={color}
                   fontSize="sm"
                   textTransform="capitalize"

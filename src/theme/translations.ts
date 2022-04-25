@@ -1,6 +1,10 @@
 export const PRODUCTION_APP_TITLE = 'Zarządzanie produkcją';
-export const MENU = 'Menu';
 export const SHOW_MENU = 'Pokaż menu';
+
+export const GROUP_PRODUCTS = 'Produkty';
+export const GROUP_SALARIES = 'Wypłaty';
+export const GROUP_EMPLOYEES = 'Pracownicy';
+export const GROUP_OTHER = 'Inne';
 
 export const TOOLTIP_TOGGLE_THEME = 'Przełącz tryb';
 export const TOOLTIP_TOGGLE_COLOR = 'Zmień kolor';

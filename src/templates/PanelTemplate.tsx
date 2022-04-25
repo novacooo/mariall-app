@@ -3,12 +3,12 @@ import Sidebar from 'components/Sidebar/Sidebar';
 import TopBar from 'components/TopBar/TopBar';
 import MainTemplate from './MainTemplate';
 
-interface TabTemplateProps {
+interface PanelTemplateProps {
   name: string;
   children: React.ReactNode;
 }
 
-const TabTemplate = ({ name, children }: TabTemplateProps) => {
+const PanelTemplate = ({ name, children }: PanelTemplateProps) => {
   const bgColor = useColorModeValue('white', 'gray.800');
 
   return (
@@ -40,4 +40,4 @@ const TabTemplate = ({ name, children }: TabTemplateProps) => {
   );
 };
 
-export default TabTemplate;
+export default PanelTemplate;
