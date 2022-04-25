@@ -1,0 +1,31 @@
+{
+  "appNames": {
+    "productionManagement": "Production management"
+  },
+  "sidebar": {
+    "groups": {
+      "products": "Products",
+      "salaries": "Salaries",
+      "employees": "Employees",
+      "other": "Other"
+    },
+    "tabs": {
+      "addingQuantity": "Adding quantity",
+      "productsManagement": "Products management",
+      "salaries": "Salaries",
+      "printingSummaries": "Printing summaries",
+      "employeesManagement": "Employees management",
+      "logs": "Logs"
+    }
+  },
+  "tooltips": {
+    "showMenu": "Show menu",
+    "toggleTheme": "Toggle theme",
+    "changeColor": "Change color",
+    "changeApp": "Change application"
+  },
+  "buttons": {
+    "userSettings": "User settings",
+    "logOut": "Log out"
+  }
+}

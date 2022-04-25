@@ -29,18 +29,10 @@ import {
 import { BiPalette } from 'react-icons/bi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
-import {
-  BUTTON_LOGOUT,
-  BUTTON_USER_SETTINGS,
-  PRODUCTION_APP_TITLE,
-  SHOW_MENU,
-  TOOLTIP_CHANGE_APP,
-  TOOLTIP_TOGGLE_COLOR,
-  TOOLTIP_TOGGLE_THEME,
-} from 'theme/translations';
 import { AccentColorType, useColorContext } from 'contexts/ColorContext';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
+import { useTranslation } from 'react-i18next';
 
 const data = {
   userName: 'Jacek Nowak',
@@ -59,6 +51,8 @@ const colors: AccentColorType[] = [
 ];
 
 const TopBar = () => {
+  const { t } = useTranslation();
+
   const { colorMode, toggleColorMode } = useColorMode();
   const { accentColor, changeAccentColor } = useColorContext();
 
@@ -93,12 +87,12 @@ const TopBar = () => {
             fontWeight="medium"
             letterSpacing="wider"
           >
-            {PRODUCTION_APP_TITLE}
+            {t('appNames.productionManagement')}
           </Text>
-          <Tooltip label={TOOLTIP_CHANGE_APP}>
+          <Tooltip label={t('tooltips.changeApp')}>
             <IconButton
               variant="outline"
-              aria-label={TOOLTIP_CHANGE_APP}
+              aria-label={t('tooltips.changeApp')}
               icon={<FiGrid />}
               onClick={() => navigate(routes.menu)}
             />
@@ -107,11 +101,11 @@ const TopBar = () => {
       </HStack>
       <HStack spacing={3}>
         <Menu closeOnSelect={false}>
-          <Tooltip label={TOOLTIP_TOGGLE_COLOR}>
+          <Tooltip label={t('tooltips.changeColor')}>
             <MenuButton
               as={IconButton}
               variant="outline"
-              aria-label={TOOLTIP_TOGGLE_COLOR}
+              aria-label={t('tooltips.changeColor')}
               icon={<BiPalette />}
             />
           </Tooltip>
@@ -139,16 +133,16 @@ const TopBar = () => {
             </MenuOptionGroup>
           </MenuList>
         </Menu>
-        <Tooltip label={TOOLTIP_TOGGLE_THEME}>
+        <Tooltip label={t('tooltips.toggleTheme')}>
           <IconButton
             onClick={toggleColorMode}
             variant="outline"
-            aria-label={TOOLTIP_TOGGLE_THEME}
+            aria-label={t('tooltips.toggleTheme')}
             icon={colorMode === 'light' ? <FiSun /> : <FiMoon />}
           />
         </Tooltip>
         <Menu>
-          <Tooltip label={SHOW_MENU}>
+          <Tooltip label={t('tooltips.showMenu')}>
             <MenuButton
               as={Button}
               variant="outline"
@@ -164,7 +158,7 @@ const TopBar = () => {
           </Tooltip>
           <MenuList>
             <MenuItem icon={<FiSettings />} fontSize="sm">
-              {BUTTON_USER_SETTINGS}
+              {t('buttons.userSettings')}
             </MenuItem>
             <MenuDivider />
             <MenuItem
@@ -173,7 +167,7 @@ const TopBar = () => {
               color={logoutTextColor}
               onClick={() => navigate(routes.login)}
             >
-              {BUTTON_LOGOUT}
+              {t('buttons.logOut')}
             </MenuItem>
           </MenuList>
         </Menu>

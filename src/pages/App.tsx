@@ -2,12 +2,13 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { routes } from 'routes';
+import { Suspense } from 'react';
 import PanelPage from './PanelPage';
 import MenuPage from './MenuPage';
 import LoginPage from './LoginPage';
 
 const App = () => (
-  <>
+  <Suspense fallback="loading">
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <ChakraProvider theme={theme}>
       <HashRouter basename="/">
@@ -18,7 +19,7 @@ const App = () => (
         </Routes>
       </HashRouter>
     </ChakraProvider>
-  </>
+  </Suspense>
 );
 
 export default App;

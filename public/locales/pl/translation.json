@@ -1,0 +1,31 @@
+{
+  "appNames": {
+    "productionManagement": "Zarządzanie produkcją"
+  },
+  "sidebar": {
+    "groups": {
+      "products": "Produkty",
+      "salaries": "Wypłaty",
+      "employees": "Pracownicy",
+      "other": "Inne"
+    },
+    "tabs": {
+      "addingQuantity": "Dodawanie ilości",
+      "productsManagement": "Zarządzanie produktami",
+      "salaries": "Wypłaty",
+      "printingSummaries": "Drukowanie podsumowań",
+      "employeesManagement": "Zarządzanie pracownikami",
+      "logs": "Logi"
+    }
+  },
+  "tooltips": {
+    "showMenu": "Pokaż menu",
+    "toggleTheme": "Przełącz tryb",
+    "changeColor": "Zmień kolor",
+    "changeApp": "Zmień aplikację"
+  },
+  "buttons": {
+    "userSettings": "Ustawienia użytkownika",
+    "logOut": "Wyloguj się"
+  }
+}
