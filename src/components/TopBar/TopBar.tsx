@@ -162,7 +162,7 @@ const TopBar = () => {
                       rounded="full"
                       bgColor={`${color}.400`}
                     />
-                    <Text>{color}</Text>
+                    <Text>{t(`colors.${color}`)}</Text>
                   </HStack>
                 </MenuItemOption>
               ))}

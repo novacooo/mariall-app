@@ -32,5 +32,16 @@
   "buttons": {
     "userSettings": "Ustawienia użytkownika",
     "logOut": "Wyloguj się"
+  },
+  "colors": {
+    "red": "Czerwony",
+    "orange": "Pomarańczowy",
+    "yellow": "Żółty",
+    "green": "Zielony",
+    "teal": "Turkusowy",
+    "blue": "Niebieski",
+    "cyan": "Błękitny",
+    "purple": "Fioletowy",
+    "pink": "Różowy"
   }
 }
