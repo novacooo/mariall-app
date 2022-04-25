@@ -2,6 +2,10 @@
   "appNames": {
     "productionManagement": "Production management"
   },
+  "languages": {
+    "english": "English",
+    "polish": "Polish"
+  },
   "sidebar": {
     "groups": {
       "products": "Products",
@@ -22,7 +26,8 @@
     "showMenu": "Show menu",
     "toggleTheme": "Toggle theme",
     "changeColor": "Change color",
-    "changeApp": "Change application"
+    "changeApp": "Change application",
+    "changeLanguage": "Change language"
   },
   "buttons": {
     "userSettings": "User settings",

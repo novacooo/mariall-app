@@ -2,6 +2,10 @@
   "appNames": {
     "productionManagement": "Zarządzanie produkcją"
   },
+  "languages": {
+    "english": "Angielski",
+    "polish": "Polski"
+  },
   "sidebar": {
     "groups": {
       "products": "Produkty",
@@ -22,7 +26,8 @@
     "showMenu": "Pokaż menu",
     "toggleTheme": "Przełącz tryb",
     "changeColor": "Zmień kolor",
-    "changeApp": "Zmień aplikację"
+    "changeApp": "Zmień aplikację",
+    "changeLanguage": "Zmień język"
   },
   "buttons": {
     "userSettings": "Ustawienia użytkownika",

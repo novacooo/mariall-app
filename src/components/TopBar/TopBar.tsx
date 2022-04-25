@@ -25,6 +25,7 @@ import {
   FiMoon,
   FiChevronDown,
   FiGrid,
+  FiGlobe,
 } from 'react-icons/fi';
 import { BiPalette } from 'react-icons/bi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
@@ -33,6 +34,7 @@ import { AccentColorType, useColorContext } from 'contexts/ColorContext';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
 import { useTranslation } from 'react-i18next';
+import { Languages } from 'constants/languages';
 
 const data = {
   userName: 'Jacek Nowak',
@@ -51,7 +53,7 @@ const colors: AccentColorType[] = [
 ];
 
 const TopBar = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { colorMode, toggleColorMode } = useColorMode();
   const { accentColor, changeAccentColor } = useColorContext();
@@ -63,6 +65,10 @@ const TopBar = () => {
   const logoutTextColor = useColorModeValue('red.500', 'red.400');
 
   const logoHeight = 36;
+
+  const changeLanguage = (language: Languages) => {
+    i18n.changeLanguage(language);
+  };
 
   return (
     <Flex
@@ -100,6 +106,36 @@ const TopBar = () => {
         </HStack>
       </HStack>
       <HStack spacing={3}>
+        <Menu closeOnSelect={false}>
+          <Tooltip label={t('tooltips.changeLanguage')}>
+            <MenuButton
+              as={IconButton}
+              variant="outline"
+              aria-label={t('tooltips.changeLanguage')}
+              icon={<FiGlobe />}
+            />
+          </Tooltip>
+          <MenuList>
+            <MenuOptionGroup defaultValue={i18n.language} type="radio">
+              <MenuItemOption
+                value={Languages.ENGLISH}
+                fontSize="sm"
+                textTransform="capitalize"
+                onClick={() => changeLanguage(Languages.ENGLISH)}
+              >
+                {t('languages.english')}
+              </MenuItemOption>
+              <MenuItemOption
+                value={Languages.POLISH}
+                fontSize="sm"
+                textTransform="capitalize"
+                onClick={() => changeLanguage(Languages.POLISH)}
+              >
+                {t('languages.polish')}
+              </MenuItemOption>
+            </MenuOptionGroup>
+          </MenuList>
+        </Menu>
         <Menu closeOnSelect={false}>
           <Tooltip label={t('tooltips.changeColor')}>
             <MenuButton
