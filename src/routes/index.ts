@@ -3,7 +3,7 @@ export const routes = {
   menu: '/',
   login: '/login',
   panel: '/panel',
-  panelProductManagement: '/panel/product-management',
+  panelProductsManagement: '/panel/product-management',
   panelSalaries: '/panel/salaries',
   panelPrinting: '/panel/printing',
   panelEmployeesManagement: '/panel/employees-management',
