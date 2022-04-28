@@ -26,7 +26,7 @@ const tabs: IPanelTab[] = [
     id: 'panel-tab-01',
     groupId: SidebarGroup.PRODUCTS,
     tabId: SidebarTab.ADDING_QUANTITY,
-    route: routes.panel,
+    route: routes.panelAddingQuantity,
     admin: false,
   },
   {
@@ -115,20 +115,20 @@ const Sidebar = () => {
               {tabs.map((tab) => {
                 const tabName = getTabName(tab.tabId);
                 if (!tabName) return null;
-
-                return (
-                  <>
-                    {tab.groupId === group && (
-                      <SidebarItem
-                        key={tab.id}
-                        active={tab.route === location.pathname}
-                        link={tab.route}
-                      >
-                        {tabName}
-                      </SidebarItem>
-                    )}
-                  </>
-                );
+                if (tab.groupId === group) {
+                  return (
+                    <SidebarItem
+                      key={tab.id}
+                      active={
+                        `${routes.panel}/${tab.route}` === location.pathname
+                      }
+                      link={tab.route}
+                    >
+                      {tabName}
+                    </SidebarItem>
+                  );
+                }
+                return null;
               })}
             </SidebarMenu>
           );

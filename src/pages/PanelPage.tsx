@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { routes } from 'routes';
 import AddingQuantityTab from 'tabs/AddingQuantityTab';
 import EmployeesManagementTab from 'tabs/EmployeesManagementTab';
@@ -15,17 +15,17 @@ const PanelPage = () => {
 
   const getPanelTitle = () => {
     switch (pathname) {
-      case routes.panel:
+      case `${routes.panel}/${routes.panelAddingQuantity}`:
         return t('sidebar.tabs.addingQuantity');
-      case routes.panelProductsManagement:
+      case `${routes.panel}/${routes.panelProductsManagement}`:
         return t('sidebar.tabs.productsManagement');
-      case routes.panelSalaries:
+      case `${routes.panel}/${routes.panelSalaries}`:
         return t('sidebar.tabs.salaries');
-      case routes.panelPrinting:
+      case `${routes.panel}/${routes.panelPrinting}`:
         return t('sidebar.tabs.printingSummaries');
-      case routes.panelEmployeesManagement:
+      case `${routes.panel}/${routes.panelEmployeesManagement}`:
         return t('sidebar.tabs.employeesManagement');
-      case routes.panelLogs:
+      case `${routes.panel}/${routes.panelLogs}`:
         return t('sidebar.tabs.logs');
       default:
         return '';
@@ -36,8 +36,14 @@ const PanelPage = () => {
 
   return (
     <PanelTemplate name={panelTitle}>
+      {pathname === routes.panel && (
+        <Navigate to={routes.panelAddingQuantity} />
+      )}
       <Routes>
-        <Route path={routes.panel} element={<AddingQuantityTab />} />
+        <Route
+          path={routes.panelAddingQuantity}
+          element={<AddingQuantityTab />}
+        />
         <Route
           path={routes.panelProductsManagement}
           element={<ProductsManagementTab />}
