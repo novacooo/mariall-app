@@ -23,7 +23,7 @@ const SidebarItem = ({ children, active = false, link }: SidebarItemProps) => {
   );
 
   return (
-    <Link to={link || '#'}>
+    <Link to={link || '#'} data-testid="sidebar-item">
       <Box
         position="relative"
         px={3}
@@ -57,6 +57,7 @@ const SidebarItem = ({ children, active = false, link }: SidebarItemProps) => {
           fontSize="sm"
           fontWeight={active ? 'medium' : 'normal'}
           color={active ? textColorActive : 'normal'}
+          data-testid="sidebar-item-text"
         >
           {children}
         </Text>
