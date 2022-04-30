@@ -203,7 +203,7 @@ const TopBar = () => {
               color={logoutTextColor}
               onClick={() => navigate(routes.login)}
             >
-              {t('buttons.logOut')}
+              {t('buttons.signOut')}
             </MenuItem>
           </MenuList>
         </Menu>

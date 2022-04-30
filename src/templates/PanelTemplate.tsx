@@ -1,7 +1,6 @@
 import { Divider, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
 import Sidebar from 'components/Sidebar/Sidebar';
 import TopBar from 'components/TopBar/TopBar';
-import MainTemplate from './MainTemplate';
 
 interface PanelTemplateProps {
   name: string;
@@ -12,7 +11,7 @@ const PanelTemplate = ({ name, children }: PanelTemplateProps) => {
   const bgColor = useColorModeValue('white', 'gray.800');
 
   return (
-    <MainTemplate>
+    <>
       <TopBar />
       <Flex flexGrow={1}>
         <Sidebar />
@@ -36,7 +35,7 @@ const PanelTemplate = ({ name, children }: PanelTemplateProps) => {
           {children}
         </Flex>
       </Flex>
-    </MainTemplate>
+    </>
   );
 };
 

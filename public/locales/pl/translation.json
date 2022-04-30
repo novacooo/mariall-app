@@ -31,7 +31,15 @@
   },
   "buttons": {
     "userSettings": "Ustawienia użytkownika",
-    "logOut": "Wyloguj się"
+    "signIn": "Zaloguj się",
+    "signOut": "Wyloguj się"
+  },
+  "headers": {
+    "signIn": "Logowanie"
+  },
+  "inputs": {
+    "email": "Adres email",
+    "password": "Hasło"
   },
   "colors": {
     "red": "Czerwony",

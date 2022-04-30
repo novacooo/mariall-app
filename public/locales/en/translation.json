@@ -31,7 +31,15 @@
   },
   "buttons": {
     "userSettings": "User settings",
-    "logOut": "Log out"
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "headers": {
+    "signIn": "Sign in"
+  },
+  "inputs": {
+    "email": "Email",
+    "password": "Password"
   },
   "colors": {
     "red": "Red",
