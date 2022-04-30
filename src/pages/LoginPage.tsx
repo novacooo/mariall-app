@@ -2,11 +2,17 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   HStack,
+  IconButton,
   Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   StackDivider,
+  Tooltip,
   useColorMode,
   useColorModeValue,
   VStack,
@@ -19,22 +25,46 @@ import { routes } from 'routes';
 import MainTemplate from 'templates/MainTemplate';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
+import { FiEye, FiEyeOff, FiLock, FiMail } from 'react-icons/fi';
+import { useDebouncedCallback } from 'use-debounce';
+import validator from 'validator';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { accentColor } = useColorContext();
   const { t } = useTranslation();
-  const [input, setInput] = useState('');
   const bgColor = useColorModeValue('white', 'gray.800');
   const { colorMode } = useColorMode();
+
+  const [emailValue, setEmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const logoHeight = 44;
 
   const handleButtonClick = () => {
     navigate(routes.menu);
   };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+
+  const debouncedCheck = useDebouncedCallback((value) => {
+    setIsEmailValid(validator.isEmail(value));
+  }, 1000);
+
+  const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setEmailValue(value);
+    debouncedCheck(value);
+  };
+
+  const handlePasswordInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setPasswordValue(e.target.value);
+  };
+
+  const handleShowButtonClick = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -60,30 +90,82 @@ const LoginPage = () => {
           bgColor={bgColor}
           width="340px"
         >
-          <Heading as="h3" size="md" textAlign="center">
+          <Heading
+            as="h3"
+            size="md"
+            textAlign="center"
+            color={accentColor}
+            fontWeight="medium"
+          >
             {t('headers.signIn')}
           </Heading>
-          <FormControl isRequired>
-            <FormLabel htmlFor="email">{t('inputs.email')}</FormLabel>
-            <Input
-              id="email"
-              type="email"
-              value={input}
-              placeholder={t('inputs.email')}
-              onChange={handleInputChange}
-              variant="filled"
-            />
+          <FormControl isRequired isInvalid={!isEmailValid}>
+            <FormLabel htmlFor="email" fontWeight="normal">
+              {t('inputs.email')}
+            </FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="gray.500"
+                children={<FiMail />}
+              />
+              <Input
+                id="email"
+                type="email"
+                value={emailValue}
+                placeholder={t('inputs.email')}
+                onChange={handleEmailInputChange}
+                variant="filled"
+              />
+            </InputGroup>
+            {!isEmailValid && (
+              <FormErrorMessage>{t('errors.invalidEmail')}</FormErrorMessage>
+            )}
           </FormControl>
           <FormControl isRequired>
-            <FormLabel htmlFor="password">{t('inputs.password')}</FormLabel>
-            <Input
-              id="password"
-              type="password"
-              value={input}
-              placeholder={t('inputs.password')}
-              onChange={handleInputChange}
-              variant="filled"
-            />
+            <FormLabel htmlFor="password" fontWeight="normal">
+              {t('inputs.password')}
+            </FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="gray.500"
+                children={<FiLock />}
+              />
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={passwordValue}
+                placeholder={t('inputs.password')}
+                onChange={handlePasswordInputChange}
+                variant="filled"
+              />
+              <InputRightElement>
+                <Tooltip
+                  label={
+                    showPassword
+                      ? t('tooltips.hidePassword')
+                      : t('tooltips.showPassword')
+                  }
+                >
+                  <IconButton
+                    size="sm"
+                    variant="ghost"
+                    isRound
+                    aria-label={t('tooltips.changeApp')}
+                    color="gray.500"
+                    icon={
+                      showPassword ? (
+                        <FiEyeOff size={16} />
+                      ) : (
+                        <FiEye size={16} />
+                      )
+                    }
+                    onClick={handleShowButtonClick}
+                  />
+                </Tooltip>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
           <Button
             mt={3}

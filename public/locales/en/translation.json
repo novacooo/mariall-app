@@ -24,6 +24,8 @@
   },
   "tooltips": {
     "showMenu": "Show menu",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "toggleTheme": "Toggle theme",
     "changeColor": "Change color",
     "changeApp": "Change application",
@@ -51,5 +53,8 @@
     "cyan": "Cyan",
     "purple": "Purple",
     "pink": "Pink"
+  },
+  "errors": {
+    "invalidEmail": "The email address provided is not valid!"
   }
 }

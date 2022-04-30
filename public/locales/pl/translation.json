@@ -24,6 +24,8 @@
   },
   "tooltips": {
     "showMenu": "Pokaż menu",
+    "showPassword": "Pokaż hasło",
+    "hidePassword": "Ukryj hasło",
     "toggleTheme": "Przełącz tryb",
     "changeColor": "Zmień kolor",
     "changeApp": "Zmień aplikację",
@@ -51,5 +53,8 @@
     "cyan": "Błękitny",
     "purple": "Fioletowy",
     "pink": "Różowy"
+  },
+  "errors": {
+    "invalidEmail": "Podany adres email jest nieprawidłowy!"
   }
 }
