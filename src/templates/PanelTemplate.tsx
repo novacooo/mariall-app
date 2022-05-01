@@ -20,7 +20,10 @@ const PanelTemplate = ({ name, children }: PanelTemplateProps) => {
           flexGrow={1}
           gap={5}
           bgColor={bgColor}
-          m={8}
+          m={{
+            base: 4,
+            md: 8,
+          }}
           py={5}
           px={6}
           borderWidth={1}

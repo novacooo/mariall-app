@@ -98,6 +98,10 @@ const Sidebar = () => {
 
   return (
     <Flex
+      display={{
+        base: 'none',
+        md: 'flex',
+      }}
       direction="column"
       py={5}
       px={3}

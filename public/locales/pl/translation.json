@@ -29,7 +29,8 @@
     "toggleTheme": "Przełącz tryb",
     "changeColor": "Zmień kolor",
     "changeApp": "Zmień aplikację",
-    "changeLanguage": "Zmień język"
+    "changeLanguage": "Zmień język",
+    "signOut": "Wyloguj się"
   },
   "buttons": {
     "userSettings": "Ustawienia użytkownika",

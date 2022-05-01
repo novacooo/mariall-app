@@ -15,7 +15,13 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { FiLogOut, FiSettings, FiChevronDown, FiGrid } from 'react-icons/fi';
+import {
+  FiLogOut,
+  FiSettings,
+  FiChevronDown,
+  FiGrid,
+  FiMenu,
+} from 'react-icons/fi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
 import { useNavigate } from 'react-router-dom';
@@ -44,20 +50,66 @@ const TopBar = () => {
 
   return (
     <Flex
+      position="relative"
       px={6}
       py={3}
-      justify="space-between"
+      justify={{
+        base: 'center',
+        md: 'space-between',
+      }}
       align="center"
       bgColor={bgColor}
       borderBottomWidth={1}
     >
-      <HStack spacing={5} divider={<StackDivider />}>
+      <Tooltip label={t('tooltips.showMenu')}>
+        <IconButton
+          position="absolute"
+          left={4}
+          display={{
+            base: 'inline-flex',
+            md: 'none',
+          }}
+          variant="outline"
+          aria-label={t('tooltips.showMenu')}
+          icon={<FiMenu />}
+        />
+      </Tooltip>
+      <Tooltip label={t('tooltips.signOut')}>
+        <IconButton
+          position="absolute"
+          right={4}
+          display={{
+            base: 'inline-flex',
+            md: 'none',
+          }}
+          variant="outline"
+          aria-label={t('tooltips.signOut')}
+          icon={<FiLogOut />}
+        />
+      </Tooltip>
+      <HStack
+        spacing={5}
+        divider={
+          <StackDivider
+            display={{
+              base: 'none',
+              md: 'flex',
+            }}
+          />
+        }
+      >
         {colorMode === 'light' ? (
           <LogoLight height={logoHeight} />
         ) : (
           <LogoDark height={logoHeight} />
         )}
-        <HStack spacing={5}>
+        <HStack
+          spacing={5}
+          display={{
+            base: 'none',
+            md: 'flex',
+          }}
+        >
           <Text
             fontSize="xs"
             color={textColor}
@@ -77,7 +129,13 @@ const TopBar = () => {
           </Tooltip>
         </HStack>
       </HStack>
-      <HStack spacing={3}>
+      <HStack
+        spacing={3}
+        display={{
+          base: 'none',
+          md: 'flex',
+        }}
+      >
         <LanguageButton />
         <ColorButton />
         <ColorModeButton />
