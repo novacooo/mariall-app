@@ -1,17 +1,35 @@
-import { Heading } from '@chakra-ui/react';
+import { Flex, Heading, VStack } from '@chakra-ui/react';
+import MenuCard from 'components/MenuCard/MenuCard';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { FiPackage } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
 import PageTemplate from 'templates/PageTemplate';
 
 const MenuPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <PageTemplate name={t('pagesHeaders.menu')}>
-      <Heading>{t('headers.chooseApp')}</Heading>
-      <Link to={routes.panel}>panel</Link>
-      <Link to={routes.login}>login</Link>
+      <VStack spacing={10} w="full">
+        <Heading as="h4" size="md" fontWeight="medium">
+          {t('headers.chooseApp')}
+        </Heading>
+        <Flex
+          direction={['column', 'row']}
+          flexWrap="wrap"
+          justify="center"
+          gap={6}
+          w="full"
+        >
+          <MenuCard
+            name={t('appNames.productionManagement')}
+            icon={FiPackage}
+            onClick={() => navigate(routes.panel)}
+          />
+        </Flex>
+      </VStack>
     </PageTemplate>
   );
 };
