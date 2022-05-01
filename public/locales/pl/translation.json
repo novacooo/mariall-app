@@ -56,5 +56,6 @@
   },
   "errors": {
     "invalidEmail": "Podany adres email jest nieprawidłowy!"
-  }
+  },
+  "copyright": "Copyright © 2022 Jacek Nowak. Wszystkie prawa zastrzeżone."
 }
