@@ -5,6 +5,14 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
+const styles = {
+  global: {
+    'html, body, #root': {
+      height: '100%',
+    },
+  },
+};
+
+const theme = extendTheme({ config, styles });
 
 export default theme;

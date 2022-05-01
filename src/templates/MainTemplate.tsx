@@ -10,7 +10,7 @@ const MainTemplate = ({ children }: MainTemplateProps) => {
 
   return (
     <ColorContextProvider>
-      <Flex direction="column" minHeight="100vh" bgColor={bgColor}>
+      <Flex direction="column" minHeight="100%" bgColor={bgColor}>
         {children}
       </Flex>
     </ColorContextProvider>

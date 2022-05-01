@@ -21,7 +21,7 @@ const MenuPage = () => {
           flexWrap="wrap"
           justify="center"
           gap={6}
-          w="full"
+          w="80%"
         >
           <MenuCard
             name={t('appNames.productionManagement')}

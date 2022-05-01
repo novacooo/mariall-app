@@ -20,7 +20,7 @@ const MenuCard = ({ name, icon, onClick }: MenuCardProps) => {
   return (
     <VStack
       spacing={5}
-      p={10}
+      p={8}
       w={['full', 48]}
       bg={bg}
       borderWidth={1}
