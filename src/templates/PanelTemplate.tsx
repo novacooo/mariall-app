@@ -14,7 +14,7 @@ const PanelTemplate = ({ name, children }: PanelTemplateProps) => {
     <>
       <TopBar />
       <Flex flexGrow={1}>
-        <Sidebar />
+        <Sidebar width={250} />
         <Flex
           direction="column"
           flexGrow={1}

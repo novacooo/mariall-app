@@ -1,4 +1,4 @@
-import { Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex, useBreakpointValue, useColorModeValue } from '@chakra-ui/react';
 import SidebarItem from 'components/SidebarItem/SidebarItem';
 import SidebarMenu from 'components/SidebarMenu/SidebarMenu';
 import { SidebarGroup, SidebarTab } from 'constants/sidebar';
@@ -12,6 +12,11 @@ interface IPanelTab {
   tabId: SidebarTab;
   route: string;
   admin: boolean;
+}
+
+interface SidebarProps {
+  width: number;
+  showAlways?: boolean;
 }
 
 const groups: SidebarGroup[] = [
@@ -66,10 +71,14 @@ const tabs: IPanelTab[] = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ showAlways = false, width }: SidebarProps) => {
   const bgColor = useColorModeValue('white', 'gray.800');
   const location = useLocation();
   const { t } = useTranslation();
+  const sidebarDisplay = useBreakpointValue({
+    base: 'none',
+    md: 'flex',
+  });
 
   const getGroupName = (groupId: SidebarGroup) => {
     if (groupId === SidebarGroup.PRODUCTS) return t('sidebar.groups.products');
@@ -98,14 +107,11 @@ const Sidebar = () => {
 
   return (
     <Flex
-      display={{
-        base: 'none',
-        md: 'flex',
-      }}
+      display={showAlways ? 'flex' : sidebarDisplay}
       direction="column"
       py={5}
       px={3}
-      width="250px"
+      width={`${width}px`}
       bgColor={bgColor}
       borderRightWidth={1}
     >

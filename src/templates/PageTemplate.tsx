@@ -29,7 +29,7 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
     <>
       <VStack
         flexGrow={1}
-        px={[5, 10, 10, 16]}
+        px={[4, 10, 10, 16]}
         pt={[8, 12, 16, 20]}
         pb={8}
         spacing={[8, 10, 12, 14]}

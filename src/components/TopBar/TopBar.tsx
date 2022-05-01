@@ -85,6 +85,7 @@ const TopBar = () => {
           variant="outline"
           aria-label={t('tooltips.signOut')}
           icon={<FiLogOut />}
+          onClick={() => navigate(routes.login)}
         />
       </Tooltip>
       <HStack
