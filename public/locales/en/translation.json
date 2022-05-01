@@ -37,7 +37,12 @@
     "signOut": "Sign out"
   },
   "headers": {
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "chooseApp": "Choose application"
+  },
+  "pagesHeaders": {
+    "signIn": "Sign in",
+    "menu": "Menu"
   },
   "inputs": {
     "email": "Email",

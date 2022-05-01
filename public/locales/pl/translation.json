@@ -37,7 +37,12 @@
     "signOut": "Wyloguj się"
   },
   "headers": {
-    "signIn": "Logowanie"
+    "signIn": "Zaloguj się",
+    "chooseApp": "Wybierz aplikację"
+  },
+  "pagesHeaders": {
+    "signIn": "Logowanie",
+    "menu": "Menu"
   },
   "inputs": {
     "email": "Adres email",
