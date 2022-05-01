@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -28,6 +29,10 @@ const LoginPage = () => {
   const { accentColor } = useColorContext();
   const { t } = useTranslation();
   const bgColor = useColorModeValue('white', 'gray.800');
+  const adaptiveAccentColor = useColorModeValue(
+    `${accentColor}.600`,
+    `${accentColor}.200`,
+  );
 
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
@@ -75,7 +80,7 @@ const LoginPage = () => {
           size="md"
           my={2}
           textAlign="center"
-          color={accentColor}
+          color={adaptiveAccentColor}
           fontWeight="medium"
         >
           {t('headers.signIn')}
@@ -93,6 +98,7 @@ const LoginPage = () => {
             <Input
               id="email"
               type="email"
+              focusBorderColor={adaptiveAccentColor}
               value={emailValue}
               placeholder={t('inputs.email')}
               onChange={handleEmailInputChange}
@@ -119,6 +125,7 @@ const LoginPage = () => {
               value={passwordValue}
               placeholder={t('inputs.password')}
               onChange={handlePasswordInputChange}
+              focusBorderColor={adaptiveAccentColor}
               variant="filled"
             />
             <InputRightElement>
@@ -144,6 +151,9 @@ const LoginPage = () => {
             </InputRightElement>
           </InputGroup>
         </FormControl>
+        <Checkbox colorScheme={accentColor} mx={1} my={2}>
+          {t('checkboxes.rememberPassword')}
+        </Checkbox>
         <Button
           mt={3}
           mx={6}

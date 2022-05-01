@@ -48,6 +48,9 @@
     "email": "Adres email",
     "password": "Hasło"
   },
+  "checkboxes": {
+    "rememberPassword": "Zapamiętaj hasło"
+  },
   "colors": {
     "red": "Czerwony",
     "orange": "Pomarańczowy",
