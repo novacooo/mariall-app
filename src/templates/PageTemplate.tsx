@@ -10,7 +10,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
-import MainTemplate from './MainTemplate';
 
 interface PageTemplateProps {
   name: string;
@@ -24,7 +23,7 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
   const logoHeight = 42;
 
   return (
-    <MainTemplate>
+    <>
       <VStack
         flexGrow={1}
         px={[5, 10, 10, 16]}
@@ -49,7 +48,7 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
           {t('copyright')}
         </Text>
       </VStack>
-    </MainTemplate>
+    </>
   );
 };
 

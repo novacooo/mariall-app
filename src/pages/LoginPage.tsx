@@ -23,6 +23,9 @@ import { FiEye, FiEyeOff, FiLock, FiMail } from 'react-icons/fi';
 import { useDebouncedCallback } from 'use-debounce';
 import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
+import LanguageButton from 'components/LanguageButton/LanguageButton';
+import ColorButton from 'components/ColorButton/ColorButton';
+import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -66,6 +69,9 @@ const LoginPage = () => {
 
   return (
     <PageTemplate name={t('pagesHeaders.signIn')}>
+      <LanguageButton />
+      <ColorButton />
+      <ColorModeButton />
       <Flex
         direction="column"
         gap={4}
