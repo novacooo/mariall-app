@@ -10,6 +10,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
+import LanguageButton from 'components/LanguageButton/LanguageButton';
+import ColorButton from 'components/ColorButton/ColorButton';
+import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 
 interface PageTemplateProps {
   name: string;
@@ -29,7 +32,7 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
         px={[5, 10, 10, 16]}
         pt={[8, 12, 16, 20]}
         pb={8}
-        gap={[8, 12, 16, 20]}
+        spacing={[8, 10, 12, 14]}
       >
         <HStack spacing={5} divider={<StackDivider />}>
           {colorMode === 'light' ? (
@@ -40,6 +43,11 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
           <Heading as="h3" size="md" fontWeight="normal">
             {name}
           </Heading>
+        </HStack>
+        <HStack spacing={3}>
+          <LanguageButton />
+          <ColorButton />
+          <ColorModeButton />
         </HStack>
         <Flex w="full" direction="column" flexGrow={1} align="center">
           {children}
