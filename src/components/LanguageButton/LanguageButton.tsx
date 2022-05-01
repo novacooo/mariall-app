@@ -1,15 +1,18 @@
 import {
+  HStack,
   IconButton,
   Menu,
   MenuButton,
   MenuItemOption,
   MenuList,
+  Text,
   MenuOptionGroup,
   Tooltip,
 } from '@chakra-ui/react';
 import { Languages } from 'constants/languages';
 import { useTranslation } from 'react-i18next';
 import { FiGlobe } from 'react-icons/fi';
+import ReactCountryFlag from 'react-country-flag';
 
 const LanguageButton = () => {
   const { t, i18n } = useTranslation();
@@ -36,7 +39,14 @@ const LanguageButton = () => {
             textTransform="capitalize"
             onClick={() => changeLanguage(Languages.ENGLISH)}
           >
-            {t('languages.english')}
+            <HStack>
+              <ReactCountryFlag
+                countryCode="US"
+                svg
+                style={{ marginTop: '1px', fontSize: '16px' }}
+              />
+              <Text>{t('languages.english')}</Text>
+            </HStack>
           </MenuItemOption>
           <MenuItemOption
             value={Languages.POLISH}
@@ -44,7 +54,14 @@ const LanguageButton = () => {
             textTransform="capitalize"
             onClick={() => changeLanguage(Languages.POLISH)}
           >
-            {t('languages.polish')}
+            <HStack>
+              <ReactCountryFlag
+                countryCode="PL"
+                svg
+                style={{ marginTop: '1px', fontSize: '16px' }}
+              />
+              <Text>{t('languages.polish')}</Text>
+            </HStack>
           </MenuItemOption>
         </MenuOptionGroup>
       </MenuList>

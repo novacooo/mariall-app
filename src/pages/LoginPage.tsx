@@ -151,12 +151,11 @@ const LoginPage = () => {
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        <Checkbox colorScheme={accentColor} mx={1} my={2}>
+        <Checkbox colorScheme={accentColor} mx={2} my={2}>
           {t('checkboxes.rememberPassword')}
         </Checkbox>
         <Button
-          mt={3}
-          mx={6}
+          mx={2}
           onClick={handleButtonClick}
           colorScheme={accentColor}
           type="submit"
