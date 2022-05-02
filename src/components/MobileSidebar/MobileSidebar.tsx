@@ -48,9 +48,9 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
         <DrawerBody px={3} py={6}>
           <Flex minH="100%" direction="column" gap={6}>
             <Flex px={3} align="center" justify="space-between">
-              <Flex gap={4} align="center">
-                <Avatar name={data.userName} size="md" />
-                <Text fontSize="lg">{data.userName}</Text>
+              <Flex gap={3} align="center">
+                <Avatar name={data.userName} size="sm" />
+                <Text fontSize="sm">{data.userName}</Text>
               </Flex>
               <Tooltip label={t('tooltips.signOut')}>
                 <IconButton
