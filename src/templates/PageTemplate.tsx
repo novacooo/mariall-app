@@ -13,6 +13,7 @@ import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
 import LanguageButton from 'components/LanguageButton/LanguageButton';
 import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
+import UserButton from 'components/UserButton/UserButton';
 
 interface PageTemplateProps {
   name: string;
@@ -44,11 +45,12 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
             {name}
           </Heading>
         </HStack>
-        <HStack spacing={3}>
+        <Flex gap={3} wrap="wrap" justify="center">
           <LanguageButton />
           <ColorButton />
           <ColorModeButton />
-        </HStack>
+          <UserButton />
+        </Flex>
         <Flex w="full" direction="column" flexGrow={1} align="center">
           {children}
         </Flex>

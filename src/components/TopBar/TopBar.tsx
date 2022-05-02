@@ -1,27 +1,14 @@
 import {
-  Avatar,
-  Button,
   Flex,
   HStack,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
   StackDivider,
   Text,
   Tooltip,
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
-import {
-  FiLogOut,
-  FiSettings,
-  FiChevronDown,
-  FiGrid,
-  FiMenu,
-} from 'react-icons/fi';
+import { FiLogOut, FiGrid, FiMenu } from 'react-icons/fi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
 import { useNavigate } from 'react-router-dom';
@@ -30,10 +17,7 @@ import { useTranslation } from 'react-i18next';
 import LanguageButton from 'components/LanguageButton/LanguageButton';
 import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
-
-const data = {
-  userName: 'Jacek Nowak',
-};
+import UserButton from 'components/UserButton/UserButton';
 
 const TopBar = () => {
   const { t } = useTranslation();
@@ -44,7 +28,6 @@ const TopBar = () => {
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.600', 'gray.300');
-  const logoutTextColor = useColorModeValue('red.500', 'red.400');
 
   const logoHeight = 36;
 
@@ -140,36 +123,7 @@ const TopBar = () => {
         <LanguageButton />
         <ColorButton />
         <ColorModeButton />
-        <Menu>
-          <Tooltip label={t('tooltips.showMenu')}>
-            <MenuButton
-              as={Button}
-              variant="outline"
-              rightIcon={<FiChevronDown />}
-            >
-              <HStack spacing={2}>
-                <Text color={textColor} fontSize="xs">
-                  {data.userName}
-                </Text>
-                <Avatar name={data.userName} size="xs" />
-              </HStack>
-            </MenuButton>
-          </Tooltip>
-          <MenuList>
-            <MenuItem icon={<FiSettings />} fontSize="sm">
-              {t('buttons.userSettings')}
-            </MenuItem>
-            <MenuDivider />
-            <MenuItem
-              icon={<FiLogOut />}
-              fontSize="sm"
-              color={logoutTextColor}
-              onClick={() => navigate(routes.login)}
-            >
-              {t('buttons.signOut')}
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        <UserButton />
       </HStack>
     </Flex>
   );
