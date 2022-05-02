@@ -78,7 +78,6 @@ const LoginPage = () => {
         <Heading
           as="h3"
           size="md"
-          my={2}
           textAlign="center"
           color={adaptiveAccentColor}
           fontWeight="medium"

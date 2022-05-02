@@ -12,7 +12,13 @@ const MenuPage = () => {
 
   return (
     <PageTemplate name={t('pagesHeaders.menu')}>
-      <VStack spacing={10} w="full">
+      <VStack
+        spacing={{
+          base: 6,
+          md: 10,
+        }}
+        w="full"
+      >
         <Heading as="h4" size="md" fontWeight="medium">
           {t('headers.chooseApp')}
         </Heading>
