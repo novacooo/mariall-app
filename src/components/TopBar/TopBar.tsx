@@ -9,7 +9,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FiLogOut, FiGrid, FiMenu } from 'react-icons/fi';
+import { FiGrid, FiMenu } from 'react-icons/fi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
 import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
 import { useNavigate } from 'react-router-dom';
@@ -62,8 +62,8 @@ const TopBar = () => {
         />
       </Tooltip>
 
-      {/* Mobile sign out button */}
-      <Tooltip label={t('tooltips.signOut')}>
+      {/* Mobile menu button */}
+      <Tooltip label={t('tooltips.changeApp')}>
         <IconButton
           position="absolute"
           right={4}
@@ -72,9 +72,9 @@ const TopBar = () => {
             md: 'none',
           }}
           variant="outline"
-          aria-label={t('tooltips.signOut')}
-          icon={<FiLogOut />}
-          onClick={() => navigate(routes.login)}
+          aria-label={t('tooltips.changeApp')}
+          icon={<FiGrid />}
+          onClick={() => navigate(routes.menu)}
         />
       </Tooltip>
 
