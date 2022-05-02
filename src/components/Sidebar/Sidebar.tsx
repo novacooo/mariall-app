@@ -15,7 +15,7 @@ interface IPanelTab {
 }
 
 interface SidebarProps {
-  width: number;
+  width: number | string;
   showAlways?: boolean;
 }
 
@@ -71,10 +71,11 @@ const tabs: IPanelTab[] = [
   },
 ];
 
-const Sidebar = ({ showAlways = false, width }: SidebarProps) => {
+const Sidebar = ({ width, showAlways = false }: SidebarProps) => {
   const bgColor = useColorModeValue('white', 'gray.800');
   const location = useLocation();
   const { t } = useTranslation();
+
   const sidebarDisplay = useBreakpointValue({
     base: 'none',
     md: 'flex',
@@ -111,7 +112,7 @@ const Sidebar = ({ showAlways = false, width }: SidebarProps) => {
       direction="column"
       py={5}
       px={3}
-      width={`${width}px`}
+      width={typeof width === 'number' ? `${width}px` : width}
       bgColor={bgColor}
       borderRightWidth={1}
     >

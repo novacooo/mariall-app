@@ -7,6 +7,7 @@ import {
   Tooltip,
   useColorMode,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { FiLogOut, FiGrid, FiMenu } from 'react-icons/fi';
 import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
@@ -18,13 +19,14 @@ import LanguageButton from 'components/LanguageButton/LanguageButton';
 import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 import UserButton from 'components/UserButton/UserButton';
+import MobileSidebar from 'components/MobileSidebar/MobileSidebar';
 
 const TopBar = () => {
   const { t } = useTranslation();
-
   const { colorMode } = useColorMode();
-
   const navigate = useNavigate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.600', 'gray.300');
@@ -44,6 +46,7 @@ const TopBar = () => {
       bgColor={bgColor}
       borderBottomWidth={1}
     >
+      {/* Mobile menu button */}
       <Tooltip label={t('tooltips.showMenu')}>
         <IconButton
           position="absolute"
@@ -55,8 +58,11 @@ const TopBar = () => {
           variant="outline"
           aria-label={t('tooltips.showMenu')}
           icon={<FiMenu />}
+          onClick={onOpen}
         />
       </Tooltip>
+
+      {/* Mobile sign out button */}
       <Tooltip label={t('tooltips.signOut')}>
         <IconButton
           position="absolute"
@@ -71,6 +77,10 @@ const TopBar = () => {
           onClick={() => navigate(routes.login)}
         />
       </Tooltip>
+
+      {/* Mobile sidebar */}
+      <MobileSidebar isOpen={isOpen} onClose={onClose} />
+
       <HStack
         spacing={5}
         divider={
