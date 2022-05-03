@@ -80,14 +80,11 @@ const LoginPage = () => {
           size="md"
           textAlign="center"
           color={adaptiveAccentColor}
-          fontWeight="medium"
         >
           {t('headers.signIn')}
         </Heading>
         <FormControl isRequired isInvalid={!isEmailValid}>
-          <FormLabel htmlFor="email" fontWeight="normal">
-            {t('inputs.email')}
-          </FormLabel>
+          <FormLabel htmlFor="email">{t('inputs.email')}</FormLabel>
           <InputGroup>
             <InputLeftElement
               pointerEvents="none"
@@ -109,9 +106,7 @@ const LoginPage = () => {
           )}
         </FormControl>
         <FormControl isRequired>
-          <FormLabel htmlFor="password" fontWeight="normal">
-            {t('inputs.password')}
-          </FormLabel>
+          <FormLabel htmlFor="password">{t('inputs.password')}</FormLabel>
           <InputGroup>
             <InputLeftElement
               pointerEvents="none"

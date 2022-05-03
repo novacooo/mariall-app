@@ -43,13 +43,7 @@ const MenuCard = ({ name, icon, onClick }: MenuCardProps) => {
           color: adaptiveAccentColor,
         }}
       />
-      <Heading
-        as="h4"
-        size="sm"
-        textAlign="center"
-        fontWeight="medium"
-        userSelect="none"
-      >
+      <Heading as="h4" size="sm" textAlign="center" userSelect="none">
         {name}
       </Heading>
     </VStack>

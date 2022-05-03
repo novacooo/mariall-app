@@ -41,7 +41,7 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
           ) : (
             <LogoDark height={logoHeight} />
           )}
-          <Heading as="h3" size="md" fontWeight="normal">
+          <Heading as="h3" size="md">
             {name}
           </Heading>
         </HStack>

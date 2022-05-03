@@ -55,7 +55,7 @@ const SidebarItem = ({ children, active = false, link }: SidebarItemProps) => {
           position="relative"
           zIndex={1}
           fontSize="sm"
-          fontWeight={active ? 'medium' : 'normal'}
+          fontWeight={active ? 'semibold' : undefined}
           color={active ? textColorActive : 'normal'}
           data-testid="sidebar-item-text"
         >

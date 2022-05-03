@@ -19,7 +19,7 @@ const MenuPage = () => {
         }}
         w="full"
       >
-        <Heading as="h4" size="md" fontWeight="medium">
+        <Heading as="h4" size="md">
           {t('headers.chooseApp')}
         </Heading>
         <Flex

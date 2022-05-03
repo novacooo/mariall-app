@@ -108,7 +108,7 @@ const TopBar = () => {
             fontSize="xs"
             color={textColor}
             textTransform="uppercase"
-            fontWeight="medium"
+            fontWeight="semibold"
             letterSpacing="wider"
           >
             {t('appNames.productionManagement')}
