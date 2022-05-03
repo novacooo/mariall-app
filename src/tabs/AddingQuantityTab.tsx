@@ -1,8 +1,7 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   Button,
-  FormControl,
-  FormLabel,
+  Flex,
   Menu,
   MenuButton,
   MenuItemOption,
@@ -34,6 +33,23 @@ const workers: IWorkerData[] = [
   },
 ];
 
+const months: string[] = [
+  'Styczeń',
+  'Luty',
+  'Marzec',
+  'Kwiecień',
+  'Maj',
+  'Czerwiec',
+  'Lipiec',
+  'Sierpień',
+  'Wrzesień',
+  'Październik',
+  'Listopad',
+  'Grudzień',
+];
+
+const years: number[] = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+
 const getWorkers = (succed: boolean) => {
   return new Promise<IWorkerData[]>((resolve, reject) => {
     setTimeout(() => {
@@ -44,9 +60,14 @@ const getWorkers = (succed: boolean) => {
 };
 
 const AddingQuantityTab = () => {
-  const [workersData, setWorkersData] = useState<IWorkerData[] | undefined>();
-  const [selectedWorker, setSelectedWorker] = useState<string>();
   const { accentColor } = useColorContext();
+
+  const [workersData, setWorkersData] = useState<IWorkerData[]>();
+  const [productsData, setProductsData] = useState();
+
+  const [selectedWorker, setSelectedWorker] = useState<string>();
+  const [selectedYear, setSelectedYear] = useState<number>();
+  const [selectedMonth, setSelectedMonth] = useState<string>();
 
   const toast = useToast();
 
@@ -70,19 +91,29 @@ const AddingQuantityTab = () => {
   });
 
   return (
-    <div>
-      {workersData ? (
-        <FormControl>
-          <FormLabel htmlFor="country">Wybierz pracownika:</FormLabel>
+    <Flex direction="column">
+      {/* TODO: Make separated component for selects */}
+      <Flex
+        gap={{
+          base: 3,
+          md: 4,
+        }}
+        direction={{
+          base: 'column',
+          md: 'row',
+        }}
+      >
+        {workersData ? (
           <Menu>
             <MenuButton
               as={Button}
+              variant="outline"
               rightIcon={<ChevronDownIcon />}
               colorScheme={selectedWorker ? accentColor : undefined}
             >
               {selectedWorker || 'Wybierz pracownika'}
             </MenuButton>
-            <MenuList>
+            <MenuList maxH={60} overflow="hidden" overflowY="auto">
               <MenuOptionGroup defaultValue={workers[0].id} type="radio">
                 {workers.map(({ id, name }) => (
                   <MenuItemOption
@@ -96,11 +127,62 @@ const AddingQuantityTab = () => {
               </MenuOptionGroup>
             </MenuList>
           </Menu>
-        </FormControl>
-      ) : (
-        <Spinner />
-      )}
-    </div>
+        ) : (
+          <Spinner />
+        )}
+        {selectedWorker && (
+          <Menu>
+            <MenuButton
+              as={Button}
+              variant="outline"
+              rightIcon={<ChevronDownIcon />}
+              colorScheme={selectedYear ? accentColor : undefined}
+            >
+              {selectedYear || 'Wybierz rok'}
+            </MenuButton>
+            <MenuList maxH={60} overflow="hidden" overflowY="auto">
+              <MenuOptionGroup type="radio">
+                {years.map((year) => (
+                  <MenuItemOption
+                    key={year}
+                    value={`${year}`}
+                    onClick={() => setSelectedYear(year)}
+                  >
+                    {year}
+                  </MenuItemOption>
+                ))}
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        )}
+        {selectedYear && (
+          <Menu>
+            <MenuButton
+              as={Button}
+              variant="outline"
+              rightIcon={<ChevronDownIcon />}
+              colorScheme={selectedMonth ? accentColor : undefined}
+            >
+              {selectedMonth || 'Wybierz miesiąc'}
+            </MenuButton>
+            <MenuList maxH={60} overflow="hidden" overflowY="auto">
+              <MenuOptionGroup type="radio">
+                {months.map((month) => (
+                  <MenuItemOption
+                    key={month}
+                    value={`${month}`}
+                    onClick={() => setSelectedMonth(month)}
+                  >
+                    {month}
+                  </MenuItemOption>
+                ))}
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        )}
+      </Flex>
+      {selectedMonth && <>{productsData ? <p>data here</p> : <p>fds</p>}</>}
+    </Flex>
   );
 };
 

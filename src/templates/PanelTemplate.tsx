@@ -15,7 +15,7 @@ const PanelTemplate = ({ name, children }: PanelTemplateProps) => (
       <Flex
         direction="column"
         flexGrow={1}
-        gap={5}
+        gap={6}
         m={{
           base: 4,
           md: 8,
