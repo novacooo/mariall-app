@@ -9,6 +9,7 @@ import {
   MenuList,
   MenuOptionGroup,
   Spinner,
+  useToast,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useState } from 'react';
@@ -33,11 +34,12 @@ const workers: IWorkerData[] = [
   },
 ];
 
-const getWorkers = () => {
-  return new Promise<IWorkerData[]>((resolve) => {
+const getWorkers = (succed: boolean) => {
+  return new Promise<IWorkerData[]>((resolve, reject) => {
     setTimeout(() => {
+      if (!succed) reject(new Error('Failed to fetch workers data.'));
       resolve(workers);
-    }, 2000);
+    }, 1000);
   });
 };
 
@@ -46,9 +48,26 @@ const AddingQuantityTab = () => {
   const [selectedWorker, setSelectedWorker] = useState<string>();
   const { accentColor } = useColorContext();
 
+  const toast = useToast();
+
+  const fetchWorkersData = async () => {
+    try {
+      const data = await getWorkers(true);
+      setWorkersData(data);
+    } catch (err) {
+      toast({
+        title: 'An error occured',
+        description: `${err}`,
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      });
+    }
+  };
+
   useEffect(() => {
-    getWorkers().then((data) => setWorkersData(data));
-  }, []);
+    fetchWorkersData();
+  });
 
   return (
     <div>
