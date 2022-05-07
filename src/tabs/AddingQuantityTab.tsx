@@ -8,10 +8,10 @@ import {
   MenuList,
   MenuOptionGroup,
   Spinner,
-  useToast,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IWorkerData {
   id: string;
@@ -33,33 +33,34 @@ const workers: IWorkerData[] = [
   },
 ];
 
-const months: string[] = [
-  'Styczeń',
-  'Luty',
-  'Marzec',
-  'Kwiecień',
-  'Maj',
-  'Czerwiec',
-  'Lipiec',
-  'Sierpień',
-  'Wrzesień',
-  'Październik',
-  'Listopad',
-  'Grudzień',
-];
-
 const years: number[] = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+
+const months: string[] = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december',
+];
 
 const getWorkers = (succed: boolean) => {
   return new Promise<IWorkerData[]>((resolve, reject) => {
     setTimeout(() => {
       if (!succed) reject(new Error('Failed to fetch workers data.'));
       resolve(workers);
-    }, 1000);
+    }, 300);
   });
 };
 
 const AddingQuantityTab = () => {
+  const { t } = useTranslation();
   const { accentColor } = useColorContext();
 
   const [workersData, setWorkersData] = useState<IWorkerData[]>();
@@ -69,26 +70,18 @@ const AddingQuantityTab = () => {
   const [selectedYear, setSelectedYear] = useState<number>();
   const [selectedMonth, setSelectedMonth] = useState<string>();
 
-  const toast = useToast();
-
-  const fetchWorkersData = async () => {
-    try {
-      const data = await getWorkers(true);
-      setWorkersData(data);
-    } catch (err) {
-      toast({
-        title: 'An error occured',
-        description: `${err}`,
-        status: 'error',
-        position: 'top',
-        isClosable: true,
-      });
-    }
-  };
-
   useEffect(() => {
+    const fetchWorkersData = async () => {
+      try {
+        const data = await getWorkers(true);
+        setWorkersData(data);
+      } catch (err) {
+        console.error(`Error: ${err}`);
+      }
+    };
+
     fetchWorkersData();
-  });
+  }, []);
 
   return (
     <Flex direction="column">
@@ -163,17 +156,17 @@ const AddingQuantityTab = () => {
               rightIcon={<ChevronDownIcon />}
               colorScheme={selectedMonth ? accentColor : undefined}
             >
-              {selectedMonth || 'Wybierz miesiąc'}
+              {selectedMonth ? t(`months.${selectedMonth}`) : 'Wybierz miesiąc'}
             </MenuButton>
             <MenuList maxH={60} overflow="hidden" overflowY="auto">
               <MenuOptionGroup type="radio">
                 {months.map((month) => (
                   <MenuItemOption
                     key={month}
-                    value={`${month}`}
+                    value={month}
                     onClick={() => setSelectedMonth(month)}
                   >
-                    {month}
+                    {t(`months.${month}`)}
                   </MenuItemOption>
                 ))}
               </MenuOptionGroup>
