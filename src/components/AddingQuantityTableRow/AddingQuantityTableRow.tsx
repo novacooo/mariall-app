@@ -5,8 +5,8 @@ interface AddingQuantityTableRowProps {
 }
 
 const AddingQuantityTableRow = ({ name }: AddingQuantityTableRowProps) => {
-  const bgColor1 = useColorModeValue('gray.50', 'gray.800');
-  const bgColor2 = useColorModeValue('white', 'gray.900');
+  const bgColor1 = useColorModeValue('gray.50', 'gray.900');
+  const bgColor2 = useColorModeValue('white', 'gray.800');
   const bgColorHover = useColorModeValue('gray.100', 'gray.700');
 
   return (
@@ -20,6 +20,7 @@ const AddingQuantityTableRow = ({ name }: AddingQuantityTableRowProps) => {
       _hover={{
         bgColor: bgColorHover,
       }}
+      _last={{ roundedBottom: 'md' }}
     >
       <Box
         backgroundImage={`https://picsum.photos/100/100?random=${

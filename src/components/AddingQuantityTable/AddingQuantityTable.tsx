@@ -12,7 +12,19 @@ import { useColorContext } from 'contexts/ColorContext';
 const AddingQuantityTable = () => {
   const { accentColor } = useColorContext();
 
-  const headerBgColor = useColorModeValue('white', 'gray.900');
+  const headerBgColor = useColorModeValue('white', 'gray.800');
+  const headerTextColor = useColorModeValue('gray.500', 'gray.400');
+
+  const HeaderText = ({ children }: { children: string }) => (
+    <Text
+      fontSize="xs"
+      color={headerTextColor}
+      textTransform="uppercase"
+      fontWeight="semibold"
+    >
+      {children}
+    </Text>
+  );
 
   return (
     <Box borderWidth={1} rounded="md">
@@ -23,13 +35,15 @@ const AddingQuantityTable = () => {
         px={5}
         bgColor={headerBgColor}
         roundedTop="md"
+        borderBottomWidth={1}
       >
-        <Text>Zdjęcie</Text>
-        <Text>Nazwa produktu</Text>
-        <Text>Aktualna ilość</Text>
-        <Text>Ilość do dodania</Text>
+        <HeaderText>Zdjęcie</HeaderText>
+        <HeaderText>Nazwa produktu</HeaderText>
+        <HeaderText>Aktualna ilość</HeaderText>
+        <HeaderText>Ilość do dodania</HeaderText>
+        <HeaderText>Akcja</HeaderText>
       </Flex>
-      {[...Array(50)].map((el, i) => (
+      {[...Array(15)].map((el, i) => (
         <AddingQuantityTableRow name={`Product ${i + 1}`} />
       ))}
     </Box>

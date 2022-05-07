@@ -101,7 +101,6 @@ const AddingQuantityTab = () => {
           <Menu>
             <MenuButton
               as={Button}
-              variant="outline"
               rightIcon={<ChevronDownIcon />}
               colorScheme={selectedWorker ? accentColor : undefined}
             >
@@ -128,7 +127,6 @@ const AddingQuantityTab = () => {
           <Menu>
             <MenuButton
               as={Button}
-              variant="outline"
               rightIcon={<ChevronDownIcon />}
               colorScheme={selectedYear ? accentColor : undefined}
             >
@@ -153,7 +151,6 @@ const AddingQuantityTab = () => {
           <Menu>
             <MenuButton
               as={Button}
-              variant="outline"
               rightIcon={<ChevronDownIcon />}
               colorScheme={selectedMonth ? accentColor : undefined}
             >
