@@ -9,6 +9,7 @@ import {
   MenuOptionGroup,
   Spinner,
 } from '@chakra-ui/react';
+import AddingQuantityTable from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -68,7 +69,7 @@ const AddingQuantityTab = () => {
 
   const [selectedWorker, setSelectedWorker] = useState<string>();
   const [selectedYear, setSelectedYear] = useState<number>();
-  const [selectedMonth, setSelectedMonth] = useState<string>();
+  const [selectedMonth, setSelectedMonth] = useState<string>(months[0]);
 
   useEffect(() => {
     const fetchWorkersData = async () => {
@@ -84,7 +85,7 @@ const AddingQuantityTab = () => {
   }, []);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" gap={6}>
       {/* TODO: Make separated component for selects */}
       <Flex
         gap={{
@@ -107,7 +108,7 @@ const AddingQuantityTab = () => {
               {selectedWorker || 'Wybierz pracownika'}
             </MenuButton>
             <MenuList maxH={60} overflow="hidden" overflowY="auto">
-              <MenuOptionGroup defaultValue={workers[0].id} type="radio">
+              <MenuOptionGroup type="radio">
                 {workers.map(({ id, name }) => (
                   <MenuItemOption
                     key={id}
@@ -174,7 +175,7 @@ const AddingQuantityTab = () => {
           </Menu>
         )}
       </Flex>
-      {selectedMonth && <>{productsData ? <p>data here</p> : <p>fds</p>}</>}
+      {selectedMonth && <AddingQuantityTable />}
     </Flex>
   );
 };
