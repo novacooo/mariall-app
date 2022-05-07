@@ -8,6 +8,7 @@ import {
   MenuList,
   MenuOptionGroup,
   Spinner,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import AddingQuantityTable from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
@@ -64,12 +65,17 @@ const AddingQuantityTab = () => {
   const { t } = useTranslation();
   const { accentColor } = useColorContext();
 
+  const selectAccentText = useColorModeValue(
+    `${accentColor}.600`,
+    `${accentColor}.200`,
+  );
+
   const [workersData, setWorkersData] = useState<IWorkerData[]>();
   const [productsData, setProductsData] = useState();
 
   const [selectedWorker, setSelectedWorker] = useState<string>();
   const [selectedYear, setSelectedYear] = useState<number>();
-  const [selectedMonth, setSelectedMonth] = useState<string>(months[0]);
+  const [selectedMonth, setSelectedMonth] = useState<string>();
 
   useEffect(() => {
     const fetchWorkersData = async () => {
@@ -102,7 +108,7 @@ const AddingQuantityTab = () => {
             <MenuButton
               as={Button}
               rightIcon={<ChevronDownIcon />}
-              colorScheme={selectedWorker ? accentColor : undefined}
+              color={selectedWorker ? selectAccentText : undefined}
             >
               {selectedWorker || 'Wybierz pracownika'}
             </MenuButton>
@@ -128,7 +134,7 @@ const AddingQuantityTab = () => {
             <MenuButton
               as={Button}
               rightIcon={<ChevronDownIcon />}
-              colorScheme={selectedYear ? accentColor : undefined}
+              color={selectedYear ? selectAccentText : undefined}
             >
               {selectedYear || 'Wybierz rok'}
             </MenuButton>
@@ -152,7 +158,7 @@ const AddingQuantityTab = () => {
             <MenuButton
               as={Button}
               rightIcon={<ChevronDownIcon />}
-              colorScheme={selectedMonth ? accentColor : undefined}
+              color={selectedMonth ? selectAccentText : undefined}
             >
               {selectedMonth ? t(`months.${selectedMonth}`) : 'Wybierz miesiąc'}
             </MenuButton>
