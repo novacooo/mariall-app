@@ -1,20 +1,24 @@
 import { Box, Text, Flex, useColorModeValue } from '@chakra-ui/react';
 import AddingQuantityTableRow from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
-import { useColorContext } from 'contexts/ColorContext';
 
 const AddingQuantityTable = () => {
-  const { accentColor } = useColorContext();
-
   const headerBgColor = useColorModeValue('white', 'gray.800');
   const headerTextColor = useColorModeValue('gray.500', 'gray.400');
 
   return (
     <Box borderWidth={1} rounded="md">
       <Flex
+        display={{
+          base: 'none',
+          md: 'flex',
+        }}
         gap={5}
         align="center"
         py={3}
-        px={5}
+        px={{
+          base: 2,
+          md: 5,
+        }}
         bgColor={headerBgColor}
         roundedTop="md"
         borderBottomWidth={1}
@@ -22,22 +26,53 @@ const AddingQuantityTable = () => {
         color={headerTextColor}
         textTransform="uppercase"
         fontWeight="semibold"
+        textAlign="center"
       >
-        <Text w={16} textAlign="center">
+        <Text
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          w={12}
+        >
           Zdjęcie
         </Text>
-        <Text flexGrow={1}>Nazwa produktu</Text>
-        <Text w={28} textAlign="center">
+        <Text
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          flexGrow={1}
+          textAlign="start"
+        >
+          Nazwa produktu
+        </Text>
+        <Text
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          w={{
+            base: 16,
+            md: 28,
+          }}
+        >
           Aktualna ilość
         </Text>
-        <Text w={36} textAlign="center">
+        <Text
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          w={{
+            base: 28,
+            md: 36,
+          }}
+        >
           Ilość do dodania
         </Text>
       </Flex>
-      {[...Array(15)].map((el, i) => (
+      {[...Array(100)].map((el, i) => (
         <AddingQuantityTableRow
+          key={i}
           quantity={0}
-          name={`Very long product name that can take a lot of space ${i + 1}`}
+          name={`Normal product name ${i + 1}`}
         />
       ))}
     </Box>

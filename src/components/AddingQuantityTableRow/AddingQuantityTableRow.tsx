@@ -1,14 +1,11 @@
 import {
   Box,
-  Button,
   Center,
   Flex,
-  HStack,
   IconButton,
   Input,
   Text,
   useColorModeValue,
-  useNumberInput,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
 import { FiMinus, FiPlus } from 'react-icons/fi';
@@ -31,9 +28,14 @@ const AddingQuantityTableRow = ({
   return (
     <Flex
       gap={5}
+      wrap="wrap"
       align="center"
+      justify="center"
       py={2}
-      px={5}
+      px={{
+        base: 2,
+        md: 5,
+      }}
       bgColor={bgColor1}
       _odd={{ bgColor: bgColor2 }}
       _hover={{
@@ -41,7 +43,7 @@ const AddingQuantityTableRow = ({
       }}
       _last={{ roundedBottom: 'md' }}
     >
-      <Center w={16} flexShrink={0}>
+      <Center w={12} flexShrink={0}>
         <Box
           backgroundImage={`https://picsum.photos/100/100?random=${
             Math.random() * 100
@@ -56,35 +58,55 @@ const AddingQuantityTableRow = ({
           borderWidth={1}
         />
       </Center>
-      <Text fontSize="sm" flexGrow={1}>
+      <Text
+        fontSize="sm"
+        flexGrow={1}
+        overflow="hidden"
+        textOverflow="ellipsis"
+      >
         {name}
       </Text>
-      <Text fontSize="sm" w={28} textAlign="center" flexShrink={0}>
+      <Text
+        fontSize="sm"
+        w={{
+          base: 16,
+          md: 28,
+        }}
+        textAlign="center"
+        flexShrink={0}
+      >
         {quantity}
       </Text>
-      <Center>
-        <Flex gap={2} align="center" justify="center" w={36} flexShrink={0}>
-          <IconButton
-            aria-label="Decrement button"
-            icon={<FiMinus />}
-            size="xs"
-            colorScheme={accentColor}
-          />
-          <Input
-            w={10}
-            size="sm"
-            rounded="md"
-            defaultValue={0}
-            textAlign="center"
-          />
-          <IconButton
-            aria-label="Increment button"
-            icon={<FiPlus />}
-            size="xs"
-            colorScheme={accentColor}
-          />
-        </Flex>
-      </Center>
+      <Flex
+        gap={2}
+        align="center"
+        justify="center"
+        w={{
+          base: 28,
+          md: 36,
+        }}
+        flexShrink={0}
+      >
+        <IconButton
+          aria-label="Decrement button"
+          icon={<FiMinus />}
+          size="xs"
+          colorScheme={accentColor}
+        />
+        <Input
+          w={10}
+          size="sm"
+          rounded="md"
+          defaultValue={0}
+          textAlign="center"
+        />
+        <IconButton
+          aria-label="Increment button"
+          icon={<FiPlus />}
+          size="xs"
+          colorScheme={accentColor}
+        />
+      </Flex>
     </Flex>
   );
 };
