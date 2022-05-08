@@ -108,16 +108,22 @@ const AddingQuantityTableRow = forwardRef<
           md: 'center',
         }}
         flexGrow={1}
+        gap={{
+          base: 'none',
+          md: 3,
+        }}
       >
         <Text
           w={{
             base: 'auto',
-            md: 28,
+            md: 16,
+            lg: 28,
           }}
           fontSize="xs"
           fontWeight="medium"
           textAlign="center"
           color={codeColor}
+          flexShrink={0}
         >
           {code}
         </Text>

@@ -15,12 +15,12 @@ const AddingQuantityTable = () => {
 
   return (
     <Box borderWidth={1} rounded="md">
-      {/* <Flex
+      <Flex
         display={{
           base: 'none',
           md: 'flex',
         }}
-        gap={5}
+        gap={3}
         align="center"
         py={3}
         px={{
@@ -50,12 +50,12 @@ const AddingQuantityTable = () => {
           textOverflow="ellipsis"
           whiteSpace="nowrap"
           w={{
-            base: 24,
-            md: 28,
+            md: 16,
+            lg: 28,
           }}
           onClick={showRefs}
         >
-          Kod produktu
+          Kod
         </Text>
         <Text
           overflow="hidden"
@@ -64,31 +64,31 @@ const AddingQuantityTable = () => {
           flexGrow={1}
           textAlign="start"
         >
-          Nazwa produktu
+          Nazwa
         </Text>
         <Text
           overflow="hidden"
           textOverflow="ellipsis"
           whiteSpace="nowrap"
           w={{
-            base: 16,
+            md: 12,
+            lg: 28,
+          }}
+        >
+          Ilość
+        </Text>
+        <Text
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          w={{
             md: 28,
+            lg: 36,
           }}
         >
-          Aktualna ilość
+          Dodawanie
         </Text>
-        <Text
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-          w={{
-            base: 28,
-            md: 36,
-          }}
-        >
-          Ilość do dodania
-        </Text>
-      </Flex> */}
+      </Flex>
       <Box>
         {[...Array(100)].map((el, i) => (
           <AddingQuantityTableRow
