@@ -5,8 +5,13 @@ import AddingQuantityTableRow, {
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+interface IQuantity {
+  code: string;
+  quantity: number;
+}
+
 export interface AddingQuantityTableHandle {
-  showRowsCounts: () => void;
+  getQuantities: () => IQuantity[];
 }
 
 const AddingQuantityTable = forwardRef<AddingQuantityTableHandle>(
@@ -17,13 +22,23 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle>(
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
 
-    const showRefs = () => {
-      rowsRefs.current.map((el) => console.log(el.getCount()));
-    };
-
     useImperativeHandle(ref, () => ({
-      showRowsCounts: () => {
-        showRefs();
+      getQuantities: () => {
+        const quantities: IQuantity[] = [];
+
+        rowsRefs.current.forEach((rowRef) => {
+          const code = rowRef.getCode();
+          const quantity = rowRef.getCount();
+
+          if (quantity > 0) {
+            quantities.push({
+              code,
+              quantity,
+            });
+          }
+        });
+
+        return quantities;
       },
     }));
 
@@ -55,7 +70,6 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle>(
             textOverflow="ellipsis"
             whiteSpace="nowrap"
             w={12}
-            onClick={showRefs}
           >
             {t('tables.productImage')}
           </Text>
@@ -67,7 +81,6 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle>(
               md: 16,
               lg: 28,
             }}
-            onClick={showRefs}
           >
             {t('tables.productCode')}
           </Text>

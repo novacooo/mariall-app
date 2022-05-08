@@ -80,6 +80,12 @@ const AddingQuantityTab = () => {
   const [selectedYear, setSelectedYear] = useState<number>();
   const [selectedMonth, setSelectedMonth] = useState<string>();
 
+  const handleSaveButtonClick = () => {
+    if (!tableRef.current) return;
+    const quantities = tableRef.current.getQuantities();
+    console.log(quantities);
+  };
+
   useEffect(() => {
     const fetchWorkersData = async () => {
       try {
@@ -197,10 +203,7 @@ const AddingQuantityTab = () => {
           )}
         </Flex>
         {selectedMonth && (
-          <Button
-            colorScheme={accentColor}
-            onClick={() => tableRef.current?.showRowsCounts()}
-          >
+          <Button colorScheme={accentColor} onClick={handleSaveButtonClick}>
             Zapisz
           </Button>
         )}
