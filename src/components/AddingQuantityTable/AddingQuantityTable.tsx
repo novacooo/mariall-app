@@ -49,6 +49,18 @@ const AddingQuantityTable = () => {
           overflow="hidden"
           textOverflow="ellipsis"
           whiteSpace="nowrap"
+          w={{
+            base: 24,
+            md: 28,
+          }}
+          onClick={showRefs}
+        >
+          Kod produktu
+        </Text>
+        <Text
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
           flexGrow={1}
           textAlign="start"
         >
@@ -77,16 +89,19 @@ const AddingQuantityTable = () => {
           Ilość do dodania
         </Text>
       </Flex>
-      {[...Array(100)].map((el, i) => (
-        <AddingQuantityTableRow
-          key={i}
-          ref={(element) => {
-            rowsRefs.current[i] = element as never;
-          }}
-          name={`Normal product name ${i + 1}`}
-          quantity={0}
-        />
-      ))}
+      <Box>
+        {[...Array(100)].map((el, i) => (
+          <AddingQuantityTableRow
+            key={i}
+            ref={(element) => {
+              rowsRefs.current[i] = element as never;
+            }}
+            name={`Normal product name ${i + 1}`}
+            quantity={0}
+            code={`CODE-${i + 1 > 9 ? i + 1 : `0${i + 1}`}`}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };

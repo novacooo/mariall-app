@@ -18,12 +18,13 @@ export interface AddingQuantityTableRowHandle {
 interface AddingQuantityTableRowProps {
   name: string;
   quantity: number;
+  code: string;
 }
 
 const AddingQuantityTableRow = forwardRef<
   AddingQuantityTableRowHandle,
   AddingQuantityTableRowProps
->(({ name, quantity }, ref) => {
+>(({ name, quantity, code }, ref) => {
   const [count, setCount] = useState(0);
   const { accentColor } = useColorContext();
 
@@ -70,6 +71,12 @@ const AddingQuantityTableRow = forwardRef<
       _hover={{
         bgColor: bgColorHover,
       }}
+      _first={{
+        roundedTop: {
+          base: 'md',
+          md: 'none',
+        },
+      }}
       _last={{ roundedBottom: 'md' }}
     >
       <Center w={12} flexShrink={0}>
@@ -85,6 +92,19 @@ const AddingQuantityTableRow = forwardRef<
           borderWidth={1}
         />
       </Center>
+      <Text
+        textAlign="center"
+        w={{
+          base: 24,
+          md: 28,
+        }}
+        as="kbd"
+        fontSize="sm"
+        overflow="hidden"
+        textOverflow="ellipsis"
+      >
+        {code}
+      </Text>
       <Text
         fontSize="sm"
         flexGrow={1}
