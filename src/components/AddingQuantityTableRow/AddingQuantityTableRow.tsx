@@ -13,11 +13,17 @@ import { FiMinus, FiPlus } from 'react-icons/fi';
 interface AddingQuantityTableRowProps {
   name: string;
   quantity: number;
+  value: number;
+  onMinusClick: () => void;
+  onPlusClick: () => void;
 }
 
 const AddingQuantityTableRow = ({
   name,
   quantity,
+  value,
+  onMinusClick,
+  onPlusClick,
 }: AddingQuantityTableRowProps) => {
   const { accentColor } = useColorContext();
 
@@ -92,19 +98,15 @@ const AddingQuantityTableRow = ({
           icon={<FiMinus />}
           size="xs"
           colorScheme={accentColor}
+          onClick={onMinusClick}
         />
-        <Input
-          w={10}
-          size="sm"
-          rounded="md"
-          defaultValue={0}
-          textAlign="center"
-        />
+        <Input w={10} size="sm" rounded="md" value={value} textAlign="center" />
         <IconButton
           aria-label="Increment button"
           icon={<FiPlus />}
           size="xs"
           colorScheme={accentColor}
+          onClick={onPlusClick}
         />
       </Flex>
     </Flex>

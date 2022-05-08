@@ -1,7 +1,10 @@
 import { Box, Text, Flex, useColorModeValue } from '@chakra-ui/react';
 import AddingQuantityTableRow from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
+import { useState } from 'react';
 
 const AddingQuantityTable = () => {
+  const [value, setValue] = useState(0);
+
   const headerBgColor = useColorModeValue('white', 'gray.800');
   const headerTextColor = useColorModeValue('gray.500', 'gray.400');
 
@@ -71,8 +74,11 @@ const AddingQuantityTable = () => {
       {[...Array(100)].map((el, i) => (
         <AddingQuantityTableRow
           key={i}
-          quantity={0}
           name={`Normal product name ${i + 1}`}
+          quantity={0}
+          value={value}
+          onPlusClick={() => setValue((prev) => prev + 1)}
+          onMinusClick={() => setValue((prev) => prev - 1)}
         />
       ))}
     </Box>
