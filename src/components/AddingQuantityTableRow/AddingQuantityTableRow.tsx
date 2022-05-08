@@ -27,21 +27,18 @@ const AddingQuantityTableRow = forwardRef<
   AddingQuantityTableRowHandle,
   AddingQuantityTableRowProps
 >(({ image, code, name, quantity }, ref) => {
-  const [count, setCount] = useState(0);
   const { accentColor } = useColorContext();
 
-  const bgColor1 = useColorModeValue('gray.50', 'gray.900');
-  const bgColor2 = useColorModeValue('white', 'gray.800');
+  const [count, setCount] = useState(0);
+
+  const bgColorFirst = useColorModeValue('gray.50', 'gray.900');
+  const bgColorSecond = useColorModeValue('white', 'gray.800');
   const bgColorHover = useColorModeValue('gray.100', 'gray.700');
-  const codeColor = useColorModeValue('gray.600', 'gray.300');
+  const productCodeColor = useColorModeValue('gray.600', 'gray.300');
 
   useImperativeHandle(ref, () => ({
-    getCount: () => {
-      return count;
-    },
-    getCode: () => {
-      return code;
-    },
+    getCount: () => count,
+    getCode: () => code,
   }));
 
   const handleMinusClick = () => {
@@ -71,8 +68,8 @@ const AddingQuantityTableRow = forwardRef<
         base: 2,
         md: 5,
       }}
-      bgColor={bgColor1}
-      _odd={{ bgColor: bgColor2 }}
+      bgColor={bgColorFirst}
+      _odd={{ bgColor: bgColorSecond }}
       _hover={{
         bgColor: bgColorHover,
       }}
@@ -127,7 +124,7 @@ const AddingQuantityTableRow = forwardRef<
           fontSize="xs"
           fontWeight="medium"
           textAlign="center"
-          color={codeColor}
+          color={productCodeColor}
           flexShrink={0}
           textTransform="uppercase"
         >

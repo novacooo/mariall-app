@@ -50,7 +50,8 @@
     "userSettings": "Ustawienia użytkownika",
     "signIn": "Zaloguj się",
     "signOut": "Wyloguj się",
-    "saveChanges": "Zapisz zmiany"
+    "saveChanges": "Zapisz zmiany",
+    "cancel": "Anuluj"
   },
   "headers": {
     "signIn": "Zaloguj się",
@@ -63,6 +64,11 @@
   "inputs": {
     "email": "Adres email",
     "password": "Hasło"
+  },
+  "selects": {
+    "chooseWorker": "Wybierz pracownika",
+    "chooseYear": "Wybierz rok",
+    "chooseMonth": "Wybierz miesiąc"
   },
   "checkboxes": {
     "rememberPassword": "Zapamiętaj hasło"
@@ -87,6 +93,14 @@
     "productName": "Nazwa",
     "productQuantity": "Ilość",
     "productAdding": "Dodawanie"
+  },
+  "alerts": {
+    "headers": {
+      "addingQuantities": "Dodawanie ilości"
+    },
+    "bodies": {
+      "addingQuantities": "Czy chcesz zapisać wprowadzone zmiany?"
+    }
   },
   "copyright": "Copyright © 2022 Jacek Nowak. Wszystkie prawa zastrzeżone."
 }

@@ -50,7 +50,8 @@
     "userSettings": "User settings",
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "saveChanges": "Save changes"
+    "saveChanges": "Save changes",
+    "cancel": "Cancel"
   },
   "headers": {
     "signIn": "Sign in",
@@ -63,6 +64,11 @@
   "inputs": {
     "email": "Email",
     "password": "Password"
+  },
+  "selects": {
+    "chooseWorker": "Choose worker",
+    "chooseYear": "Choose year",
+    "chooseMonth": "Choose month"
   },
   "checkboxes": {
     "rememberPassword": "Remember password"
@@ -87,6 +93,14 @@
     "productName": "Name",
     "productQuantity": "Quantity",
     "productAdding": "Adding"
+  },
+  "alerts": {
+    "headers": {
+      "addingQuantities": "Adding quantities"
+    },
+    "bodies": {
+      "addingQuantities": "Do you want to save the changes made?"
+    }
   },
   "copyright": "Copyright © 2022 Jacek Nowak. All rights reserved."
 }

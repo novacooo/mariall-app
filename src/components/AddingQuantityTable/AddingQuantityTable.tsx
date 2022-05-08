@@ -1,4 +1,4 @@
-import { Box, Text, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text, Flex, useColorModeValue, Spinner } from '@chakra-ui/react';
 import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
@@ -151,147 +151,160 @@ export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];
 }
 
-const getProducts = () => {
+interface AddingQuantityTableProps {
+  workerId: string;
+  year: number;
+  month: string;
+}
+
+const getProducts = (workerId: string, year: number, month: string) => {
   return new Promise<IProductData[]>((resolve) => {
     setTimeout(() => {
       resolve(products);
-    }, 300);
+    }, 500);
   });
 };
 
 const AddingQuantityTable = memo(
-  forwardRef<AddingQuantityTableHandle>((props, ref) => {
-    const { t } = useTranslation();
-    const [productsData, setProductsData] = useState<IProductData[]>();
+  forwardRef<AddingQuantityTableHandle, AddingQuantityTableProps>(
+    ({ workerId, year, month }, ref) => {
+      const { t } = useTranslation();
 
-    const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
-    const headerBgColor = useColorModeValue('white', 'gray.800');
-    const headerTextColor = useColorModeValue('gray.500', 'gray.400');
+      const [productsData, setProductsData] = useState<IProductData[]>();
 
-    useImperativeHandle(ref, () => ({
-      getQuantities: () => {
-        const quantities: IQuantity[] = [];
+      const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
 
-        rowsRefs.current.forEach((rowRef) => {
-          const code = rowRef.getCode();
-          const quantity = rowRef.getCount();
+      const headerBgColor = useColorModeValue('white', 'gray.800');
+      const headerTextColor = useColorModeValue('gray.500', 'gray.400');
 
-          if (quantity > 0) {
-            quantities.push({
-              code,
-              quantity,
-            });
+      useImperativeHandle(ref, () => ({
+        getQuantities: () => {
+          const quantities: IQuantity[] = [];
+
+          rowsRefs.current.forEach((rowRef) => {
+            const code = rowRef.getCode();
+            const quantity = rowRef.getCount();
+
+            if (quantity > 0) {
+              quantities.push({
+                code,
+                quantity,
+              });
+            }
+          });
+
+          return quantities;
+        },
+      }));
+
+      useEffect(() => {
+        const fetchProductsData = async () => {
+          try {
+            setProductsData(undefined);
+            const data = await getProducts(workerId, year, month);
+            setProductsData(data);
+          } catch (err) {
+            console.error(`Error: ${err}`);
           }
-        });
+        };
 
-        return quantities;
-      },
-    }));
+        fetchProductsData();
+      }, [month, workerId, year]);
 
-    useEffect(() => {
-      const fetchProductsData = async () => {
-        try {
-          const data = await getProducts();
-          setProductsData(data);
-        } catch (err) {
-          console.error(`Error: ${err}`);
-        }
-      };
+      if (!productsData) return <Spinner />;
 
-      fetchProductsData();
-    }, []);
-
-    return (
-      <Box borderWidth={1} rounded="md">
-        <Flex
-          display={{
-            base: 'none',
-            md: 'flex',
-          }}
-          gap={3}
-          align="center"
-          py={3}
-          px={{
-            base: 2,
-            md: 5,
-          }}
-          bgColor={headerBgColor}
-          roundedTop="md"
-          borderBottomWidth={1}
-          fontSize="xs"
-          color={headerTextColor}
-          textTransform="uppercase"
-          fontWeight="semibold"
-          textAlign="center"
-        >
-          <Text
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            w={12}
-          >
-            {t('tables.productImage')}
-          </Text>
-          <Text
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            w={{
-              md: 16,
-              lg: 28,
+      return (
+        <Box borderWidth={1} rounded="md">
+          <Flex
+            display={{
+              base: 'none',
+              md: 'flex',
             }}
-          >
-            {t('tables.productCode')}
-          </Text>
-          <Text
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            flexGrow={1}
-            textAlign="start"
-          >
-            {t('tables.productName')}
-          </Text>
-          <Text
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            w={{
-              md: 12,
-              lg: 28,
+            gap={3}
+            align="center"
+            py={3}
+            px={{
+              base: 2,
+              md: 5,
             }}
+            bgColor={headerBgColor}
+            roundedTop="md"
+            borderBottomWidth={1}
+            fontSize="xs"
+            color={headerTextColor}
+            textTransform="uppercase"
+            fontWeight="semibold"
+            textAlign="center"
           >
-            {t('tables.productQuantity')}
-          </Text>
-          <Text
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            w={{
-              md: 28,
-              lg: 36,
-            }}
-          >
-            {t('tables.productAdding')}
-          </Text>
-        </Flex>
-        <Box>
-          {productsData?.map(({ image, code, name, quantity }, i) => (
-            <AddingQuantityTableRow
-              key={code}
-              ref={(element) => {
-                rowsRefs.current[i] = element as never;
+            <Text
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              w={12}
+            >
+              {t('tables.productImage')}
+            </Text>
+            <Text
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              w={{
+                md: 16,
+                lg: 28,
               }}
-              image={image}
-              name={name}
-              quantity={quantity}
-              code={code}
-            />
-          ))}
+            >
+              {t('tables.productCode')}
+            </Text>
+            <Text
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              flexGrow={1}
+              textAlign="start"
+            >
+              {t('tables.productName')}
+            </Text>
+            <Text
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              w={{
+                md: 12,
+                lg: 28,
+              }}
+            >
+              {t('tables.productQuantity')}
+            </Text>
+            <Text
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              w={{
+                md: 28,
+                lg: 36,
+              }}
+            >
+              {t('tables.productAdding')}
+            </Text>
+          </Flex>
+          <Box>
+            {productsData?.map(({ image, code, name, quantity }, i) => (
+              <AddingQuantityTableRow
+                key={code}
+                ref={(element) => {
+                  rowsRefs.current[i] = element as never;
+                }}
+                image={image}
+                name={name}
+                quantity={quantity}
+                code={code}
+              />
+            ))}
+          </Box>
         </Box>
-      </Box>
-    );
-  }),
+      );
+    },
+  ),
 );
 
 export default AddingQuantityTable;

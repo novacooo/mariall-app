@@ -18,6 +18,8 @@ import {
   useColorModeValue,
   useDisclosure,
   Box,
+  Code,
+  VStack,
 } from '@chakra-ui/react';
 import AddingQuantityTable, {
   AddingQuantityTableHandle,
@@ -26,7 +28,7 @@ import AddingQuantityTable, {
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FiSave } from 'react-icons/fi';
+import { FiSave, FiX } from 'react-icons/fi';
 
 interface IWorkerData {
   id: string;
@@ -146,7 +148,7 @@ const AddingQuantityTab = () => {
                 rightIcon={<ChevronDownIcon />}
                 color={selectedWorker ? selectAccentText : undefined}
               >
-                {selectedWorker || 'Wybierz pracownika'}
+                {selectedWorker || t('selects.chooseWorker')}
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
@@ -172,7 +174,7 @@ const AddingQuantityTab = () => {
                 rightIcon={<ChevronDownIcon />}
                 color={selectedYear ? selectAccentText : undefined}
               >
-                {selectedYear || 'Wybierz rok'}
+                {selectedYear || t('selects.chooseYear')}
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
@@ -198,7 +200,7 @@ const AddingQuantityTab = () => {
               >
                 {selectedMonth
                   ? t(`months.${selectedMonth}`)
-                  : 'Wybierz miesiąc'}
+                  : t('selects.chooseMonth')}
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
@@ -226,7 +228,14 @@ const AddingQuantityTab = () => {
           </Button>
         )}
       </Flex>
-      <AddingQuantityTable ref={tableRef} />
+      {selectedWorker && selectedYear && selectedMonth && (
+        <AddingQuantityTable
+          workerId={selectedWorker}
+          year={selectedYear}
+          month={selectedMonth}
+          ref={tableRef}
+        />
+      )}
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -235,27 +244,32 @@ const AddingQuantityTab = () => {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Dodawanie produktów
+            <AlertDialogHeader>
+              {t('alerts.headers.addingQuantities')}
             </AlertDialogHeader>
-
             <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-              {quantities &&
-                quantities.map((el) => (
-                  <Box key={el.code}>
-                    <Text>Code: {el.code}</Text>
-                    <Text>Quantity: {el.quantity}</Text>
-                  </Box>
-                ))}
+              {t('alerts.bodies.addingQuantities')}
+              <Flex mt={3} direction="column" gap={1}>
+                {quantities &&
+                  quantities.map((el) => (
+                    <Code
+                      key={el.code}
+                      children={`${el.code.toUpperCase()}: ${el.quantity}`}
+                    />
+                  ))}
+              </Flex>
             </AlertDialogBody>
-
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
-                Cancel
+                {t('buttons.cancel')}
               </Button>
-              <Button colorScheme={accentColor} onClick={onClose} ml={3}>
-                Save
+              <Button
+                colorScheme={accentColor}
+                onClick={onClose}
+                ml={3}
+                rightIcon={<FiSave />}
+              >
+                {t('buttons.saveChanges')}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
