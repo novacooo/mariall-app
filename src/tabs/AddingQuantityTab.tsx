@@ -87,7 +87,6 @@ const AddingQuantityTab = () => {
   );
 
   const [workersData, setWorkersData] = useState<IWorkerData[]>();
-  const [productsData, setProductsData] = useState();
   const [quantities, setQuantities] = useState<IQuantity[]>();
 
   const [selectedWorker, setSelectedWorker] = useState<string>();
@@ -222,7 +221,7 @@ const AddingQuantityTab = () => {
           </Button>
         )}
       </Flex>
-      {selectedMonth && <AddingQuantityTable ref={tableRef} />}
+      <AddingQuantityTable ref={tableRef} />
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

@@ -17,15 +17,16 @@ export interface AddingQuantityTableRowHandle {
 }
 
 interface AddingQuantityTableRowProps {
+  image: string;
+  code: string;
   name: string;
   quantity: number;
-  code: string;
 }
 
 const AddingQuantityTableRow = forwardRef<
   AddingQuantityTableRowHandle,
   AddingQuantityTableRowProps
->(({ name, quantity, code }, ref) => {
+>(({ image, code, name, quantity }, ref) => {
   const [count, setCount] = useState(0);
   const { accentColor } = useColorContext();
 
@@ -55,7 +56,6 @@ const AddingQuantityTableRow = forwardRef<
     setCount(() => {
       const number = parseInt(e.target.value, 10);
       if (number >= 0 && number <= 99) return number;
-      if (number < 0) return 0;
       if (number > 99) return 99;
       return 0;
     });
@@ -92,7 +92,7 @@ const AddingQuantityTableRow = forwardRef<
         flexShrink={0}
       >
         <Box
-          backgroundImage={`https://picsum.photos/100/100?random=${code}`}
+          backgroundImage={image}
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
@@ -129,6 +129,7 @@ const AddingQuantityTableRow = forwardRef<
           textAlign="center"
           color={codeColor}
           flexShrink={0}
+          textTransform="uppercase"
         >
           {code}
         </Text>
