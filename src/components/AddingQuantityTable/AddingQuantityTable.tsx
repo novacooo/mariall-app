@@ -76,9 +76,6 @@ const AddingQuantityTable = () => {
           key={i}
           name={`Normal product name ${i + 1}`}
           quantity={0}
-          value={value}
-          onPlusClick={() => setValue((prev) => prev + 1)}
-          onMinusClick={() => setValue((prev) => prev - 1)}
         />
       ))}
     </Box>

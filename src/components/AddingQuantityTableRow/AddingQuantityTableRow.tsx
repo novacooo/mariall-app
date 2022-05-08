@@ -8,28 +8,43 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
+import { useImperativeHandle, forwardRef, useState } from 'react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
+
+interface AddingQuantityTableRowHandle {
+  getCount: () => number;
+}
 
 interface AddingQuantityTableRowProps {
   name: string;
   quantity: number;
-  value: number;
-  onMinusClick: () => void;
-  onPlusClick: () => void;
 }
 
-const AddingQuantityTableRow = ({
-  name,
-  quantity,
-  value,
-  onMinusClick,
-  onPlusClick,
-}: AddingQuantityTableRowProps) => {
+const AddingQuantityTableRow = forwardRef<
+  AddingQuantityTableRowHandle,
+  AddingQuantityTableRowProps
+>(({ name, quantity }, ref) => {
+  const [count, setCount] = useState(0);
+
   const { accentColor } = useColorContext();
 
   const bgColor1 = useColorModeValue('gray.50', 'gray.900');
   const bgColor2 = useColorModeValue('white', 'gray.800');
   const bgColorHover = useColorModeValue('gray.100', 'gray.700');
+
+  useImperativeHandle(ref, () => ({
+    getCount: () => {
+      return count;
+    },
+  }));
+
+  const handleMinusClick = () => {
+    setCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+  };
+
+  const handlePlusClick = () => {
+    setCount((prevCount) => (prevCount < 10 ? prevCount + 1 : 10));
+  };
 
   return (
     <Flex
@@ -51,9 +66,7 @@ const AddingQuantityTableRow = ({
     >
       <Center w={12} flexShrink={0}>
         <Box
-          backgroundImage={`https://picsum.photos/100/100?random=${
-            Math.random() * 100
-          }`}
+          backgroundImage="https://picsum.photos/100"
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
@@ -98,19 +111,19 @@ const AddingQuantityTableRow = ({
           icon={<FiMinus />}
           size="xs"
           colorScheme={accentColor}
-          onClick={onMinusClick}
+          onClick={handleMinusClick}
         />
-        <Input w={10} size="sm" rounded="md" value={value} textAlign="center" />
+        <Input w={10} size="sm" rounded="md" value={count} textAlign="center" />
         <IconButton
           aria-label="Increment button"
           icon={<FiPlus />}
           size="xs"
           colorScheme={accentColor}
-          onClick={onPlusClick}
+          onClick={handlePlusClick}
         />
       </Flex>
     </Flex>
   );
-};
+});
 
 export default AddingQuantityTableRow;
