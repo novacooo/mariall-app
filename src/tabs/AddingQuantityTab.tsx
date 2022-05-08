@@ -1,6 +1,13 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
+  Text,
   Flex,
   Menu,
   MenuButton,
@@ -9,9 +16,12 @@ import {
   MenuOptionGroup,
   Spinner,
   useColorModeValue,
+  useDisclosure,
+  Box,
 } from '@chakra-ui/react';
 import AddingQuantityTable, {
   AddingQuantityTableHandle,
+  IQuantity,
 } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useRef, useState } from 'react';
@@ -68,6 +78,9 @@ const AddingQuantityTab = () => {
   const { accentColor } = useColorContext();
   const tableRef = useRef<AddingQuantityTableHandle>(null);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
+
   const selectAccentText = useColorModeValue(
     `${accentColor}.600`,
     `${accentColor}.200`,
@@ -75,6 +88,7 @@ const AddingQuantityTab = () => {
 
   const [workersData, setWorkersData] = useState<IWorkerData[]>();
   const [productsData, setProductsData] = useState();
+  const [quantities, setQuantities] = useState<IQuantity[]>();
 
   const [selectedWorker, setSelectedWorker] = useState<string>();
   const [selectedYear, setSelectedYear] = useState<number>();
@@ -82,8 +96,8 @@ const AddingQuantityTab = () => {
 
   const handleSaveButtonClick = () => {
     if (!tableRef.current) return;
-    const quantities = tableRef.current.getQuantities();
-    console.log(quantities);
+    setQuantities(tableRef.current.getQuantities());
+    onOpen();
   };
 
   useEffect(() => {
@@ -204,11 +218,45 @@ const AddingQuantityTab = () => {
         </Flex>
         {selectedMonth && (
           <Button colorScheme={accentColor} onClick={handleSaveButtonClick}>
-            Zapisz
+            {t('buttons.saveChanges')}
           </Button>
         )}
       </Flex>
       {selectedMonth && <AddingQuantityTable ref={tableRef} />}
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Dodawanie produktów
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+              {quantities &&
+                quantities.map((el) => (
+                  <Box key={el.code}>
+                    <Text>Code: {el.code}</Text>
+                    <Text>Quantity: {el.quantity}</Text>
+                  </Box>
+                ))}
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme={accentColor} onClick={onClose} ml={3}>
+                Save
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Flex>
   );
 };

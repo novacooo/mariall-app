@@ -5,7 +5,7 @@ import AddingQuantityTableRow, {
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface IQuantity {
+export interface IQuantity {
   code: string;
   quantity: number;
 }

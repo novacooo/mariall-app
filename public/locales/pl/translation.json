@@ -49,7 +49,8 @@
   "buttons": {
     "userSettings": "Ustawienia użytkownika",
     "signIn": "Zaloguj się",
-    "signOut": "Wyloguj się"
+    "signOut": "Wyloguj się",
+    "saveChanges": "Zapisz zmiany"
   },
   "headers": {
     "signIn": "Zaloguj się",
