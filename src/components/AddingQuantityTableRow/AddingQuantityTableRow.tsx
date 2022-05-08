@@ -8,10 +8,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
-import { useImperativeHandle, forwardRef, useState } from 'react';
+import { useImperativeHandle, forwardRef, useState, ChangeEvent } from 'react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
 
-interface AddingQuantityTableRowHandle {
+export interface AddingQuantityTableRowHandle {
   getCount: () => number;
 }
 
@@ -25,7 +25,6 @@ const AddingQuantityTableRow = forwardRef<
   AddingQuantityTableRowProps
 >(({ name, quantity }, ref) => {
   const [count, setCount] = useState(0);
-
   const { accentColor } = useColorContext();
 
   const bgColor1 = useColorModeValue('gray.50', 'gray.900');
@@ -43,7 +42,16 @@ const AddingQuantityTableRow = forwardRef<
   };
 
   const handlePlusClick = () => {
-    setCount((prevCount) => (prevCount < 10 ? prevCount + 1 : 10));
+    setCount((prevCount) => (prevCount < 99 ? prevCount + 1 : 99));
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCount(() => {
+      const number = parseInt(e.target.value, 10);
+      if (number >= 0 && number <= 99) return number;
+      if (number < 0) return 0;
+      return 99;
+    });
   };
 
   return (
@@ -113,7 +121,14 @@ const AddingQuantityTableRow = forwardRef<
           colorScheme={accentColor}
           onClick={handleMinusClick}
         />
-        <Input w={10} size="sm" rounded="md" value={count} textAlign="center" />
+        <Input
+          w={12}
+          size="sm"
+          rounded="md"
+          value={count}
+          textAlign="center"
+          onChange={handleInputChange}
+        />
         <IconButton
           aria-label="Increment button"
           icon={<FiPlus />}

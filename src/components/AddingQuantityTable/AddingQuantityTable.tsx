@@ -1,12 +1,17 @@
 import { Box, Text, Flex, useColorModeValue } from '@chakra-ui/react';
-import AddingQuantityTableRow from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
-import { useState } from 'react';
+import AddingQuantityTableRow, {
+  AddingQuantityTableRowHandle,
+} from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
+import { useRef } from 'react';
 
 const AddingQuantityTable = () => {
-  const [value, setValue] = useState(0);
-
+  const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
   const headerBgColor = useColorModeValue('white', 'gray.800');
   const headerTextColor = useColorModeValue('gray.500', 'gray.400');
+
+  const showRefs = () => {
+    rowsRefs.current.map((el) => console.log(el.getCount()));
+  };
 
   return (
     <Box borderWidth={1} rounded="md">
@@ -36,6 +41,7 @@ const AddingQuantityTable = () => {
           textOverflow="ellipsis"
           whiteSpace="nowrap"
           w={12}
+          onClick={showRefs}
         >
           Zdjęcie
         </Text>
@@ -74,6 +80,9 @@ const AddingQuantityTable = () => {
       {[...Array(100)].map((el, i) => (
         <AddingQuantityTableRow
           key={i}
+          ref={(element) => {
+            rowsRefs.current[i] = element as never;
+          }}
           name={`Normal product name ${i + 1}`}
           quantity={0}
         />
