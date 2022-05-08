@@ -26,6 +26,7 @@ import AddingQuantityTable, {
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FiSave } from 'react-icons/fi';
 
 interface IWorkerData {
   id: string;
@@ -216,7 +217,11 @@ const AddingQuantityTab = () => {
           )}
         </Flex>
         {selectedMonth && (
-          <Button colorScheme={accentColor} onClick={handleSaveButtonClick}>
+          <Button
+            colorScheme={accentColor}
+            onClick={handleSaveButtonClick}
+            rightIcon={<FiSave />}
+          >
             {t('buttons.saveChanges')}
           </Button>
         )}
