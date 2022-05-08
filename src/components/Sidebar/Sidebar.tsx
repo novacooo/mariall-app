@@ -23,6 +23,7 @@ const Sidebar = ({ width, showAlways = false }: SidebarProps) => {
       width={typeof width === 'number' ? `${width}px` : width}
       bgColor={bgColor}
       borderRightWidth={1}
+      flexShrink={0}
     >
       <SidebarTabs />
     </Flex>

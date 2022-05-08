@@ -31,6 +31,7 @@ const AddingQuantityTableRow = forwardRef<
   const bgColor1 = useColorModeValue('gray.50', 'gray.900');
   const bgColor2 = useColorModeValue('white', 'gray.800');
   const bgColorHover = useColorModeValue('gray.100', 'gray.700');
+  const codeColor = useColorModeValue('gray.600', 'gray.300');
 
   useImperativeHandle(ref, () => ({
     getCount: () => {
@@ -57,8 +58,7 @@ const AddingQuantityTableRow = forwardRef<
 
   return (
     <Flex
-      gap={5}
-      wrap="wrap"
+      gap={3}
       align="center"
       justify="center"
       py={2}
@@ -79,45 +79,69 @@ const AddingQuantityTableRow = forwardRef<
       }}
       _last={{ roundedBottom: 'md' }}
     >
-      <Center w={12} flexShrink={0}>
+      <Center
+        w={{
+          base: 'auto',
+          md: 12,
+        }}
+        flexShrink={0}
+      >
         <Box
-          backgroundImage="https://picsum.photos/100"
+          backgroundImage={`https://picsum.photos/100/100?random=${code}`}
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
           rounded="base"
-          w={8}
-          h={8}
+          w={10}
+          h={10}
           objectFit="contain"
           borderWidth={1}
         />
       </Center>
-      <Text
-        textAlign="center"
-        w={{
-          base: 24,
-          md: 28,
+      <Flex
+        direction={{
+          base: 'column',
+          md: 'row',
         }}
-        as="kbd"
-        fontSize="sm"
-        overflow="hidden"
-        textOverflow="ellipsis"
-      >
-        {code}
-      </Text>
-      <Text
-        fontSize="sm"
+        align={{
+          base: 'flex-start',
+          md: 'center',
+        }}
         flexGrow={1}
-        overflow="hidden"
-        textOverflow="ellipsis"
       >
-        {name}
-      </Text>
+        <Text
+          w={{
+            base: 'auto',
+            md: 28,
+          }}
+          fontSize="xs"
+          fontWeight="medium"
+          textAlign="center"
+          color={codeColor}
+        >
+          {code}
+        </Text>
+        <Text
+          fontSize={{
+            base: 'xs',
+            md: 'sm',
+          }}
+          flexGrow={1}
+          w="full"
+        >
+          {name}
+        </Text>
+      </Flex>
       <Text
+        display={{
+          base: 'none',
+          md: 'block',
+        }}
         fontSize="sm"
         w={{
-          base: 16,
-          md: 28,
+          base: 'auto',
+          md: 12,
+          lg: 28,
         }}
         textAlign="center"
         flexShrink={0}
@@ -125,12 +149,16 @@ const AddingQuantityTableRow = forwardRef<
         {quantity}
       </Text>
       <Flex
-        gap={2}
+        gap={{
+          base: 1,
+          md: 2,
+        }}
         align="center"
         justify="center"
         w={{
-          base: 28,
-          md: 36,
+          base: 'auto',
+          sm: 28,
+          lg: 36,
         }}
         flexShrink={0}
       >
@@ -142,8 +170,15 @@ const AddingQuantityTableRow = forwardRef<
           onClick={handleMinusClick}
         />
         <Input
-          w={12}
+          w={{
+            base: 10,
+            md: 12,
+          }}
           size="sm"
+          fontSize={{
+            base: 'xs',
+            md: 'sm',
+          }}
           rounded="md"
           value={count}
           textAlign="center"

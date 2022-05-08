@@ -15,7 +15,7 @@ const AddingQuantityTable = () => {
 
   return (
     <Box borderWidth={1} rounded="md">
-      <Flex
+      {/* <Flex
         display={{
           base: 'none',
           md: 'flex',
@@ -88,7 +88,7 @@ const AddingQuantityTable = () => {
         >
           Ilość do dodania
         </Text>
-      </Flex>
+      </Flex> */}
       <Box>
         {[...Array(100)].map((el, i) => (
           <AddingQuantityTableRow
