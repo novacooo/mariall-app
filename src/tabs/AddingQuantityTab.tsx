@@ -10,9 +10,11 @@ import {
   Spinner,
   useColorModeValue,
 } from '@chakra-ui/react';
-import AddingQuantityTable from 'components/AddingQuantityTable/AddingQuantityTable';
+import AddingQuantityTable, {
+  AddingQuantityTableHandle,
+} from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface IWorkerData {
@@ -64,6 +66,7 @@ const getWorkers = (succed: boolean) => {
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
   const { accentColor } = useColorContext();
+  const tableRef = useRef<AddingQuantityTableHandle>(null);
 
   const selectAccentText = useColorModeValue(
     `${accentColor}.600`,
@@ -94,6 +97,7 @@ const AddingQuantityTab = () => {
     <Flex direction="column" gap={6}>
       {/* TODO: Make separated component for selects */}
       <Flex
+        justify="space-between"
         gap={{
           base: 3,
           md: 4,
@@ -102,83 +106,106 @@ const AddingQuantityTab = () => {
           base: 'column',
           md: 'row',
         }}
+        wrap="wrap"
       >
-        {workersData ? (
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              color={selectedWorker ? selectAccentText : undefined}
-            >
-              {selectedWorker || 'Wybierz pracownika'}
-            </MenuButton>
-            <MenuList maxH={60} overflow="hidden" overflowY="auto">
-              <MenuOptionGroup type="radio">
-                {workers.map(({ id, name }) => (
-                  <MenuItemOption
-                    key={id}
-                    value={id}
-                    onClick={() => setSelectedWorker(name)}
-                  >
-                    {name}
-                  </MenuItemOption>
-                ))}
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
-        ) : (
-          <Spinner />
-        )}
-        {selectedWorker && (
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              color={selectedYear ? selectAccentText : undefined}
-            >
-              {selectedYear || 'Wybierz rok'}
-            </MenuButton>
-            <MenuList maxH={60} overflow="hidden" overflowY="auto">
-              <MenuOptionGroup type="radio">
-                {years.map((year) => (
-                  <MenuItemOption
-                    key={year}
-                    value={`${year}`}
-                    onClick={() => setSelectedYear(year)}
-                  >
-                    {year}
-                  </MenuItemOption>
-                ))}
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
-        )}
-        {selectedYear && (
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              color={selectedMonth ? selectAccentText : undefined}
-            >
-              {selectedMonth ? t(`months.${selectedMonth}`) : 'Wybierz miesiąc'}
-            </MenuButton>
-            <MenuList maxH={60} overflow="hidden" overflowY="auto">
-              <MenuOptionGroup type="radio">
-                {months.map((month) => (
-                  <MenuItemOption
-                    key={month}
-                    value={month}
-                    onClick={() => setSelectedMonth(month)}
-                  >
-                    {t(`months.${month}`)}
-                  </MenuItemOption>
-                ))}
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
+        <Flex
+          wrap="wrap"
+          gap={{
+            base: 3,
+            md: 4,
+          }}
+          direction={{
+            base: 'column',
+            md: 'row',
+          }}
+        >
+          {workersData ? (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                color={selectedWorker ? selectAccentText : undefined}
+              >
+                {selectedWorker || 'Wybierz pracownika'}
+              </MenuButton>
+              <MenuList maxH={60} overflow="hidden" overflowY="auto">
+                <MenuOptionGroup type="radio">
+                  {workers.map(({ id, name }) => (
+                    <MenuItemOption
+                      key={id}
+                      value={id}
+                      onClick={() => setSelectedWorker(name)}
+                    >
+                      {name}
+                    </MenuItemOption>
+                  ))}
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Spinner />
+          )}
+          {selectedWorker && (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                color={selectedYear ? selectAccentText : undefined}
+              >
+                {selectedYear || 'Wybierz rok'}
+              </MenuButton>
+              <MenuList maxH={60} overflow="hidden" overflowY="auto">
+                <MenuOptionGroup type="radio">
+                  {years.map((year) => (
+                    <MenuItemOption
+                      key={year}
+                      value={`${year}`}
+                      onClick={() => setSelectedYear(year)}
+                    >
+                      {year}
+                    </MenuItemOption>
+                  ))}
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+          )}
+          {selectedYear && (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                color={selectedMonth ? selectAccentText : undefined}
+              >
+                {selectedMonth
+                  ? t(`months.${selectedMonth}`)
+                  : 'Wybierz miesiąc'}
+              </MenuButton>
+              <MenuList maxH={60} overflow="hidden" overflowY="auto">
+                <MenuOptionGroup type="radio">
+                  {months.map((month) => (
+                    <MenuItemOption
+                      key={month}
+                      value={month}
+                      onClick={() => setSelectedMonth(month)}
+                    >
+                      {t(`months.${month}`)}
+                    </MenuItemOption>
+                  ))}
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+          )}
+        </Flex>
+        {selectedMonth && (
+          <Button
+            colorScheme={accentColor}
+            onClick={() => tableRef.current?.showRowsCounts()}
+          >
+            Zapisz
+          </Button>
         )}
       </Flex>
-      {selectedMonth && <AddingQuantityTable />}
+      {selectedMonth && <AddingQuantityTable ref={tableRef} />}
     </Flex>
   );
 };

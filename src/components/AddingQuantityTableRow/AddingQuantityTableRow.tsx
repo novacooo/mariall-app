@@ -52,7 +52,8 @@ const AddingQuantityTableRow = forwardRef<
       const number = parseInt(e.target.value, 10);
       if (number >= 0 && number <= 99) return number;
       if (number < 0) return 0;
-      return 99;
+      if (number > 99) return 99;
+      return 0;
     });
   };
 

@@ -80,5 +80,12 @@
   "errors": {
     "invalidEmail": "Podany adres email jest nieprawidłowy!"
   },
+  "tables": {
+    "productImage": "Zdjęcie",
+    "productCode": "Kod",
+    "productName": "Nazwa",
+    "productQuantity": "Ilość",
+    "productAdding": "Dodawanie"
+  },
   "copyright": "Copyright © 2022 Jacek Nowak. Wszystkie prawa zastrzeżone."
 }
