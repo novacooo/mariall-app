@@ -102,5 +102,13 @@
       "addingQuantities": "Czy chcesz zapisać wprowadzone zmiany?"
     }
   },
+  "toasts": {
+    "titles": {
+      "unableToSave": "Nie można zapisać!"
+    },
+    "descriptions": {
+      "unableToSave": "Musisz zmodyfikować jakikolwiek produkt, żeby móc zapisać zmiany."
+    }
+  },
   "copyright": "Copyright © 2022 Jacek Nowak. Wszystkie prawa zastrzeżone."
 }

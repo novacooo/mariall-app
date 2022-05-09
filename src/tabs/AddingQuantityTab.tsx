@@ -7,7 +7,6 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  Text,
   Flex,
   Menu,
   MenuButton,
@@ -17,9 +16,8 @@ import {
   Spinner,
   useColorModeValue,
   useDisclosure,
-  Box,
   Code,
-  VStack,
+  useToast,
 } from '@chakra-ui/react';
 import AddingQuantityTable, {
   AddingQuantityTableHandle,
@@ -90,17 +88,42 @@ const AddingQuantityTab = () => {
   );
 
   const [workersData, setWorkersData] = useState<IWorkerData[]>();
-  const [quantities, setQuantities] = useState<IQuantity[]>();
+  const [quantities, setQuantities] = useState<IQuantity[]>([]);
 
   const [selectedWorker, setSelectedWorker] = useState<string>();
   const [selectedYear, setSelectedYear] = useState<number>();
   const [selectedMonth, setSelectedMonth] = useState<string>();
 
+  const [isQuantitiesFetched, setIsQuantitiesFetched] =
+    useState<boolean>(false);
+
+  const toast = useToast();
+
   const handleSaveButtonClick = () => {
     if (!tableRef.current) return;
+
     setQuantities(tableRef.current.getQuantities());
-    onOpen();
+    setIsQuantitiesFetched(true);
   };
+
+  useEffect(() => {
+    if (!isQuantitiesFetched) return;
+
+    if (quantities.length > 0) {
+      onOpen();
+    } else {
+      toast({
+        title: t('toasts.titles.unableToSave'),
+        description: t('toasts.descriptions.unableToSave'),
+        duration: 5000,
+        status: 'warning',
+        isClosable: true,
+        position: 'top',
+      });
+    }
+
+    setIsQuantitiesFetched(false);
+  }, [isQuantitiesFetched, onOpen, quantities.length, t, toast]);
 
   useEffect(() => {
     const fetchWorkersData = async () => {

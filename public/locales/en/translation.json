@@ -102,5 +102,13 @@
       "addingQuantities": "Do you want to save the changes made?"
     }
   },
+  "toasts": {
+    "titles": {
+      "unableToSave": "Unable to save!"
+    },
+    "descriptions": {
+      "unableToSave": "You must modify any product to be able to save the changes."
+    }
+  },
   "copyright": "Copyright © 2022 Jacek Nowak. All rights reserved."
 }
