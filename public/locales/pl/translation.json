@@ -51,6 +51,7 @@
     "signIn": "Zaloguj się",
     "signOut": "Wyloguj się",
     "saveChanges": "Zapisz zmiany",
+    "resetChanges": "Zresetuj zmiany",
     "cancel": "Anuluj"
   },
   "headers": {

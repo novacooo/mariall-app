@@ -51,6 +51,7 @@
     "signIn": "Sign in",
     "signOut": "Sign out",
     "saveChanges": "Save changes",
+    "resetChanges": "Reset changes",
     "cancel": "Cancel"
   },
   "headers": {

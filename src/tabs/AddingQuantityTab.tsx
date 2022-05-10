@@ -26,7 +26,7 @@ import AddingQuantityTable, {
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FiSave, FiX } from 'react-icons/fi';
+import { FiRefreshCcw, FiSave, FiX } from 'react-icons/fi';
 
 interface IWorkerData {
   id: string;
@@ -99,9 +99,13 @@ const AddingQuantityTab = () => {
 
   const toast = useToast();
 
+  const handleResetButtonClick = () => {
+    if (!tableRef.current) return;
+    tableRef.current.resetQuantities();
+  };
+
   const handleSaveButtonClick = () => {
     if (!tableRef.current) return;
-
     setQuantities(tableRef.current.getQuantities());
     setIsQuantitiesFetched(true);
   };
@@ -242,13 +246,31 @@ const AddingQuantityTab = () => {
           )}
         </Flex>
         {selectedMonth && (
-          <Button
-            colorScheme={accentColor}
-            onClick={handleSaveButtonClick}
-            rightIcon={<FiSave />}
+          <Flex
+            wrap="wrap"
+            gap={{
+              base: 3,
+              md: 4,
+            }}
+            direction={{
+              base: 'column',
+              md: 'row',
+            }}
           >
-            {t('buttons.saveChanges')}
-          </Button>
+            <Button
+              rightIcon={<FiRefreshCcw />}
+              onClick={handleResetButtonClick}
+            >
+              {t('buttons.resetChanges')}
+            </Button>
+            <Button
+              colorScheme={accentColor}
+              onClick={handleSaveButtonClick}
+              rightIcon={<FiSave />}
+            >
+              {t('buttons.saveChanges')}
+            </Button>
+          </Flex>
         )}
       </Flex>
       {selectedWorker && selectedYear && selectedMonth && (

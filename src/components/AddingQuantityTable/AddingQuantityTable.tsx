@@ -149,6 +149,7 @@ export interface IQuantity {
 
 export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];
+  resetQuantities: () => void;
 }
 
 interface AddingQuantityTableProps {
@@ -194,6 +195,11 @@ const AddingQuantityTable = memo(
           });
 
           return quantities;
+        },
+        resetQuantities: () => {
+          rowsRefs.current.forEach((rowRef) => {
+            rowRef.resetCount();
+          });
         },
       }));
 

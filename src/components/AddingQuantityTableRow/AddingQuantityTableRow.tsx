@@ -14,6 +14,7 @@ import { FiMinus, FiPlus } from 'react-icons/fi';
 export interface AddingQuantityTableRowHandle {
   getCount: () => number;
   getCode: () => string;
+  resetCount: () => void;
 }
 
 interface AddingQuantityTableRowProps {
@@ -39,6 +40,9 @@ const AddingQuantityTableRow = forwardRef<
   useImperativeHandle(ref, () => ({
     getCount: () => count,
     getCode: () => code,
+    resetCount: () => {
+      setCount(0);
+    },
   }));
 
   const handleMinusClick = () => {
