@@ -26,7 +26,7 @@ import AddingQuantityTable, {
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FiRefreshCcw, FiSave, FiX } from 'react-icons/fi';
+import { FiRefreshCcw, FiSave } from 'react-icons/fi';
 
 interface IWorkerData {
   id: string;
