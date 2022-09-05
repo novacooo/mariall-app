@@ -82,10 +82,7 @@ const AddingQuantityTab = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  const selectAccentText = useColorModeValue(
-    `${accentColor}.600`,
-    `${accentColor}.200`,
-  );
+  const selectAccentText = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
 
   const [workersData, setWorkersData] = useState<IWorkerData[]>();
   const [quantities, setQuantities] = useState<IQuantity[]>([]);
@@ -94,8 +91,7 @@ const AddingQuantityTab = () => {
   const [selectedYear, setSelectedYear] = useState<number>();
   const [selectedMonth, setSelectedMonth] = useState<string>();
 
-  const [isQuantitiesFetched, setIsQuantitiesFetched] =
-    useState<boolean>(false);
+  const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
 
   const toast = useToast();
 
@@ -135,11 +131,12 @@ const AddingQuantityTab = () => {
         const data = await getWorkers(true);
         setWorkersData(data);
       } catch (err) {
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         console.error(`Error: ${err}`);
       }
     };
 
-    fetchWorkersData();
+    void fetchWorkersData();
   }, []);
 
   return (
@@ -180,11 +177,7 @@ const AddingQuantityTab = () => {
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
                   {workers.map(({ id, name }) => (
-                    <MenuItemOption
-                      key={id}
-                      value={id}
-                      onClick={() => setSelectedWorker(name)}
-                    >
+                    <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(name)}>
                       {name}
                     </MenuItemOption>
                   ))}
@@ -206,11 +199,7 @@ const AddingQuantityTab = () => {
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
                   {years.map((year) => (
-                    <MenuItemOption
-                      key={year}
-                      value={`${year}`}
-                      onClick={() => setSelectedYear(year)}
-                    >
+                    <MenuItemOption key={year} value={`${year}`} onClick={() => setSelectedYear(year)}>
                       {year}
                     </MenuItemOption>
                   ))}
@@ -225,18 +214,12 @@ const AddingQuantityTab = () => {
                 rightIcon={<ChevronDownIcon />}
                 color={selectedMonth ? selectAccentText : undefined}
               >
-                {selectedMonth
-                  ? t(`months.${selectedMonth}`)
-                  : t('selects.chooseMonth')}
+                {selectedMonth ? t(`months.${selectedMonth}`) : t('selects.chooseMonth')}
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
                   {months.map((month) => (
-                    <MenuItemOption
-                      key={month}
-                      value={month}
-                      onClick={() => setSelectedMonth(month)}
-                    >
+                    <MenuItemOption key={month} value={month} onClick={() => setSelectedMonth(month)}>
                       {t(`months.${month}`)}
                     </MenuItemOption>
                   ))}
@@ -257,63 +240,34 @@ const AddingQuantityTab = () => {
               md: 'row',
             }}
           >
-            <Button
-              rightIcon={<FiRefreshCcw />}
-              onClick={handleResetButtonClick}
-            >
+            <Button rightIcon={<FiRefreshCcw />} onClick={handleResetButtonClick}>
               {t('buttons.resetChanges')}
             </Button>
-            <Button
-              colorScheme={accentColor}
-              onClick={handleSaveButtonClick}
-              rightIcon={<FiSave />}
-            >
+            <Button colorScheme={accentColor} onClick={handleSaveButtonClick} rightIcon={<FiSave />}>
               {t('buttons.saveChanges')}
             </Button>
           </Flex>
         )}
       </Flex>
       {selectedWorker && selectedYear && selectedMonth && (
-        <AddingQuantityTable
-          workerId={selectedWorker}
-          year={selectedYear}
-          month={selectedMonth}
-          ref={tableRef}
-        />
+        <AddingQuantityTable workerId={selectedWorker} year={selectedYear} month={selectedMonth} ref={tableRef} />
       )}
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isCentered
-      >
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} isCentered>
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader>
-              {t('alerts.headers.addingQuantities')}
-            </AlertDialogHeader>
+            <AlertDialogHeader>{t('alerts.headers.addingQuantities')}</AlertDialogHeader>
             <AlertDialogBody>
               {t('alerts.bodies.addingQuantities')}
               <Flex mt={3} direction="column" gap={1}>
                 {quantities &&
-                  quantities.map((el) => (
-                    <Code
-                      key={el.code}
-                      children={`${el.code.toUpperCase()}: ${el.quantity}`}
-                    />
-                  ))}
+                  quantities.map((el) => <Code key={el.code}>{`${el.code.toUpperCase()}: ${el.quantity}`}</Code>)}
               </Flex>
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 {t('buttons.cancel')}
               </Button>
-              <Button
-                colorScheme={accentColor}
-                onClick={onClose}
-                ml={3}
-                rightIcon={<FiSave />}
-              >
+              <Button colorScheme={accentColor} onClick={onClose} ml={3} rightIcon={<FiSave />}>
                 {t('buttons.saveChanges')}
               </Button>
             </AlertDialogFooter>

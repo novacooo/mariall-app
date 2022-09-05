@@ -29,10 +29,7 @@ const LoginPage = () => {
   const { accentColor } = useColorContext();
   const { t } = useTranslation();
   const bgColor = useColorModeValue('white', 'gray.800');
-  const adaptiveAccentColor = useColorModeValue(
-    `${accentColor}.600`,
-    `${accentColor}.200`,
-  );
+  const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
 
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
@@ -43,7 +40,7 @@ const LoginPage = () => {
     navigate(routes.menu);
   };
 
-  const debouncedCheck = useDebouncedCallback((value) => {
+  const debouncedCheck = useDebouncedCallback((value: string) => {
     setIsEmailValid(validator.isEmail(value));
   }, 500);
 
@@ -54,9 +51,7 @@ const LoginPage = () => {
     debouncedCheck(value);
   };
 
-  const handlePasswordInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handlePasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordValue(e.target.value);
   };
 
@@ -75,22 +70,15 @@ const LoginPage = () => {
         bgColor={bgColor}
         w={['100%', '80%', '60%', '48%', '36%', '20%']}
       >
-        <Heading
-          as="h3"
-          size="md"
-          textAlign="center"
-          color={adaptiveAccentColor}
-        >
+        <Heading as="h3" size="md" textAlign="center" color={adaptiveAccentColor}>
           {t('headers.signIn')}
         </Heading>
         <FormControl isRequired isInvalid={!isEmailValid}>
           <FormLabel htmlFor="email">{t('inputs.email')}</FormLabel>
           <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              color="gray.500"
-              children={<FiMail />}
-            />
+            <InputLeftElement pointerEvents="none" color="gray.500">
+              <FiMail />
+            </InputLeftElement>
             <Input
               id="email"
               type="email"
@@ -101,18 +89,14 @@ const LoginPage = () => {
               variant="filled"
             />
           </InputGroup>
-          {!isEmailValid && (
-            <FormErrorMessage>{t('errors.invalidEmail')}</FormErrorMessage>
-          )}
+          {!isEmailValid && <FormErrorMessage>{t('errors.invalidEmail')}</FormErrorMessage>}
         </FormControl>
         <FormControl isRequired>
           <FormLabel htmlFor="password">{t('inputs.password')}</FormLabel>
           <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              color="gray.500"
-              children={<FiLock />}
-            />
+            <InputLeftElement pointerEvents="none" color="gray.500">
+              <FiLock />
+            </InputLeftElement>
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
@@ -123,22 +107,14 @@ const LoginPage = () => {
               variant="filled"
             />
             <InputRightElement zIndex={0}>
-              <Tooltip
-                label={
-                  showPassword
-                    ? t('tooltips.hidePassword')
-                    : t('tooltips.showPassword')
-                }
-              >
+              <Tooltip label={showPassword ? t('tooltips.hidePassword') : t('tooltips.showPassword')}>
                 <IconButton
                   size="sm"
                   variant="ghost"
                   isRound
                   aria-label={t('tooltips.changeApp')}
                   color="gray.500"
-                  icon={
-                    showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />
-                  }
+                  icon={showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                   onClick={handleShowButtonClick}
                 />
               </Tooltip>
@@ -148,12 +124,7 @@ const LoginPage = () => {
         <Checkbox colorScheme={accentColor} mx={2} my={2}>
           {t('checkboxes.rememberPassword')}
         </Checkbox>
-        <Button
-          mx={2}
-          onClick={handleButtonClick}
-          colorScheme={accentColor}
-          type="submit"
-        >
+        <Button mx={2} onClick={handleButtonClick} colorScheme={accentColor} type="submit">
           {t('buttons.signIn')}
         </Button>
       </Flex>

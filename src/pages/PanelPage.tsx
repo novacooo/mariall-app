@@ -36,24 +36,13 @@ const PanelPage = () => {
 
   return (
     <PanelTemplate name={panelTitle}>
-      {pathname === routes.panel && (
-        <Navigate to={routes.panelAddingQuantity} />
-      )}
+      {pathname === routes.panel && <Navigate to={routes.panelAddingQuantity} />}
       <Routes>
-        <Route
-          path={routes.panelAddingQuantity}
-          element={<AddingQuantityTab />}
-        />
-        <Route
-          path={routes.panelProductsManagement}
-          element={<ProductsManagementTab />}
-        />
+        <Route path={routes.panelAddingQuantity} element={<AddingQuantityTab />} />
+        <Route path={routes.panelProductsManagement} element={<ProductsManagementTab />} />
         <Route path={routes.panelSalaries} element={<SalariesTab />} />
         <Route path={routes.panelPrinting} element={<PrintingSummariesTab />} />
-        <Route
-          path={routes.panelEmployeesManagement}
-          element={<EmployeesManagementTab />}
-        />
+        <Route path={routes.panelEmployeesManagement} element={<EmployeesManagementTab />} />
         <Route path={routes.panelLogs} element={<LogsTab />} />
       </Routes>
     </PanelTemplate>

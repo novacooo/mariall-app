@@ -73,23 +73,18 @@ const SidebarTabs = () => {
   const getGroupName = (groupId: SidebarGroup) => {
     if (groupId === SidebarGroup.PRODUCTS) return t('sidebar.groups.products');
     if (groupId === SidebarGroup.SALARIES) return t('sidebar.groups.salaries');
-    if (groupId === SidebarGroup.EMPLOYEES)
-      return t('sidebar.groups.employees');
+    if (groupId === SidebarGroup.EMPLOYEES) return t('sidebar.groups.employees');
     if (groupId === SidebarGroup.OTHER) return t('sidebar.groups.other');
 
     return null;
   };
 
   const getTabName = (tabId: SidebarTab) => {
-    if (tabId === SidebarTab.ADDING_QUANTITY)
-      return t('sidebar.tabs.addingQuantity');
-    if (tabId === SidebarTab.PRODUCTS_MANAGEMENT)
-      return t('sidebar.tabs.productsManagement');
+    if (tabId === SidebarTab.ADDING_QUANTITY) return t('sidebar.tabs.addingQuantity');
+    if (tabId === SidebarTab.PRODUCTS_MANAGEMENT) return t('sidebar.tabs.productsManagement');
     if (tabId === SidebarTab.SALARIES) return t('sidebar.tabs.salaries');
-    if (tabId === SidebarTab.PRINTING_SUMMARIES)
-      return t('sidebar.tabs.printingSummaries');
-    if (tabId === SidebarTab.EMPLOYEES_MANAGEMENT)
-      return t('sidebar.tabs.employeesManagement');
+    if (tabId === SidebarTab.PRINTING_SUMMARIES) return t('sidebar.tabs.printingSummaries');
+    if (tabId === SidebarTab.EMPLOYEES_MANAGEMENT) return t('sidebar.tabs.employeesManagement');
     if (tabId === SidebarTab.LOGS) return t('sidebar.tabs.logs');
 
     return null;
@@ -110,9 +105,7 @@ const SidebarTabs = () => {
                 return (
                   <SidebarItem
                     key={tab.id}
-                    active={
-                      `${routes.panel}/${tab.route}` === location.pathname
-                    }
+                    active={`${routes.panel}/${tab.route}` === location.pathname}
                     link={tab.route}
                   >
                     {tabName}

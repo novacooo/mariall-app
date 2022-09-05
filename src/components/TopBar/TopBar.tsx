@@ -92,11 +92,7 @@ const TopBar = () => {
           />
         }
       >
-        {colorMode === 'light' ? (
-          <LogoLight height={logoHeight} />
-        ) : (
-          <LogoDark height={logoHeight} />
-        )}
+        {colorMode === 'light' ? <LogoLight height={logoHeight} /> : <LogoDark height={logoHeight} />}
         <HStack
           spacing={5}
           display={{
@@ -104,13 +100,7 @@ const TopBar = () => {
             md: 'flex',
           }}
         >
-          <Text
-            fontSize="xs"
-            color={textColor}
-            textTransform="uppercase"
-            fontWeight="semibold"
-            letterSpacing="wider"
-          >
+          <Text fontSize="xs" color={textColor} textTransform="uppercase" fontWeight="semibold" letterSpacing="wider">
             {t('appNames.productionManagement')}
           </Text>
           <Tooltip label={t('tooltips.changeApp')}>

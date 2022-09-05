@@ -22,18 +22,8 @@ const MenuPage = () => {
         <Heading as="h4" size="md">
           {t('headers.chooseApp')}
         </Heading>
-        <Flex
-          direction={['column', 'row']}
-          flexWrap="wrap"
-          justify="center"
-          gap={6}
-          w="80%"
-        >
-          <MenuCard
-            name={t('appNames.productionManagement')}
-            icon={FiPackage}
-            onClick={() => navigate(routes.panel)}
-          />
+        <Flex direction={['column', 'row']} flexWrap="wrap" justify="center" gap={6} w="80%">
+          <MenuCard name={t('appNames.productionManagement')} icon={FiPackage} onClick={() => navigate(routes.panel)} />
         </Flex>
       </VStack>
     </PageTemplate>

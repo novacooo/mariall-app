@@ -44,12 +44,7 @@ const UserButton = () => {
           {t('buttons.userSettings')}
         </MenuItem>
         <MenuDivider />
-        <MenuItem
-          icon={<FiLogOut />}
-          fontSize="sm"
-          color={logoutTextColor}
-          onClick={() => navigate(routes.login)}
-        >
+        <MenuItem icon={<FiLogOut />} fontSize="sm" color={logoutTextColor} onClick={() => navigate(routes.login)}>
           {t('buttons.signOut')}
         </MenuItem>
       </MenuList>

@@ -8,14 +8,11 @@ interface MenuCardProps {
   onClick?: () => void;
 }
 
-const MenuCard = ({ name, icon, onClick }: MenuCardProps) => {
+const MenuCard = ({ name, icon, onClick = undefined }: MenuCardProps) => {
   const { accentColor } = useColorContext();
   const bg = useColorModeValue('white', 'gray.800');
   const iconColor = useColorModeValue('gray.400', 'gray.600');
-  const adaptiveAccentColor = useColorModeValue(
-    `${accentColor}.600`,
-    `${accentColor}.200`,
-  );
+  const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
 
   return (
     <VStack

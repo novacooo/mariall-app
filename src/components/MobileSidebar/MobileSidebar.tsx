@@ -37,12 +37,7 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
   const bgColor = useColorModeValue('white', 'gray.800');
 
   return (
-    <Drawer
-      isOpen={isOpen}
-      placement="left"
-      onClose={onClose}
-      autoFocus={false}
-    >
+    <Drawer isOpen={isOpen} placement="left" onClose={onClose} autoFocus={false}>
       <DrawerOverlay />
       <DrawerContent bg={bgColor}>
         <DrawerBody px={3} py={6}>

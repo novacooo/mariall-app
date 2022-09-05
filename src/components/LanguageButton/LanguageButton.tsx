@@ -18,18 +18,13 @@ const LanguageButton = () => {
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (language: Languages) => {
-    i18n.changeLanguage(language);
+    void i18n.changeLanguage(language);
   };
 
   return (
     <Menu closeOnSelect={false}>
       <Tooltip label={t('tooltips.changeLanguage')}>
-        <MenuButton
-          as={IconButton}
-          variant="outline"
-          aria-label={t('tooltips.changeLanguage')}
-          icon={<FiGlobe />}
-        />
+        <MenuButton as={IconButton} variant="outline" aria-label={t('tooltips.changeLanguage')} icon={<FiGlobe />} />
       </Tooltip>
       <MenuList>
         <MenuOptionGroup defaultValue={i18n.language} type="radio">
@@ -40,11 +35,7 @@ const LanguageButton = () => {
             onClick={() => changeLanguage(Languages.ENGLISH)}
           >
             <HStack>
-              <ReactCountryFlag
-                countryCode="US"
-                svg
-                style={{ marginTop: '1px', fontSize: '16px' }}
-              />
+              <ReactCountryFlag countryCode="US" svg style={{ marginTop: '1px', fontSize: '16px' }} />
               <Text>{t('languages.english')}</Text>
             </HStack>
           </MenuItemOption>
@@ -55,11 +46,7 @@ const LanguageButton = () => {
             onClick={() => changeLanguage(Languages.POLISH)}
           >
             <HStack>
-              <ReactCountryFlag
-                countryCode="PL"
-                svg
-                style={{ marginTop: '1px', fontSize: '16px' }}
-              />
+              <ReactCountryFlag countryCode="PL" svg style={{ marginTop: '1px', fontSize: '16px' }} />
               <Text>{t('languages.polish')}</Text>
             </HStack>
           </MenuItemOption>
