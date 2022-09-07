@@ -105,10 +105,12 @@
   },
   "toasts": {
     "titles": {
-      "unableToSave": "Nie można zapisać!"
+      "unableToSave": "Nie można zapisać!",
+      "incorrectLoginCredentials": "Błędne dane logowania!"
     },
     "descriptions": {
-      "unableToSave": "Musisz zmodyfikować jakikolwiek produkt, żeby móc zapisać zmiany."
+      "unableToSave": "Musisz zmodyfikować jakikolwiek produkt, żeby móc zapisać zmiany.",
+      "incorrectLoginCredentials": "Podałeś błędne dane logowania. Nie udało się zalogować."
     }
   },
   "copyright": "Copyright © 2022 Jacek Nowak. Wszystkie prawa zastrzeżone."

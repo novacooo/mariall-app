@@ -105,10 +105,12 @@
   },
   "toasts": {
     "titles": {
-      "unableToSave": "Unable to save!"
+      "unableToSave": "Unable to save!",
+      "incorrectLoginCredentials": "Incorrect login credentials!"
     },
     "descriptions": {
-      "unableToSave": "You must modify any product to be able to save the changes."
+      "unableToSave": "You must modify any product to be able to save the changes.",
+      "incorrectLoginCredentials": "You entered incorrect login credentials. Login failed."
     }
   },
   "copyright": "Copyright © 2022 Jacek Nowak. All rights reserved."

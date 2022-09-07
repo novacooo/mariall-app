@@ -13,6 +13,7 @@ import {
   InputRightElement,
   Tooltip,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
 import { useEffect, useState } from 'react';
@@ -42,30 +43,36 @@ const LoginPage = () => {
   const bgColor = useColorModeValue('white', 'gray.800');
   const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
   const isLogged = useAppSelector(selectIsLogged);
-
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const errorToast = useToast();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION, {
+    onError: () => {
+      errorToast({
+        title: t('toasts.titles.incorrectLoginCredentials'),
+        description: t('toasts.descriptions.incorrectLoginCredentials'),
+        duration: 5000,
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+    },
     onCompleted: (data) => {
       console.log(data);
     },
   });
 
   const loginUser = async () => {
-    try {
-      await loginUserMutation({
-        variables: {
-          email: emailValue,
-          password: passwordValue,
-        },
-      });
-    } catch (e) {
-      // error
-    }
+    await loginUserMutation({
+      variables: {
+        email: emailValue,
+        password: passwordValue,
+      },
+    });
   };
 
   const handleButtonClick = () => {
