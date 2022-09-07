@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
@@ -24,29 +25,16 @@ import AddingQuantityTable, {
   IQuantity,
 } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
+import { getEmployeesQuery, GetEmployeesQueryPayload } from 'graphql/queries';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
 
 interface IWorkerData {
-  id: string;
-  name: string;
+  id: number;
+  firstName: string;
+  lastName?: string;
 }
-
-const workers: IWorkerData[] = [
-  {
-    id: 'worker-01',
-    name: 'Jan Kowalski',
-  },
-  {
-    id: 'worker-02',
-    name: 'Jacek Nowak',
-  },
-  {
-    id: 'worker-03',
-    name: 'Krzysztof Bąkowski',
-  },
-];
 
 const years: number[] = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
 
@@ -64,15 +52,6 @@ const months: string[] = [
   'november',
   'december',
 ];
-
-const getWorkers = (succed: boolean) => {
-  return new Promise<IWorkerData[]>((resolve, reject) => {
-    setTimeout(() => {
-      if (!succed) reject(new Error('Failed to fetch workers data.'));
-      resolve(workers);
-    }, 300);
-  });
-};
 
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
@@ -94,6 +73,37 @@ const AddingQuantityTab = () => {
   const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
 
   const toast = useToast();
+
+  useQuery<GetEmployeesQueryPayload>(getEmployeesQuery, {
+    onError: (err) => {
+      toast({
+        title: t('toasts.titles.somethingWentWrong'),
+        description: `${t('toasts.descriptions.somethingWentWrong')} ${err.message}`,
+        duration: 5000,
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+    },
+    onCompleted: ({ employees }) => {
+      const newWorkersData: IWorkerData[] = [];
+
+      employees.data.forEach((worker) => {
+        const {
+          id,
+          attributes: { firstName, lastName },
+        } = worker;
+
+        newWorkersData.push({
+          id,
+          firstName,
+          lastName,
+        });
+      });
+
+      setWorkersData(newWorkersData);
+    },
+  });
 
   const handleResetButtonClick = () => {
     if (!tableRef.current) return;
@@ -124,20 +134,6 @@ const AddingQuantityTab = () => {
 
     setIsQuantitiesFetched(false);
   }, [isQuantitiesFetched, onOpen, quantities.length, t, toast]);
-
-  useEffect(() => {
-    const fetchWorkersData = async () => {
-      try {
-        const data = await getWorkers(true);
-        setWorkersData(data);
-      } catch (err) {
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        console.error(`Error: ${err}`);
-      }
-    };
-
-    void fetchWorkersData();
-  }, []);
 
   return (
     <Flex direction="column" gap={6}>
@@ -176,11 +172,15 @@ const AddingQuantityTab = () => {
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
-                  {workers.map(({ id, name }) => (
-                    <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(name)}>
-                      {name}
-                    </MenuItemOption>
-                  ))}
+                  {workersData.map(({ id, firstName, lastName }) => {
+                    const name = lastName ? `${firstName} ${lastName}` : firstName;
+
+                    return (
+                      <MenuItemOption key={id} value={id.toString()} onClick={() => setSelectedWorker(name)}>
+                        {name}
+                      </MenuItemOption>
+                    );
+                  })}
                 </MenuOptionGroup>
               </MenuList>
             </Menu>
