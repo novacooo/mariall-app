@@ -1,5 +1,5 @@
 import { useAppSelector } from 'app/hooks';
-import { selectIsLogged } from 'features/user/userSlice';
+import { selectUserIsLogged } from 'features/user/userSlice';
 import { Navigate } from 'react-router-dom';
 import { routes } from 'routes';
 
@@ -8,7 +8,7 @@ interface AuthenticatedPageTemplateProps {
 }
 
 const AuthenticatedPageTemplate = ({ children }: AuthenticatedPageTemplateProps) => {
-  const isLogged = useAppSelector(selectIsLogged);
+  const isLogged = useAppSelector(selectUserIsLogged);
 
   if (!isLogged) {
     return <Navigate to={routes.login} />;

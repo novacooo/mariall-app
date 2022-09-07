@@ -8,7 +8,7 @@ import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 import UserButton from 'components/UserButton/UserButton';
 import { ReactNode } from 'react';
 import { useAppSelector } from 'app/hooks';
-import { selectIsLogged } from 'features/user/userSlice';
+import { selectUserIsLogged } from 'features/user/userSlice';
 
 interface PageTemplateProps {
   name: string;
@@ -18,7 +18,7 @@ interface PageTemplateProps {
 const PageTemplate = ({ name, children }: PageTemplateProps) => {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const isLogged = useAppSelector(selectIsLogged);
+  const isLogged = useAppSelector(selectUserIsLogged);
 
   const logoHeight = 42;
 

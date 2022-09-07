@@ -16,7 +16,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
@@ -24,12 +24,17 @@ import { FiEye, FiEyeOff, FiLock, FiMail } from 'react-icons/fi';
 import { useDebouncedCallback } from 'use-debounce';
 import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
-import { useAppSelector } from 'app/hooks';
-import { selectIsLogged } from 'features/user/userSlice';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { selectUserIsLogged, setUserId, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
 import { gql, useMutation } from '@apollo/client';
 
 interface LoginUserMutationPayload {
-  jwt: string;
+  login: {
+    jwt: string;
+    user: {
+      id: number;
+    };
+  };
 }
 
 interface LoginUserMutationVariables {
@@ -41,17 +46,21 @@ const LOGIN_USER_MUTATION = gql`
   mutation LoginUser($email: String!, $password: String!) {
     login(input: { identifier: $email, password: $password }) {
       jwt
+      user {
+        id
+      }
     }
   }
 `;
 
 const LoginPage = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { accentColor } = useColorContext();
   const { t } = useTranslation();
   const bgColor = useColorModeValue('white', 'gray.800');
   const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
-  const isLogged = useAppSelector(selectIsLogged);
+  const isLogged = useAppSelector(selectUserIsLogged);
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [isPasswordCompleted, setIsPasswordCompleted] = useState(true);
@@ -75,9 +84,16 @@ const LoginPage = () => {
       setEmailValue('');
       setPasswordValue('');
     },
-    onCompleted: (data) => {
-      console.log(data);
-      // navigate(routes.menu);
+    onCompleted: ({
+      login: {
+        jwt,
+        user: { id },
+      },
+    }) => {
+      dispatch(setUserIsLogged(true));
+      dispatch(setUserId(id));
+      dispatch(setUserJwtToken(jwt));
+      navigate(routes.menu);
     },
   });
 
