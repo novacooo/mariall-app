@@ -7,7 +7,7 @@ import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 import UserButton from 'components/UserButton/UserButton';
 import { ReactNode } from 'react';
-import { useAppSelector } from 'app/hooks';
+import { useAppSelector } from 'app';
 import { selectUserIsLogged } from 'features/user/userSlice';
 
 interface PageTemplateProps {

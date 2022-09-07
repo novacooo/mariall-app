@@ -1,4 +1,4 @@
-import { useAppSelector } from 'app/hooks';
+import { useAppSelector } from 'app';
 import { selectUserIsLogged } from 'features/user/userSlice';
 import { Navigate } from 'react-router-dom';
 import { routes } from 'routes';

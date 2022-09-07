@@ -24,7 +24,7 @@ import { FiEye, FiEyeOff, FiLock, FiMail } from 'react-icons/fi';
 import { useDebouncedCallback } from 'use-debounce';
 import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'app';
 import { selectUserIsLogged, setUserInfo, setUserIsLogged } from 'features/user/userSlice';
 import { gql, useMutation, useLazyQuery } from '@apollo/client';
 

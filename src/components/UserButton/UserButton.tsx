@@ -12,7 +12,7 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'app';
 import { logoutUser } from 'features/user/userSlice';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiLogOut, FiSettings } from 'react-icons/fi';
