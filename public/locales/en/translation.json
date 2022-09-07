@@ -54,6 +54,9 @@
     "resetChanges": "Reset changes",
     "cancel": "Cancel"
   },
+  "loadingTexts": {
+    "signInButton": "Signing in..."
+  },
   "headers": {
     "signIn": "Sign in",
     "chooseApp": "Choose application"

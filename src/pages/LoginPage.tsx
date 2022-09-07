@@ -49,6 +49,7 @@ const LoginPage = () => {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isEmailCompleted, setIsEmailCompleted] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
   const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION, {
@@ -61,19 +62,27 @@ const LoginPage = () => {
         isClosable: true,
         position: 'top',
       });
+
+      setEmailValue('');
+      setPasswordValue('');
     },
     onCompleted: (data) => {
       console.log(data);
+      // navigate(routes.menu);
     },
   });
 
   const loginUser = async () => {
+    setIsLoading(true);
+
     await loginUserMutation({
       variables: {
         email: emailValue,
         password: passwordValue,
       },
     });
+
+    setIsLoading(false);
   };
 
   const handleButtonClick = () => {
@@ -81,12 +90,18 @@ const LoginPage = () => {
       setIsEmailCompleted(false);
       return;
     }
+
+    if (!validator.isEmail(emailValue)) {
+      setIsEmailValid(false);
+      return;
+    }
+
     if (passwordValue === '') {
       setIsPasswordCompleted(false);
       return;
     }
+
     void loginUser();
-    // navigate(routes.menu);
   };
 
   const debouncedEmailCheck = useDebouncedCallback((value: string) => {
@@ -197,7 +212,14 @@ const LoginPage = () => {
         <Checkbox colorScheme={accentColor} mx={2} my={2}>
           {t('checkboxes.rememberPassword')}
         </Checkbox>
-        <Button mx={2} onClick={handleButtonClick} colorScheme={accentColor} type="submit">
+        <Button
+          mx={2}
+          onClick={handleButtonClick}
+          colorScheme={accentColor}
+          type="submit"
+          isLoading={isLoading}
+          loadingText={t('loadingTexts.signInButton')}
+        >
           {t('buttons.signIn')}
         </Button>
       </Flex>

@@ -54,6 +54,9 @@
     "resetChanges": "Zresetuj zmiany",
     "cancel": "Anuluj"
   },
+  "loadingTexts": {
+    "signInButton": "Logowanie..."
+  },
   "headers": {
     "signIn": "Zaloguj się",
     "chooseApp": "Wybierz aplikację"
