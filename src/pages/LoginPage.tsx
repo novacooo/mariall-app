@@ -15,7 +15,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
@@ -25,6 +25,15 @@ import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppSelector } from 'app/hooks';
 import { selectIsLogged } from 'features/user/userSlice';
+import { gql, useMutation } from '@apollo/client';
+
+const LOGIN_USER_MUTATION = gql`
+  mutation LoginUser($email: String!, $password: String!) {
+    login(input: { identifier: $email, password: $password }) {
+      jwt
+    }
+  }
+`;
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -39,8 +48,29 @@ const LoginPage = () => {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION, {
+    onCompleted: (data) => {
+      console.log(data);
+    },
+  });
+
+  const loginUser = async () => {
+    try {
+      await loginUserMutation({
+        variables: {
+          email: emailValue,
+          password: passwordValue,
+        },
+      });
+    } catch (e) {
+      // error
+    }
+  };
+
   const handleButtonClick = () => {
-    navigate(routes.menu);
+    void loginUser();
+    // navigate(routes.menu);
   };
 
   const debouncedCheck = useDebouncedCallback((value: string) => {
