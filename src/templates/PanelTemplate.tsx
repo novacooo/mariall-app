@@ -1,10 +1,11 @@
 import { Flex, Heading } from '@chakra-ui/react';
 import Sidebar from 'components/Sidebar/Sidebar';
 import TopBar from 'components/TopBar/TopBar';
+import { ReactNode } from 'react';
 
 interface PanelTemplateProps {
   name: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const PanelTemplate = ({ name, children }: PanelTemplateProps) => (

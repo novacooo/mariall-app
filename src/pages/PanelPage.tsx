@@ -7,6 +7,7 @@ import LogsTab from 'tabs/LogsTab';
 import PrintingSummariesTab from 'tabs/PrintingSummariesTab';
 import ProductsManagementTab from 'tabs/ProductsManagementTab';
 import SalariesTab from 'tabs/SalariesTab';
+import AuthenticatedPageTemplate from 'templates/AuthenticatedPageTemplate';
 import PanelTemplate from 'templates/PanelTemplate';
 
 const PanelPage = () => {
@@ -35,17 +36,19 @@ const PanelPage = () => {
   const panelTitle = getPanelTitle();
 
   return (
-    <PanelTemplate name={panelTitle}>
-      {pathname === routes.panel && <Navigate to={routes.panelAddingQuantity} />}
-      <Routes>
-        <Route path={routes.panelAddingQuantity} element={<AddingQuantityTab />} />
-        <Route path={routes.panelProductsManagement} element={<ProductsManagementTab />} />
-        <Route path={routes.panelSalaries} element={<SalariesTab />} />
-        <Route path={routes.panelPrinting} element={<PrintingSummariesTab />} />
-        <Route path={routes.panelEmployeesManagement} element={<EmployeesManagementTab />} />
-        <Route path={routes.panelLogs} element={<LogsTab />} />
-      </Routes>
-    </PanelTemplate>
+    <AuthenticatedPageTemplate>
+      <PanelTemplate name={panelTitle}>
+        {pathname === routes.panel && <Navigate to={routes.panelAddingQuantity} />}
+        <Routes>
+          <Route path={routes.panelAddingQuantity} element={<AddingQuantityTab />} />
+          <Route path={routes.panelProductsManagement} element={<ProductsManagementTab />} />
+          <Route path={routes.panelSalaries} element={<SalariesTab />} />
+          <Route path={routes.panelPrinting} element={<PrintingSummariesTab />} />
+          <Route path={routes.panelEmployeesManagement} element={<EmployeesManagementTab />} />
+          <Route path={routes.panelLogs} element={<LogsTab />} />
+        </Routes>
+      </PanelTemplate>
+    </AuthenticatedPageTemplate>
   );
 };
 

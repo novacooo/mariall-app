@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import { createContext, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 export type AccentColorType = 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'cyan' | 'purple' | 'pink';
 
@@ -9,7 +9,7 @@ interface IColorContext {
 }
 
 interface ColorContextProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const initialAccentColor = 'teal';

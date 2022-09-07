@@ -6,10 +6,11 @@ import LanguageButton from 'components/LanguageButton/LanguageButton';
 import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 import UserButton from 'components/UserButton/UserButton';
+import { ReactNode } from 'react';
 
 interface PageTemplateProps {
   name: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const PageTemplate = ({ name, children }: PageTemplateProps) => {

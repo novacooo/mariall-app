@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { routes } from 'routes';
@@ -23,6 +23,7 @@ const App = () => (
               <Route path={routes.menu} element={<MenuPage />} />
               <Route path={routes.login} element={<LoginPage />} />
               <Route path={`${routes.panel}/*`} element={<PanelPage />} />
+              <Route path="*" element={<Navigate to={routes.menu} replace />} />
             </Routes>
           </MainTemplate>
         </HashRouter>

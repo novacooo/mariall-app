@@ -1,8 +1,9 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 import ColorContextProvider from 'contexts/ColorContext';
+import { ReactNode } from 'react';
 
 interface MainTemplateProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const MainTemplate = ({ children }: MainTemplateProps) => {

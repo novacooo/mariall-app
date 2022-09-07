@@ -1,8 +1,9 @@
 import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { ReactNode } from 'react';
 
 interface SidebarMenuProps {
   name: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const SidebarMenu = ({ name, children }: SidebarMenuProps) => {
