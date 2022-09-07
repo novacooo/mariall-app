@@ -26,48 +26,9 @@ import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from 'app';
 import { selectUserIsLogged, setUserInfo, setUserIsLogged } from 'features/user/userSlice';
-import { gql, useMutation, useLazyQuery } from '@apollo/client';
-
-interface LoginUserMutationPayload {
-  login: {
-    jwt: string;
-  };
-}
-
-interface LoginUserMutationVariables {
-  email: string;
-  password: string;
-}
-
-interface GetUserInfoQueryPayload {
-  me: {
-    id: number;
-    email?: string;
-    role?: {
-      name?: string;
-    };
-  };
-}
-
-const LOGIN_USER_MUTATION = gql`
-  mutation LoginUser($email: String!, $password: String!) {
-    login(input: { identifier: $email, password: $password }) {
-      jwt
-    }
-  }
-`;
-
-const GET_USER_INFO_QUERY = gql`
-  query GetUserInfo {
-    me {
-      id
-      email
-      role {
-        name
-      }
-    }
-  }
-`;
+import { useMutation, useLazyQuery } from '@apollo/client';
+import { GetUserInfoQueryPayload, getUserInfoQuery } from 'graphql/queries';
+import { loginUserMutation, LoginUserMutationPayload, LoginUserMutationVariables } from 'graphql/mutations';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -86,7 +47,7 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const [getUserInfoQuery] = useLazyQuery<GetUserInfoQueryPayload>(GET_USER_INFO_QUERY, {
+  const [getUserInfo] = useLazyQuery<GetUserInfoQueryPayload>(getUserInfoQuery, {
     onError: (err) => {
       toast({
         title: t('toasts.titles.somethingWentWrong'),
@@ -113,7 +74,7 @@ const LoginPage = () => {
     },
   });
 
-  const [loginUserMutation] = useMutation<LoginUserMutationPayload, LoginUserMutationVariables>(LOGIN_USER_MUTATION, {
+  const [loginUser] = useMutation<LoginUserMutationPayload, LoginUserMutationVariables>(loginUserMutation, {
     onError: () => {
       toast({
         title: t('toasts.titles.incorrectLoginCredentials'),
@@ -129,14 +90,14 @@ const LoginPage = () => {
     },
     onCompleted: ({ login: { jwt } }) => {
       localStorage.setItem('jwtToken', jwt);
-      void getUserInfoQuery();
+      void getUserInfo();
     },
   });
 
-  const loginUser = async () => {
+  const signIn = async () => {
     setIsLoading(true);
 
-    await loginUserMutation({
+    await loginUser({
       variables: {
         email: emailValue,
         password: passwordValue,
@@ -162,7 +123,7 @@ const LoginPage = () => {
       return;
     }
 
-    void loginUser();
+    void signIn();
   };
 
   const debouncedEmailCheck = useDebouncedCallback((value: string) => {
