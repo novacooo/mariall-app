@@ -110,10 +110,12 @@
   },
   "toasts": {
     "titles": {
+      "somethingWentWrong": "Something went wrong!",
       "unableToSave": "Unable to save!",
       "incorrectLoginCredentials": "Incorrect login credentials!"
     },
     "descriptions": {
+      "somethingWentWrong": "Ups... something went wrong. Error message:",
       "unableToSave": "You must modify any product to be able to save the changes.",
       "incorrectLoginCredentials": "You entered incorrect login credentials. Login failed."
     }

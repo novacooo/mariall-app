@@ -110,10 +110,12 @@
   },
   "toasts": {
     "titles": {
+      "somethingWentWrong": "Coś poszło nie tak!",
       "unableToSave": "Nie można zapisać!",
       "incorrectLoginCredentials": "Błędne dane logowania!"
     },
     "descriptions": {
+      "somethingWentWrong": "Ups... coś poszło nie tak. Komunikat błędu:",
       "unableToSave": "Musisz zmodyfikować jakikolwiek produkt, żeby móc zapisać zmiany.",
       "incorrectLoginCredentials": "Podałeś błędne dane logowania. Nie udało się zalogować."
     }

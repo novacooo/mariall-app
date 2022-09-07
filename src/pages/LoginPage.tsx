@@ -25,15 +25,12 @@ import { useDebouncedCallback } from 'use-debounce';
 import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { selectUserIsLogged, setUserId, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
-import { gql, useMutation } from '@apollo/client';
+import { selectUserIsLogged, setUserInfo, setUserIsLogged } from 'features/user/userSlice';
+import { gql, useMutation, useLazyQuery } from '@apollo/client';
 
 interface LoginUserMutationPayload {
   login: {
     jwt: string;
-    user: {
-      id: number;
-    };
   };
 }
 
@@ -42,12 +39,31 @@ interface LoginUserMutationVariables {
   password: string;
 }
 
+interface GetUserInfoQueryPayload {
+  me: {
+    id: number;
+    email?: string;
+    role?: {
+      name?: string;
+    };
+  };
+}
+
 const LOGIN_USER_MUTATION = gql`
   mutation LoginUser($email: String!, $password: String!) {
     login(input: { identifier: $email, password: $password }) {
       jwt
-      user {
-        id
+    }
+  }
+`;
+
+const GET_USER_INFO_QUERY = gql`
+  query GetUserInfo {
+    me {
+      id
+      email
+      role {
+        name
       }
     }
   }
@@ -70,6 +86,33 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
+  const [getUserInfoQuery] = useLazyQuery<GetUserInfoQueryPayload>(GET_USER_INFO_QUERY, {
+    onError: (err) => {
+      toast({
+        title: t('toasts.titles.somethingWentWrong'),
+        description: `${t('toasts.descriptions.somethingWentWrong')} ${err.message}`,
+        duration: 5000,
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+
+      setEmailValue('');
+      setPasswordValue('');
+    },
+    onCompleted: ({ me: { id, email, role } }) => {
+      dispatch(
+        setUserInfo({
+          id,
+          email,
+          role: role?.name,
+        }),
+      );
+      dispatch(setUserIsLogged(true));
+      navigate(routes.menu);
+    },
+  });
+
   const [loginUserMutation] = useMutation<LoginUserMutationPayload, LoginUserMutationVariables>(LOGIN_USER_MUTATION, {
     onError: () => {
       toast({
@@ -84,16 +127,9 @@ const LoginPage = () => {
       setEmailValue('');
       setPasswordValue('');
     },
-    onCompleted: ({
-      login: {
-        jwt,
-        user: { id },
-      },
-    }) => {
-      dispatch(setUserIsLogged(true));
-      dispatch(setUserId(id));
-      dispatch(setUserJwtToken(jwt));
-      navigate(routes.menu);
+    onCompleted: ({ login: { jwt } }) => {
+      localStorage.setItem('jwtToken', jwt);
+      void getUserInfoQuery();
     },
   });
 

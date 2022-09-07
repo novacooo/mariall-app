@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import theme from 'theme/theme';
 import { routes } from 'routes';
 import { Suspense } from 'react';
@@ -13,17 +14,31 @@ import PanelPage from './PanelPage';
 import MenuPage from './MenuPage';
 import LoginPage from './LoginPage';
 
-const apolloClient = new ApolloClient({
+const httpLink = new HttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URL,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const jwtToken = localStorage.getItem('jwtToken');
+  return {
+    headers: {
+      ...headers,
+      authorization: jwtToken ? `Bearer ${jwtToken}` : '',
+    },
+  };
+});
+
+const apolloClient = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
 const App = () => (
   <Suspense fallback="loading">
-    <ApolloProvider client={apolloClient}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <ChakraProvider theme={theme}>
-        <Provider store={store}>
+    <Provider store={store}>
+      <ApolloProvider client={apolloClient}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <ChakraProvider theme={theme}>
           <HashRouter basename="/">
             <MainTemplate>
               <Routes>
@@ -34,9 +49,9 @@ const App = () => (
               </Routes>
             </MainTemplate>
           </HashRouter>
-        </Provider>
-      </ChakraProvider>
-    </ApolloProvider>
+        </ChakraProvider>
+      </ApolloProvider>
+    </Provider>
   </Suspense>
 );
 
