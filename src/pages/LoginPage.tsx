@@ -28,6 +28,15 @@ import { useAppSelector } from 'app/hooks';
 import { selectIsLogged } from 'features/user/userSlice';
 import { gql, useMutation } from '@apollo/client';
 
+interface LoginUserMutationPayload {
+  jwt: string;
+}
+
+interface LoginUserMutationVariables {
+  email: string;
+  password: string;
+}
+
 const LOGIN_USER_MUTATION = gql`
   mutation LoginUser($email: String!, $password: String!) {
     login(input: { identifier: $email, password: $password }) {
@@ -52,7 +61,7 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION, {
+  const [loginUserMutation] = useMutation<LoginUserMutationPayload, LoginUserMutationVariables>(LOGIN_USER_MUTATION, {
     onError: () => {
       toast({
         title: t('toasts.titles.incorrectLoginCredentials'),
