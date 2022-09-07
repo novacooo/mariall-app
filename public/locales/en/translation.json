@@ -86,6 +86,8 @@
     "pink": "Pink"
   },
   "errors": {
+    "notCompletedEmail": "You must provide an email address!",
+    "notCompletedPassword": "You must enter a password!",
     "invalidEmail": "The email address provided is not valid!"
   },
   "tables": {

@@ -45,14 +45,15 @@ const LoginPage = () => {
   const isLogged = useAppSelector(selectIsLogged);
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [isPasswordCompleted, setIsPasswordCompleted] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isEmailCompleted, setIsEmailCompleted] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const errorToast = useToast();
+  const toast = useToast();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [loginUserMutation] = useMutation(LOGIN_USER_MUTATION, {
     onError: () => {
-      errorToast({
+      toast({
         title: t('toasts.titles.incorrectLoginCredentials'),
         description: t('toasts.descriptions.incorrectLoginCredentials'),
         duration: 5000,
@@ -76,23 +77,46 @@ const LoginPage = () => {
   };
 
   const handleButtonClick = () => {
+    if (emailValue === '') {
+      setIsEmailCompleted(false);
+      return;
+    }
+    if (passwordValue === '') {
+      setIsPasswordCompleted(false);
+      return;
+    }
     void loginUser();
     // navigate(routes.menu);
   };
 
-  const debouncedCheck = useDebouncedCallback((value: string) => {
+  const debouncedEmailCheck = useDebouncedCallback((value: string) => {
     setIsEmailValid(validator.isEmail(value));
-  }, 500);
+    setIsEmailCompleted(value !== '');
+  }, 1000);
+
+  const debouncedPasswordCheck = useDebouncedCallback((value: string) => {
+    setIsPasswordCompleted(value !== '');
+  }, 1000);
 
   const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+
     setEmailValue(value);
+
+    setIsEmailCompleted(true);
     setIsEmailValid(true);
-    debouncedCheck(value);
+
+    debouncedEmailCheck(value);
   };
 
   const handlePasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
     setPasswordValue(e.target.value);
+
+    setIsPasswordCompleted(true);
+
+    debouncedPasswordCheck(value);
   };
 
   const handleShowButtonClick = () => {
@@ -117,7 +141,7 @@ const LoginPage = () => {
         <Heading as="h3" size="md" textAlign="center" color={adaptiveAccentColor}>
           {t('headers.signIn')}
         </Heading>
-        <FormControl isRequired isInvalid={!isEmailValid}>
+        <FormControl isRequired isInvalid={!isEmailValid || !isEmailCompleted}>
           <FormLabel htmlFor="email">{t('inputs.email')}</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none" color="gray.500">
@@ -133,9 +157,13 @@ const LoginPage = () => {
               variant="filled"
             />
           </InputGroup>
-          {!isEmailValid && <FormErrorMessage>{t('errors.invalidEmail')}</FormErrorMessage>}
+          {(!isEmailCompleted || !isEmailValid) && (
+            <FormErrorMessage>
+              {!isEmailCompleted ? t('errors.notCompletedEmail') : t('errors.invalidEmail')}
+            </FormErrorMessage>
+          )}
         </FormControl>
-        <FormControl isRequired>
+        <FormControl isRequired isInvalid={!isPasswordCompleted}>
           <FormLabel htmlFor="password">{t('inputs.password')}</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none" color="gray.500">
@@ -164,6 +192,7 @@ const LoginPage = () => {
               </Tooltip>
             </InputRightElement>
           </InputGroup>
+          {!isPasswordCompleted && <FormErrorMessage>{t('errors.notCompletedPassword')}</FormErrorMessage>}
         </FormControl>
         <Checkbox colorScheme={accentColor} mx={2} my={2}>
           {t('checkboxes.rememberPassword')}

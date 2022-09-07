@@ -86,6 +86,8 @@
     "pink": "Różowy"
   },
   "errors": {
+    "notCompletedEmail": "Musisz podać adres email!",
+    "notCompletedPassword": "Musisz podać hasło!",
     "invalidEmail": "Podany adres email jest nieprawidłowy!"
   },
   "tables": {
