@@ -17,12 +17,14 @@ import {
 import { useColorContext } from 'contexts/ColorContext';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
 import { FiEye, FiEyeOff, FiLock, FiMail } from 'react-icons/fi';
 import { useDebouncedCallback } from 'use-debounce';
 import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
+import { useAppSelector } from 'app/hooks';
+import { selectIsLogged } from 'features/user/userSlice';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const bgColor = useColorModeValue('white', 'gray.800');
   const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
+  const isLogged = useAppSelector(selectIsLogged);
 
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
@@ -58,6 +61,10 @@ const LoginPage = () => {
   const handleShowButtonClick = () => {
     setShowPassword((prevState) => !prevState);
   };
+
+  if (isLogged) {
+    return <Navigate to={routes.menu} replace />;
+  }
 
   return (
     <PageTemplate name={t('pagesHeaders.signIn')}>

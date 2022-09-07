@@ -7,6 +7,8 @@ import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 import UserButton from 'components/UserButton/UserButton';
 import { ReactNode } from 'react';
+import { useAppSelector } from 'app/hooks';
+import { selectIsLogged } from 'features/user/userSlice';
 
 interface PageTemplateProps {
   name: string;
@@ -16,6 +18,7 @@ interface PageTemplateProps {
 const PageTemplate = ({ name, children }: PageTemplateProps) => {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
+  const isLogged = useAppSelector(selectIsLogged);
 
   const logoHeight = 42;
 
@@ -31,7 +34,7 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
         <LanguageButton />
         <ColorButton />
         <ColorModeButton />
-        <UserButton />
+        {isLogged && <UserButton />}
       </Flex>
       <Flex w="full" direction="column" flexGrow={1} align="center">
         {children}
