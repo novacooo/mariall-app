@@ -35,10 +35,16 @@ export const userSlice = createSlice({
       state.email = email;
       state.role = role;
     },
+    logoutUser: (state) => {
+      state.isLogged = false;
+      state.id = undefined;
+      state.email = undefined;
+      state.role = undefined;
+    },
   },
 });
 
-export const { setUserIsLogged, setUserInfo } = userSlice.actions;
+export const { setUserIsLogged, setUserInfo, logoutUser } = userSlice.actions;
 
 export const selectUserIsLogged = (state: RootState) => state.user.isLogged;
 
