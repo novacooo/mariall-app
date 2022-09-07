@@ -15,10 +15,9 @@ import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';
 import LanguageButton from 'components/LanguageButton/LanguageButton';
 import SidebarTabs from 'components/SidebarTabs/SidebarTabs';
+import { useSignOut } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { FiLogOut } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import { routes } from 'routes';
 
 interface MobileSidebarProps {
   isOpen: boolean;
@@ -31,10 +30,14 @@ const data = {
 
 const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const singOut = useSignOut();
 
   const logoutIconColor = useColorModeValue('red.500', 'red.400');
   const bgColor = useColorModeValue('white', 'gray.800');
+
+  const handleSignOutButtonClick = () => {
+    void singOut();
+  };
 
   return (
     <Drawer isOpen={isOpen} placement="left" onClose={onClose} autoFocus={false}>
@@ -53,7 +56,7 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
                   aria-label={t('tooltips.signOut')}
                   color={logoutIconColor}
                   icon={<FiLogOut />}
-                  onClick={() => navigate(routes.login)}
+                  onClick={handleSignOutButtonClick}
                 />
               </Tooltip>
             </Flex>
