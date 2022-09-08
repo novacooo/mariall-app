@@ -39,13 +39,14 @@ const LoginPage = () => {
   const bgColor = useColorModeValue('white', 'gray.800');
   const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
   const isLogged = useAppSelector(selectUserIsLogged);
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  const [isPasswordCompleted, setIsPasswordCompleted] = useState(true);
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isEmailCompleted, setIsEmailCompleted] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [emailValue, setEmailValue] = useState<string>('');
+  const [passwordValue, setPasswordValue] = useState<string>('');
+  const [isPasswordCompleted, setIsPasswordCompleted] = useState<boolean>(true);
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+  const [isEmailCompleted, setIsEmailCompleted] = useState<boolean>(true);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isRememberMeChecked, setIsRememberMeChecked] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
   const errorToast = useErrorToast();
 
@@ -56,6 +57,7 @@ const LoginPage = () => {
           id,
           email,
           role: role?.name,
+          rememberCredentials: isRememberMeChecked,
         }),
       );
       dispatch(setUserIsLogged(true));
@@ -150,6 +152,10 @@ const LoginPage = () => {
     debouncedPasswordCheck(value);
   };
 
+  const handleCheckboxChange = () => {
+    setIsRememberMeChecked((prev) => !prev);
+  };
+
   const handleShowButtonClick = () => {
     setShowPassword((prevState) => !prevState);
   };
@@ -225,7 +231,13 @@ const LoginPage = () => {
           </InputGroup>
           {!isPasswordCompleted && <FormErrorMessage>{t('errors.notCompletedPassword')}</FormErrorMessage>}
         </FormControl>
-        <Checkbox colorScheme={accentColor} mx={2} my={2}>
+        <Checkbox
+          colorScheme={accentColor}
+          mx={2}
+          my={2}
+          isChecked={isRememberMeChecked}
+          onChange={handleCheckboxChange}
+        >
           {t('checkboxes.rememberPassword')}
         </Checkbox>
         <Button

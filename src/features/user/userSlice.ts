@@ -7,12 +7,14 @@ interface IUserState {
   id: number | undefined;
   email: string | undefined;
   role: string | undefined;
+  rememberCredentials: boolean | undefined;
 }
 
 interface IUserInfo {
   id: number | undefined;
   email: string | undefined;
   role: string | undefined;
+  rememberCredentials: boolean | undefined;
 }
 
 const initialState: IUserState = {
@@ -21,6 +23,7 @@ const initialState: IUserState = {
   id: undefined,
   email: undefined,
   role: undefined,
+  rememberCredentials: undefined,
 };
 
 export const userSlice = createSlice({
@@ -34,11 +37,12 @@ export const userSlice = createSlice({
       state.jwtToken = action.payload;
     },
     setUserInfo: (state, action: PayloadAction<IUserInfo>) => {
-      const { id, email, role } = action.payload;
+      const { id, email, role, rememberCredentials } = action.payload;
 
       state.id = id;
       state.email = email;
       state.role = role;
+      state.rememberCredentials = rememberCredentials;
     },
     logoutUser: (state) => {
       state.isLogged = false;
@@ -46,6 +50,7 @@ export const userSlice = createSlice({
       state.id = undefined;
       state.email = undefined;
       state.role = undefined;
+      state.rememberCredentials = undefined;
     },
   },
 });
@@ -57,5 +62,6 @@ export const selectUserJwtToken = (state: RootState) => state.user.jwtToken;
 export const selectUserId = (state: RootState) => state.user.id;
 export const selectUserEmail = (state: RootState) => state.user.email;
 export const selectUserRole = (state: RootState) => state.user.role;
+export const selectUserRememberCredentials = (state: RootState) => state.user.rememberCredentials;
 
 export default userSlice.reducer;
