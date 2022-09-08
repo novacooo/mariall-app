@@ -25,7 +25,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from 'app';
-import { selectUserIsLogged, setUserInfo, setUserIsLogged } from 'features/user/userSlice';
+import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { GetUserInfoQueryPayload, getUserInfoQuery } from 'graphql/queries';
 import { loginUserMutation, LoginUserMutationPayload, LoginUserMutationVariables } from 'graphql/mutations';
@@ -48,6 +48,17 @@ const LoginPage = () => {
   const toast = useToast();
 
   const [getUserInfo] = useLazyQuery<GetUserInfoQueryPayload>(getUserInfoQuery, {
+    onCompleted: ({ me: { id, email, role } }) => {
+      dispatch(
+        setUserInfo({
+          id,
+          email,
+          role: role?.name,
+        }),
+      );
+      dispatch(setUserIsLogged(true));
+      navigate(routes.menu);
+    },
     onError: (err) => {
       toast({
         title: t('toasts.titles.somethingWentWrong'),
@@ -61,20 +72,13 @@ const LoginPage = () => {
       setEmailValue('');
       setPasswordValue('');
     },
-    onCompleted: ({ me: { id, email, role } }) => {
-      dispatch(
-        setUserInfo({
-          id,
-          email,
-          role: role?.name,
-        }),
-      );
-      dispatch(setUserIsLogged(true));
-      navigate(routes.menu);
-    },
   });
 
   const [loginUser] = useMutation<LoginUserMutationPayload, LoginUserMutationVariables>(loginUserMutation, {
+    onCompleted: ({ login: { jwt } }) => {
+      dispatch(setUserJwtToken(jwt));
+      void getUserInfo();
+    },
     onError: () => {
       toast({
         title: t('toasts.titles.incorrectLoginCredentials'),
@@ -87,10 +91,6 @@ const LoginPage = () => {
 
       setEmailValue('');
       setPasswordValue('');
-    },
-    onCompleted: ({ login: { jwt } }) => {
-      localStorage.setItem('jwtToken', jwt);
-      void getUserInfo();
     },
   });
 
