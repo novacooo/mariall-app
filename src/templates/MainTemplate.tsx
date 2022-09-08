@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { ChakraProvider, ColorModeScript, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 import ColorContextProvider from 'contexts/ColorContext';
 import { ReactNode } from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { theme } from 'theme';
 import { useAppSelector } from 'app';
 import { selectUserJwtToken } from 'features/user/userSlice';
 
@@ -37,14 +36,11 @@ const MainTemplate = ({ children }: MainTemplateProps) => {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <ChakraProvider theme={theme}>
-        <ColorContextProvider>
-          <Flex direction="column" minHeight="100%" bgColor={bgColor}>
-            {children}
-          </Flex>
-        </ColorContextProvider>
-      </ChakraProvider>
+      <ColorContextProvider>
+        <Flex direction="column" minHeight="100%" bgColor={bgColor}>
+          {children}
+        </Flex>
+      </ColorContextProvider>
     </ApolloProvider>
   );
 };
