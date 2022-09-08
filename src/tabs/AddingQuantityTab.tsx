@@ -26,6 +26,7 @@ import AddingQuantityTable, {
 } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
 import { getEmployeesQuery, GetEmployeesQueryPayload } from 'graphql/queries';
+import { useErrorToast } from 'hooks/useErrorToast';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
@@ -73,17 +74,11 @@ const AddingQuantityTab = () => {
   const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
 
   const toast = useToast();
+  const errorToast = useErrorToast();
 
   useQuery<GetEmployeesQueryPayload>(getEmployeesQuery, {
-    onError: (err) => {
-      toast({
-        title: t('toasts.titles.somethingWentWrong'),
-        description: `${t('toasts.descriptions.somethingWentWrong')} ${err.message}`,
-        duration: 5000,
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-      });
+    onError: (error) => {
+      errorToast(error);
     },
     onCompleted: ({ employees }) => {
       const newWorkersData: IWorkerData[] = [];

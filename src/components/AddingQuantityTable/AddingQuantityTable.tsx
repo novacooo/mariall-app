@@ -2,6 +2,7 @@ import { Box, Text, Flex, useColorModeValue, Spinner } from '@chakra-ui/react';
 import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
+import { useErrorToast } from 'hooks/useErrorToast';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -167,6 +168,7 @@ const getProducts = () => {
 const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantityTableProps>(
   ({ workerId, year, month }, ref) => {
     const { t } = useTranslation();
+    const errorToast = useErrorToast();
 
     const [productsData, setProductsData] = useState<IProductData[]>();
 
@@ -206,14 +208,13 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
           setProductsData(undefined);
           const data = await getProducts();
           setProductsData(data);
-        } catch (err) {
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          console.error(`Error: ${err}`);
+        } catch (error) {
+          errorToast(error);
         }
       };
 
       void fetchProductsData();
-    }, [month, workerId, year]);
+    }, [errorToast, month, workerId, year]);
 
     if (!productsData) return <Spinner />;
 

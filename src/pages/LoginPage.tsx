@@ -29,6 +29,7 @@ import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } fro
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { GetUserInfoQueryPayload, getUserInfoQuery } from 'graphql/queries';
 import { loginUserMutation, LoginUserMutationPayload, LoginUserMutationVariables } from 'graphql/mutations';
+import { useErrorToast } from 'hooks/useErrorToast';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -46,6 +47,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const errorToast = useErrorToast();
 
   const [getUserInfo] = useLazyQuery<GetUserInfoQueryPayload>(getUserInfoQuery, {
     onCompleted: ({ me: { id, email, role } }) => {
@@ -59,16 +61,8 @@ const LoginPage = () => {
       dispatch(setUserIsLogged(true));
       navigate(routes.menu);
     },
-    onError: (err) => {
-      toast({
-        title: t('toasts.titles.somethingWentWrong'),
-        description: `${t('toasts.descriptions.somethingWentWrong')} ${err.message}`,
-        duration: 5000,
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-      });
-
+    onError: (error) => {
+      errorToast(error);
       setEmailValue('');
       setPasswordValue('');
     },
