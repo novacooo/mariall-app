@@ -14,7 +14,7 @@ import MenuPage from './MenuPage';
 import LoginPage from './LoginPage';
 
 const App = () => (
-  <Suspense fallback="loading">
+  <Suspense fallback="Loading...">
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
