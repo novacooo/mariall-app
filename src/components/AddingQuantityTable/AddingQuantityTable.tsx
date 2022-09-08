@@ -169,11 +169,8 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
   ({ workerId, year, month }, ref) => {
     const { t } = useTranslation();
     const errorToast = useErrorToast();
-
     const [productsData, setProductsData] = useState<IProductData[]>();
-
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
-
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
 
@@ -214,7 +211,8 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
       };
 
       void fetchProductsData();
-    }, [errorToast, month, workerId, year]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [month, workerId, year]);
 
     if (!productsData) return <Spinner />;
 
