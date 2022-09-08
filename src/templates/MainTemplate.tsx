@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 import ColorContextProvider from 'contexts/ColorContext';
