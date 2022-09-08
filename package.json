@@ -85,8 +85,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
+      "prettier --write '{,!(node_modules)/**/}*.{jsx,js,tsx,ts,css,scss}' --config ./.prettierrc",
+      "eslint --fix '**/*.{jsx,js,tsx,ts}'"
     ]
   }
 }
