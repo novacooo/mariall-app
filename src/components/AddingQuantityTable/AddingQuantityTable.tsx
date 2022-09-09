@@ -1,140 +1,19 @@
+import { useLazyQuery } from '@apollo/client';
 import { Box, Text, Flex, useColorModeValue, Spinner } from '@chakra-ui/react';
 import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
+import { getProductsQuery, GetProductsQueryPayload } from 'graphql/queries/getProductsQuery';
 import { useErrorToast } from 'hooks/useErrorToast';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface IProductData {
-  image: string;
+  id: number;
   code: string;
   name: string;
-  quantity: number;
+  image?: string;
 }
-
-const products: IProductData[] = [
-  {
-    image: 'https://picsum.photos/100/100?random=1',
-    code: 'product-01',
-    name: 'Product 1',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=2',
-    code: 'product-02',
-    name: 'Product 2',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=3',
-    code: 'product-03',
-    name: 'Product 3',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=4',
-    code: 'product-04',
-    name: 'Product 4',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=5',
-    code: 'product-05',
-    name: 'Product 5',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=1',
-    code: 'product-06',
-    name: 'Product 6',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=2',
-    code: 'product-07',
-    name: 'Product 6',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=3',
-    code: 'product-08',
-    name: 'Product 8',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=4',
-    code: 'product-09',
-    name: 'Product 9',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=5',
-    code: 'product-10',
-    name: 'Product 10',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=1',
-    code: 'product-11',
-    name: 'Product 11',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=2',
-    code: 'product-12',
-    name: 'Product 12',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=3',
-    code: 'product-13',
-    name: 'Product 13',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=4',
-    code: 'product-14',
-    name: 'Product 14',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=5',
-    code: 'product-15',
-    name: 'Product 15',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=1',
-    code: 'product-16',
-    name: 'Product 16',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=2',
-    code: 'product-17',
-    name: 'Product 17',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=3',
-    code: 'product-18',
-    name: 'Product 18',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=4',
-    code: 'product-19',
-    name: 'Product 19',
-    quantity: 0,
-  },
-  {
-    image: 'https://picsum.photos/100/100?random=5',
-    code: 'product-20',
-    name: 'Product 5',
-    quantity: 0,
-  },
-];
 
 export interface IQuantity {
   code: string;
@@ -152,19 +31,6 @@ interface AddingQuantityTableProps {
   month: string;
 }
 
-const getProducts = () => {
-  return new Promise<IProductData[]>((resolve, reject) => {
-    if (!products) {
-      reject(new Error('something bad happened'));
-      return;
-    }
-
-    setTimeout(() => {
-      resolve(products);
-    }, 500);
-  });
-};
-
 const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantityTableProps>(
   ({ workerId, year, month }, ref) => {
     const { t } = useTranslation();
@@ -173,6 +39,31 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
+
+    const [getProducts] = useLazyQuery<GetProductsQueryPayload>(getProductsQuery, {
+      onError: (error) => {
+        errorToast(error);
+      },
+      onCompleted: ({ products }) => {
+        const newProductsData: IProductData[] = [];
+
+        products.data.forEach((product) => {
+          const {
+            id,
+            attributes: { code, name, image },
+          } = product;
+
+          newProductsData.push({
+            id,
+            code,
+            name,
+            image: image?.data.attributes.url,
+          });
+        });
+
+        setProductsData(newProductsData);
+      },
+    });
 
     useImperativeHandle(ref, () => ({
       getQuantities: () => {
@@ -200,17 +91,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     }));
 
     useEffect(() => {
-      const fetchProductsData = async () => {
-        try {
-          setProductsData(undefined);
-          const data = await getProducts();
-          setProductsData(data);
-        } catch (error) {
-          errorToast(error);
-        }
-      };
-
-      void fetchProductsData();
+      void getProducts();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [month, workerId, year]);
 
@@ -280,15 +161,17 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
           </Text>
         </Flex>
         <Box>
-          {productsData?.map(({ image, code, name, quantity }, i) => (
+          {productsData?.map(({ image, code, name }, i) => (
             <AddingQuantityTableRow
               key={code}
               ref={(element) => {
                 rowsRefs.current[i] = element as never;
               }}
-              image={image}
+              image={
+                image && process.env.REACT_APP_IMAGE_URL ? `${process.env.REACT_APP_IMAGE_URL}${image}` : undefined
+              }
               name={name}
-              quantity={quantity}
+              quantity={0}
               code={code}
             />
           ))}

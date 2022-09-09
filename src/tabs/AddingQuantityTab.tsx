@@ -76,6 +76,17 @@ const AddingQuantityTab = () => {
   const toast = useToast();
   const errorToast = useErrorToast();
 
+  const handleResetButtonClick = () => {
+    if (!tableRef.current) return;
+    tableRef.current.resetQuantities();
+  };
+
+  const handleSaveButtonClick = () => {
+    if (!tableRef.current) return;
+    setQuantities(tableRef.current.getQuantities());
+    setIsQuantitiesFetched(true);
+  };
+
   useQuery<GetEmployeesQueryPayload>(getEmployeesQuery, {
     onError: (error) => {
       errorToast(error);
@@ -99,17 +110,6 @@ const AddingQuantityTab = () => {
       setWorkersData(newWorkersData);
     },
   });
-
-  const handleResetButtonClick = () => {
-    if (!tableRef.current) return;
-    tableRef.current.resetQuantities();
-  };
-
-  const handleSaveButtonClick = () => {
-    if (!tableRef.current) return;
-    setQuantities(tableRef.current.getQuantities());
-    setIsQuantitiesFetched(true);
-  };
 
   useEffect(() => {
     if (!isQuantitiesFetched) return;

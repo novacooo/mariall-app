@@ -10,7 +10,7 @@ export interface AddingQuantityTableRowHandle {
 }
 
 interface AddingQuantityTableRowProps {
-  image: string;
+  image?: string;
   code: string;
   name: string;
   quantity: number;
