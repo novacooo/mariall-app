@@ -4,14 +4,14 @@ import type { RootState } from 'app';
 interface IUserState {
   isLogged: boolean;
   jwtToken: string | undefined;
-  id: number | undefined;
+  id: string | undefined;
   email: string | undefined;
   role: string | undefined;
   rememberCredentials: boolean | undefined;
 }
 
 interface IUserInfo {
-  id: number | undefined;
+  id: string | undefined;
   email: string | undefined;
   role: string | undefined;
   rememberCredentials: boolean | undefined;

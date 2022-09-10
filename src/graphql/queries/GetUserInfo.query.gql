@@ -1,0 +1,9 @@
+query GetUserInfo {
+  me {
+    id
+    email
+    role {
+      name
+    }
+  }
+}

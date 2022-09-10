@@ -1,17 +1,16 @@
-import { useLazyQuery } from '@apollo/client';
 import { Box, Text, Flex, useColorModeValue, Spinner } from '@chakra-ui/react';
 import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
-import { getProductsQuery, GetProductsQueryPayload } from 'graphql/queries/getProductsQuery';
 import { useErrorToast } from 'hooks/useErrorToast';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useGetProductsLazyQuery } from 'graphql/generated/schema';
 
 interface IProductData {
-  id: number;
-  code: string;
-  name: string;
+  id?: string | null;
+  code?: string;
+  name?: string;
   image?: string;
 }
 
@@ -40,24 +39,19 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
 
-    const [getProducts] = useLazyQuery<GetProductsQueryPayload>(getProductsQuery, {
+    const [getProducts] = useGetProductsLazyQuery({
       onError: (error) => {
         errorToast(error);
       },
       onCompleted: ({ products }) => {
         const newProductsData: IProductData[] = [];
 
-        products.data.forEach((product) => {
-          const {
-            id,
-            attributes: { code, name, image },
-          } = product;
-
+        products?.data.forEach(({ id, attributes }) => {
           newProductsData.push({
             id,
-            code,
-            name,
-            image: image?.data?.attributes?.url,
+            code: attributes?.code,
+            name: attributes?.name,
+            image: attributes?.image?.data?.attributes?.url,
           });
         });
 
@@ -161,20 +155,24 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
           </Text>
         </Flex>
         <Box>
-          {productsData?.map(({ image, code, name }, i) => (
-            <AddingQuantityTableRow
-              key={code}
-              ref={(element) => {
-                rowsRefs.current[i] = element as never;
-              }}
-              image={
-                image && process.env.REACT_APP_IMAGE_URL ? `${process.env.REACT_APP_IMAGE_URL}${image}` : undefined
-              }
-              name={name}
-              quantity={0}
-              code={code}
-            />
-          ))}
+          {productsData?.map(({ id, image, code, name }, i) => {
+            if (!id || !code || !name) return null;
+
+            return (
+              <AddingQuantityTableRow
+                key={`${id}-${code}`}
+                ref={(element) => {
+                  rowsRefs.current[i] = element as never;
+                }}
+                image={
+                  image && process.env.REACT_APP_IMAGE_URL ? `${process.env.REACT_APP_IMAGE_URL}${image}` : undefined
+                }
+                name={name}
+                quantity={0}
+                code={code}
+              />
+            );
+          })}
         </Box>
       </Box>
     );

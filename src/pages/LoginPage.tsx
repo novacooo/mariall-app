@@ -26,10 +26,10 @@ import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from 'app';
 import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
-import { useMutation, useLazyQuery } from '@apollo/client';
-import { GetUserInfoQueryPayload, getUserInfoQuery } from 'graphql/queries';
+import { useMutation } from '@apollo/client';
 import { loginUserMutation, LoginUserMutationPayload, LoginUserMutationVariables } from 'graphql/mutations';
 import { useErrorToast } from 'hooks/useErrorToast';
+import { useGetUserInfoLazyQuery } from 'graphql/generated/schema';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -50,13 +50,15 @@ const LoginPage = () => {
   const toast = useToast();
   const errorToast = useErrorToast();
 
-  const [getUserInfo] = useLazyQuery<GetUserInfoQueryPayload>(getUserInfoQuery, {
-    onCompleted: ({ me: { id, email, role } }) => {
+  const [getUserInfo] = useGetUserInfoLazyQuery({
+    onCompleted: ({ me }) => {
+      if (!me || !me.id || !me.email || !me.role) return;
+
       dispatch(
         setUserInfo({
-          id,
-          email,
-          role: role?.name,
+          id: me.id,
+          email: me.email,
+          role: me.role.name,
           rememberCredentials: isRememberMeChecked,
         }),
       );
