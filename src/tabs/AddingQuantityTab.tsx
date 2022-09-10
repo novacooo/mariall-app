@@ -36,21 +36,67 @@ interface IWorkerData {
   lastName?: string | null | undefined;
 }
 
+interface IMonth {
+  id: number;
+  name: string;
+}
+
+interface IWorker {
+  id: string;
+  name: string;
+}
+
 const years: number[] = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
 
-const months: string[] = [
-  'january',
-  'february',
-  'march',
-  'april',
-  'may',
-  'june',
-  'july',
-  'august',
-  'september',
-  'october',
-  'november',
-  'december',
+const months: IMonth[] = [
+  {
+    id: 1,
+    name: 'january',
+  },
+  {
+    id: 2,
+    name: 'february',
+  },
+  {
+    id: 3,
+    name: 'march',
+  },
+  {
+    id: 4,
+    name: 'april',
+  },
+  {
+    id: 5,
+    name: 'may',
+  },
+  {
+    id: 6,
+    name: 'june',
+  },
+  {
+    id: 7,
+    name: 'july',
+  },
+  {
+    id: 8,
+    name: 'august',
+  },
+  {
+    id: 9,
+    name: 'september',
+  },
+  {
+    id: 10,
+    name: 'october',
+  },
+  {
+    id: 11,
+    name: 'november',
+  },
+  {
+    id: 12,
+    name: 'december',
+  },
 ];
 
 const AddingQuantityTab = () => {
@@ -66,9 +112,9 @@ const AddingQuantityTab = () => {
   const [workersData, setWorkersData] = useState<IWorkerData[]>();
   const [quantities, setQuantities] = useState<IQuantity[]>([]);
 
-  const [selectedWorker, setSelectedWorker] = useState<string>();
+  const [selectedWorker, setSelectedWorker] = useState<IWorker>();
   const [selectedYear, setSelectedYear] = useState<number>();
-  const [selectedMonth, setSelectedMonth] = useState<string>();
+  const [selectedMonth, setSelectedMonth] = useState<IMonth>();
 
   const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
 
@@ -157,7 +203,7 @@ const AddingQuantityTab = () => {
                 rightIcon={<ChevronDownIcon />}
                 color={selectedWorker ? selectAccentText : undefined}
               >
-                {selectedWorker || t('selects.chooseWorker')}
+                {selectedWorker?.name || t('selects.chooseWorker')}
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
@@ -165,9 +211,13 @@ const AddingQuantityTab = () => {
                     if (!id || !firstName) return null;
 
                     const workerName = lastName ? `${firstName} ${lastName}` : firstName;
+                    const worker: IWorker = {
+                      id,
+                      name: workerName,
+                    };
 
                     return (
-                      <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(workerName)}>
+                      <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(worker)}>
                         {workerName}
                       </MenuItemOption>
                     );
@@ -205,13 +255,13 @@ const AddingQuantityTab = () => {
                 rightIcon={<ChevronDownIcon />}
                 color={selectedMonth ? selectAccentText : undefined}
               >
-                {selectedMonth ? t(`months.${selectedMonth}`) : t('selects.chooseMonth')}
+                {selectedMonth ? t(`months.${selectedMonth.name}`) : t('selects.chooseMonth')}
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
                   {months.map((month) => (
-                    <MenuItemOption key={month} value={month} onClick={() => setSelectedMonth(month)}>
-                      {t(`months.${month}`)}
+                    <MenuItemOption key={month.name} value={month.name} onClick={() => setSelectedMonth(month)}>
+                      {t(`months.${month.name}`)}
                     </MenuItemOption>
                   ))}
                 </MenuOptionGroup>
@@ -241,7 +291,7 @@ const AddingQuantityTab = () => {
         )}
       </Flex>
       {selectedWorker && selectedYear && selectedMonth && (
-        <AddingQuantityTable workerId={selectedWorker} year={selectedYear} month={selectedMonth} ref={tableRef} />
+        <AddingQuantityTable workerId={selectedWorker.id} year={selectedYear} month={selectedMonth.id} ref={tableRef} />
       )}
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} isCentered>
         <AlertDialogOverlay>

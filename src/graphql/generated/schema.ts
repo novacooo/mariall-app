@@ -1156,6 +1156,15 @@ export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetProductsQuery = { __typename?: 'Query', products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null }> } | null };
 
+export type GetQuantitiesQueryVariables = Exact<{
+  workerId: Scalars['ID'];
+  year: Scalars['Int'];
+  month: Scalars['Int'];
+}>;
+
+
+export type GetQuantitiesQuery = { __typename?: 'Query', quantities?: { __typename?: 'QuantityEntityResponseCollection', data: Array<{ __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', year: number, month: number, quantity: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', id?: string | null } | null } | null } | null }> } | null };
+
 export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1283,6 +1292,57 @@ export function useGetProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetProductsQueryHookResult = ReturnType<typeof useGetProductsQuery>;
 export type GetProductsLazyQueryHookResult = ReturnType<typeof useGetProductsLazyQuery>;
 export type GetProductsQueryResult = Apollo.QueryResult<GetProductsQuery, GetProductsQueryVariables>;
+export const GetQuantitiesDocument = gql`
+    query GetQuantities($workerId: ID!, $year: Int!, $month: Int!) {
+  quantities(
+    filters: {year: {eq: $year}, month: {eq: $month}, employee: {id: {eq: $workerId}}}
+  ) {
+    data {
+      id
+      attributes {
+        year
+        month
+        quantity
+        employee {
+          data {
+            id
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetQuantitiesQuery__
+ *
+ * To run a query within a React component, call `useGetQuantitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuantitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetQuantitiesQuery({
+ *   variables: {
+ *      workerId: // value for 'workerId'
+ *      year: // value for 'year'
+ *      month: // value for 'month'
+ *   },
+ * });
+ */
+export function useGetQuantitiesQuery(baseOptions: Apollo.QueryHookOptions<GetQuantitiesQuery, GetQuantitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetQuantitiesQuery, GetQuantitiesQueryVariables>(GetQuantitiesDocument, options);
+      }
+export function useGetQuantitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuantitiesQuery, GetQuantitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetQuantitiesQuery, GetQuantitiesQueryVariables>(GetQuantitiesDocument, options);
+        }
+export type GetQuantitiesQueryHookResult = ReturnType<typeof useGetQuantitiesQuery>;
+export type GetQuantitiesLazyQueryHookResult = ReturnType<typeof useGetQuantitiesLazyQuery>;
+export type GetQuantitiesQueryResult = Apollo.QueryResult<GetQuantitiesQuery, GetQuantitiesQueryVariables>;
 export const GetUserInfoDocument = gql`
     query GetUserInfo {
   me {

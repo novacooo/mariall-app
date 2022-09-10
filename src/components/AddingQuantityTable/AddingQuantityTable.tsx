@@ -5,7 +5,7 @@ import AddingQuantityTableRow, {
 import { useErrorToast } from 'hooks/useErrorToast';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetProductsLazyQuery } from 'graphql/generated/schema';
+import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
 
 interface IProductData {
   id?: string | null;
@@ -27,7 +27,7 @@ export interface AddingQuantityTableHandle {
 interface AddingQuantityTableProps {
   workerId: string;
   year: number;
-  month: string;
+  month: number;
 }
 
 const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantityTableProps>(
@@ -59,6 +59,15 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
       },
     });
 
+    const [getQuantities] = useGetQuantitiesLazyQuery({
+      onError: (error) => {
+        errorToast(error);
+      },
+      onCompleted: (quantities) => {
+        console.log(quantities);
+      },
+    });
+
     useImperativeHandle(ref, () => ({
       getQuantities: () => {
         const quantities: IQuantity[] = [];
@@ -86,6 +95,13 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
 
     useEffect(() => {
       void getProducts();
+      void getQuantities({
+        variables: {
+          workerId,
+          year,
+          month: +month,
+        },
+      });
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [month, workerId, year]);
 
