@@ -6,8 +6,8 @@ interface IProduct {
     code: string;
     name: string;
     image?: {
-      data: {
-        attributes: {
+      data?: {
+        attributes?: {
           url: string;
         };
       };

@@ -57,7 +57,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
             id,
             code,
             name,
-            image: image?.data.attributes.url,
+            image: image?.data?.attributes?.url,
           });
         });
 
