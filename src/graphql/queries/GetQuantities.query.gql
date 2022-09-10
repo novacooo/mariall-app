@@ -3,10 +3,8 @@ query GetQuantities($workerId: ID!, $year: Int!, $month: Int!) {
     data {
       id
       attributes {
-        year
-        month
         quantity
-        employee {
+        product {
           data {
             id
           }

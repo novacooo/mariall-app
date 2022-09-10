@@ -1163,7 +1163,7 @@ export type GetQuantitiesQueryVariables = Exact<{
 }>;
 
 
-export type GetQuantitiesQuery = { __typename?: 'Query', quantities?: { __typename?: 'QuantityEntityResponseCollection', data: Array<{ __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', year: number, month: number, quantity: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', id?: string | null } | null } | null } | null }> } | null };
+export type GetQuantitiesQuery = { __typename?: 'Query', quantities?: { __typename?: 'QuantityEntityResponseCollection', data: Array<{ __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null } | null } | null } | null }> } | null };
 
 export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1300,10 +1300,8 @@ export const GetQuantitiesDocument = gql`
     data {
       id
       attributes {
-        year
-        month
         quantity
-        employee {
+        product {
           data {
             id
           }
