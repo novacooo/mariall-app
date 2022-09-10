@@ -26,10 +26,8 @@ import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from 'app';
 import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
-import { useMutation } from '@apollo/client';
-import { loginUserMutation, LoginUserMutationPayload, LoginUserMutationVariables } from 'graphql/mutations';
 import { useErrorToast } from 'hooks/useErrorToast';
-import { useGetUserInfoLazyQuery } from 'graphql/generated/schema';
+import { useGetUserInfoLazyQuery, useLoginUserMutation } from 'graphql/generated/schema';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -72,8 +70,9 @@ const LoginPage = () => {
     },
   });
 
-  const [loginUser] = useMutation<LoginUserMutationPayload, LoginUserMutationVariables>(loginUserMutation, {
+  const [loginUser] = useLoginUserMutation({
     onCompleted: ({ login: { jwt } }) => {
+      if (!jwt) return;
       dispatch(setUserJwtToken(jwt));
       void getUserInfo();
     },
