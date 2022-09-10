@@ -46,7 +46,7 @@
     "lint": "eslint '**/*.{jsx,js,tsx,ts}'",
     "lint:fix": "eslint --fix '**/*.{jsx,js,tsx,ts}'",
     "format": "prettier --write '{,!(node_modules)/**/}*.{jsx,js,tsx,ts,css,scss}' --config ./.prettierrc",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --require dotenv/config --config codegen.yml"
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +68,10 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.12.0",
+    "@graphql-codegen/introspection": "2.2.1",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@graphql-codegen/typescript-react-apollo": "3.3.3",
     "@types/validator": "^13.7.6",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
@@ -84,10 +88,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
-    "@graphql-codegen/typescript-operations": "2.5.3",
-    "@graphql-codegen/typescript": "2.7.3",
-    "@graphql-codegen/typescript-react-apollo": "3.3.3"
+    "prettier": "^2.7.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

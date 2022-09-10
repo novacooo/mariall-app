@@ -1,2 +1,2 @@
 # Automatically generated types from GraphQL schemas
-src/graphql/schemas.d.ts
+src/graphql/generated/schema.ts

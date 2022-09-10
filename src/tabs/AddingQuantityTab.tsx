@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
@@ -25,16 +24,16 @@ import AddingQuantityTable, {
   IQuantity,
 } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
-import { getEmployeesQuery, GetEmployeesQueryPayload } from 'graphql/queries';
 import { useErrorToast } from 'hooks/useErrorToast';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
+import { useGetEmployeesQuery } from 'graphql/generated/schema';
 
 interface IWorkerData {
-  id: number;
-  firstName: string;
-  lastName?: string;
+  id: string | null | undefined;
+  firstName: string | undefined;
+  lastName?: string | null | undefined;
 }
 
 const years: number[] = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
@@ -87,23 +86,18 @@ const AddingQuantityTab = () => {
     setIsQuantitiesFetched(true);
   };
 
-  useQuery<GetEmployeesQueryPayload>(getEmployeesQuery, {
+  useGetEmployeesQuery({
     onError: (error) => {
       errorToast(error);
     },
     onCompleted: ({ employees }) => {
       const newWorkersData: IWorkerData[] = [];
 
-      employees.data.forEach((worker) => {
-        const {
-          id,
-          attributes: { firstName, lastName },
-        } = worker;
-
+      employees?.data.forEach(({ id, attributes }) => {
         newWorkersData.push({
           id,
-          firstName,
-          lastName,
+          firstName: attributes?.firstName,
+          lastName: attributes?.lastName,
         });
       });
 
@@ -168,11 +162,13 @@ const AddingQuantityTab = () => {
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
                   {workersData.map(({ id, firstName, lastName }) => {
-                    const name = lastName ? `${firstName} ${lastName}` : firstName;
+                    if (!id || !firstName) return null;
+
+                    const workerName = lastName ? `${firstName} ${lastName}` : firstName;
 
                     return (
-                      <MenuItemOption key={id} value={id.toString()} onClick={() => setSelectedWorker(name)}>
-                        {name}
+                      <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(workerName)}>
+                        {workerName}
                       </MenuItemOption>
                     );
                   })}
