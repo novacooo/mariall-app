@@ -1,7 +1,7 @@
 import { Flex, Heading, HStack, Text, StackDivider, useColorMode, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
-import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
+import { ReactComponent as LogoLight } from 'assets/vectors/logo_light.svg';
+import { ReactComponent as LogoDark } from 'assets/vectors/logo_dark.svg';
 import LanguageButton from 'components/LanguageButton/LanguageButton';
 import ColorButton from 'components/ColorButton/ColorButton';
 import ColorModeButton from 'components/ColorModeButton/ColorModeButton';

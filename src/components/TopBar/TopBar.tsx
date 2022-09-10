@@ -10,8 +10,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { FiGrid, FiMenu } from 'react-icons/fi';
-import { ReactComponent as LogoLight } from 'assets/logo_light.svg';
-import { ReactComponent as LogoDark } from 'assets/logo_dark.svg';
+import { ReactComponent as LogoLight } from 'assets/vectors/logo_light.svg';
+import { ReactComponent as LogoDark } from 'assets/vectors/logo_dark.svg';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
 import { useTranslation } from 'react-i18next';

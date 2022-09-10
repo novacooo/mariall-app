@@ -2,6 +2,7 @@ import { Box, Center, Flex, IconButton, Input, Text, useColorModeValue } from '@
 import { useColorContext } from 'contexts/ColorContext';
 import { useImperativeHandle, forwardRef, useState, ChangeEvent } from 'react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
+import PlaceholderImage from '../../assets/images/placeholder.jpg';
 
 export interface AddingQuantityTableRowHandle {
   getCount: () => number;
@@ -83,7 +84,7 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
           flexShrink={0}
         >
           <Box
-            backgroundImage={image}
+            backgroundImage={image || PlaceholderImage}
             backgroundSize="cover"
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
