@@ -99,7 +99,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
         variables: {
           workerId,
           year,
-          month: +month,
+          month,
         },
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps

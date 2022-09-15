@@ -1,19 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from 'app';
+import { RoleType } from 'types';
 
 interface IUserState {
   isLogged: boolean;
   jwtToken: string | undefined;
   id: string | undefined;
   email: string | undefined;
-  role: string | undefined;
+  role: RoleType | undefined;
   rememberCredentials: boolean | undefined;
 }
 
 interface IUserInfo {
   id: string | undefined;
   email: string | undefined;
-  role: string | undefined;
+  role: RoleType | undefined;
   rememberCredentials: boolean | undefined;
 }
 

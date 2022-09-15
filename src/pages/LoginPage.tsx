@@ -28,6 +28,7 @@ import { useAppDispatch, useAppSelector } from 'app';
 import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
 import { useErrorToast } from 'hooks/useErrorToast';
 import { useGetUserInfoLazyQuery, useLoginUserMutation } from 'graphql/generated/schema';
+import { RoleType } from 'types';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -56,11 +57,12 @@ const LoginPage = () => {
         setUserInfo({
           id: me.id,
           email: me.email,
-          role: me.role.name,
+          role: me.role.name as RoleType,
           rememberCredentials: isRememberMeChecked,
         }),
       );
       dispatch(setUserIsLogged(true));
+
       navigate(routes.menu);
     },
     onError: (error) => {
