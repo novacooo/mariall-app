@@ -30,12 +30,6 @@ import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
 
-interface IWorkerData {
-  id: string | null | undefined;
-  firstName: string | undefined;
-  lastName?: string | null | undefined;
-}
-
 interface IMonth {
   id: number;
   name: string;
@@ -109,7 +103,6 @@ const AddingQuantityTab = () => {
 
   const selectAccentText = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
 
-  const [workersData, setWorkersData] = useState<IWorkerData[]>();
   const [quantities, setQuantities] = useState<IQuantity[]>([]);
 
   const [selectedWorker, setSelectedWorker] = useState<IWorker>();
@@ -121,6 +114,14 @@ const AddingQuantityTab = () => {
   const toast = useToast();
   const errorToast = useErrorToast();
 
+  const { data: getEmployeesData } = useGetEmployeesQuery({
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
+  const employeesData = getEmployeesData?.employees?.data;
+
   const handleResetButtonClick = () => {
     if (!tableRef.current) return;
     tableRef.current.resetQuantities();
@@ -131,25 +132,6 @@ const AddingQuantityTab = () => {
     setQuantities(tableRef.current.getQuantities());
     setIsQuantitiesFetched(true);
   };
-
-  useGetEmployeesQuery({
-    onError: (error) => {
-      errorToast(error);
-    },
-    onCompleted: ({ employees }) => {
-      const newWorkersData: IWorkerData[] = [];
-
-      employees?.data.forEach(({ id, attributes }) => {
-        newWorkersData.push({
-          id,
-          firstName: attributes?.firstName,
-          lastName: attributes?.lastName,
-        });
-      });
-
-      setWorkersData(newWorkersData);
-    },
-  });
 
   useEffect(() => {
     if (!isQuantitiesFetched) return;
@@ -172,7 +154,6 @@ const AddingQuantityTab = () => {
 
   return (
     <Flex direction="column" gap={6}>
-      {/* TODO: Make separated component for selects */}
       <Flex
         justify="space-between"
         gap={{
@@ -196,7 +177,7 @@ const AddingQuantityTab = () => {
             md: 'row',
           }}
         >
-          {workersData ? (
+          {employeesData ? (
             <Menu>
               <MenuButton
                 as={Button}
@@ -207,10 +188,12 @@ const AddingQuantityTab = () => {
               </MenuButton>
               <MenuList maxH={60} overflow="hidden" overflowY="auto">
                 <MenuOptionGroup type="radio">
-                  {workersData.map(({ id, firstName, lastName }) => {
-                    if (!id || !firstName) return null;
+                  {employeesData.map(({ id, attributes }) => {
+                    if (!id || !attributes) return null;
 
+                    const { firstName, lastName } = attributes;
                     const workerName = lastName ? `${firstName} ${lastName}` : firstName;
+
                     const worker: IWorker = {
                       id,
                       name: workerName,
