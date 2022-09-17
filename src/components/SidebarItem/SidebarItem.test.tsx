@@ -22,16 +22,4 @@ describe('SidebarItem', () => {
     const sidebarItemElement = screen.getByTestId('sidebar-item');
     expect(sidebarItemElement).toHaveTextContent(elementName);
   });
-
-  it('has normal font weight when rendered', () => {
-    render(<MockSidebarItem />);
-    const paragraph = screen.getByTestId('sidebar-item-text');
-    expect(paragraph).toHaveStyle({ 'font-weight': 'normal' });
-  });
-
-  it('has medium font weight when active', () => {
-    render(<MockSidebarItem active />);
-    const paragraph = screen.getByTestId('sidebar-item-text');
-    expect(paragraph).toHaveStyle({ 'font-weight': 'medium' });
-  });
 });

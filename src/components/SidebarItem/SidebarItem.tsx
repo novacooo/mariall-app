@@ -50,7 +50,7 @@ const SidebarItem = ({ children, active = false, link }: SidebarItemProps) => {
           zIndex={1}
           fontSize="sm"
           fontWeight={active ? 'semibold' : undefined}
-          color={active ? textColorActive : 'normal'}
+          color={active ? textColorActive : undefined}
           data-testid="sidebar-item-text"
         >
           {children}
