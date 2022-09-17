@@ -3,7 +3,7 @@ import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { useErrorToast } from 'hooks/useErrorToast';
-import { forwardRef, memo, useEffect, useImperativeHandle, useRef } from 'react';
+import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
 
@@ -15,6 +15,15 @@ export interface IQuantity {
 export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];
   resetQuantities: () => void;
+}
+
+interface IProductWithQuantities {
+  productId: string;
+  productCode: string;
+  productName: string;
+  productImageUrl: string | undefined;
+  quantityId: string | undefined;
+  quantity: number | undefined;
 }
 
 interface AddingQuantityTableProps {
@@ -30,12 +39,11 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
+    const [productsWithQuantities, setProductsWithQuantities] = useState<IProductWithQuantities[]>([]);
 
-    const [getProducts, { data: getProductsData }] = useGetProductsLazyQuery({
+    const [getProducts] = useGetProductsLazyQuery({
       onError: (error) => errorToast(error),
     });
-
-    const productsData = getProductsData?.products?.data;
 
     const [getQuantities] = useGetQuantitiesLazyQuery({
       onError: (error) => errorToast(error),
@@ -64,18 +72,51 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     }));
 
     useEffect(() => {
-      void getProducts();
-      void getQuantities({
-        variables: {
-          workerId,
-          year,
-          month,
-        },
-      });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [month, workerId, year]);
+      const fetchData = async () => {
+        const getProductsResponse = await getProducts();
+        const getQuantitiesResponse = await getQuantities({ variables: { workerId, year, month } });
 
-    if (!productsData) return <Spinner />;
+        const productsData = getProductsResponse.data?.products?.data;
+        const quantitiesData = getQuantitiesResponse.data?.quantities?.data;
+
+        const newProductsWithQuantities: IProductWithQuantities[] = [];
+
+        productsData?.forEach(({ id: productId, attributes: productAttributes }) => {
+          if (!productId || !productAttributes) return;
+
+          const { code: productCode, name: productName, image: productImage } = productAttributes;
+
+          const quantityIndex = quantitiesData?.findIndex(
+            ({ attributes }) => attributes?.product?.data?.id === productId,
+          );
+
+          let quantityId: string | undefined;
+          let quantity: number | undefined;
+
+          if (quantitiesData && quantityIndex !== undefined && quantityIndex !== -1) {
+            quantityId = quantitiesData[quantityIndex].id || undefined;
+            quantity = quantitiesData[quantityIndex].attributes?.quantity;
+          }
+
+          const newProduct: IProductWithQuantities = {
+            productId,
+            productCode,
+            productName,
+            quantityId,
+            quantity,
+            productImageUrl: productImage?.data?.attributes?.url,
+          };
+
+          newProductsWithQuantities.push(newProduct);
+        });
+
+        setProductsWithQuantities(newProductsWithQuantities);
+      };
+
+      void fetchData();
+    }, [workerId, year, month]);
+
+    if (productsWithQuantities.length === 0) return <Spinner />;
 
     return (
       <Box borderWidth={1} rounded="md">
@@ -141,29 +182,25 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
           </Text>
         </Flex>
         <Box>
-          {productsData?.map(({ id, attributes }, i) => {
-            if (!id || !attributes) return null;
-
-            const { code, name, image } = attributes;
-            const imageUrl = image?.data?.attributes?.url;
-
-            return (
+          {productsWithQuantities?.map(
+            ({ productId, productCode, productName, productImageUrl, quantityId, quantity }, i) => (
               <AddingQuantityTableRow
-                key={`${id}-${code}`}
+                key={`${productId}-${productCode}`}
                 ref={(element) => {
-                  rowsRefs.current[i] = element as never;
+                  if (!element) return;
+                  rowsRefs.current[i] = element;
                 }}
                 image={
-                  imageUrl && process.env.REACT_APP_IMAGE_URL
-                    ? `${process.env.REACT_APP_IMAGE_URL}${imageUrl}`
+                  productImageUrl && process.env.REACT_APP_IMAGE_URL
+                    ? `${process.env.REACT_APP_IMAGE_URL}${productImageUrl}`
                     : undefined
                 }
-                name={name}
-                quantity={0}
-                code={code}
+                name={productName}
+                quantity={quantity || 0}
+                code={productCode}
               />
-            );
-          })}
+            ),
+          )}
         </Box>
       </Box>
     );
