@@ -171,94 +171,92 @@ const AddingQuantityTab = () => {
         }}
         wrap="wrap"
       >
-        <Flex
-          wrap="wrap"
-          gap={{
-            base: 3,
-            md: 4,
-          }}
-          direction={{
-            base: 'column',
-            md: 'row',
-          }}
-        >
-          {employeesData ? (
-            <>
+        {employeesData ? (
+          <Flex
+            wrap="wrap"
+            gap={{
+              base: 3,
+              md: 4,
+            }}
+            direction={{
+              base: 'column',
+              md: 'row',
+            }}
+          >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                color={selectedWorker ? selectAccentText : undefined}
+              >
+                {selectedWorker?.name || t('selects.chooseWorker')}
+              </MenuButton>
+              <MenuList maxH={60} overflow="hidden" overflowY="auto">
+                <MenuOptionGroup type="radio">
+                  {employeesData.map(({ id, attributes }) => {
+                    if (!id || !attributes) return null;
+
+                    const { firstName, lastName } = attributes;
+                    const workerName = lastName ? `${firstName} ${lastName}` : firstName;
+
+                    const worker: IWorker = {
+                      id,
+                      name: workerName,
+                    };
+
+                    return (
+                      <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(worker)}>
+                        {workerName}
+                      </MenuItemOption>
+                    );
+                  })}
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+            {selectedWorker && (
               <Menu>
                 <MenuButton
                   as={Button}
                   rightIcon={<ChevronDownIcon />}
-                  color={selectedWorker ? selectAccentText : undefined}
+                  color={selectedYear ? selectAccentText : undefined}
                 >
-                  {selectedWorker?.name || t('selects.chooseWorker')}
+                  {selectedYear || t('selects.chooseYear')}
                 </MenuButton>
                 <MenuList maxH={60} overflow="hidden" overflowY="auto">
                   <MenuOptionGroup type="radio">
-                    {employeesData.map(({ id, attributes }) => {
-                      if (!id || !attributes) return null;
-
-                      const { firstName, lastName } = attributes;
-                      const workerName = lastName ? `${firstName} ${lastName}` : firstName;
-
-                      const worker: IWorker = {
-                        id,
-                        name: workerName,
-                      };
-
-                      return (
-                        <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(worker)}>
-                          {workerName}
-                        </MenuItemOption>
-                      );
-                    })}
+                    {years.map((year) => (
+                      <MenuItemOption key={year} value={`${year}`} onClick={() => setSelectedYear(year)}>
+                        {year}
+                      </MenuItemOption>
+                    ))}
                   </MenuOptionGroup>
                 </MenuList>
               </Menu>
-              {selectedWorker && (
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rightIcon={<ChevronDownIcon />}
-                    color={selectedYear ? selectAccentText : undefined}
-                  >
-                    {selectedYear || t('selects.chooseYear')}
-                  </MenuButton>
-                  <MenuList maxH={60} overflow="hidden" overflowY="auto">
-                    <MenuOptionGroup type="radio">
-                      {years.map((year) => (
-                        <MenuItemOption key={year} value={`${year}`} onClick={() => setSelectedYear(year)}>
-                          {year}
-                        </MenuItemOption>
-                      ))}
-                    </MenuOptionGroup>
-                  </MenuList>
-                </Menu>
-              )}
-              {selectedYear && (
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rightIcon={<ChevronDownIcon />}
-                    color={selectedMonth ? selectAccentText : undefined}
-                  >
-                    {selectedMonth ? t(`months.${selectedMonth.name}`) : t('selects.chooseMonth')}
-                  </MenuButton>
-                  <MenuList maxH={60} overflow="hidden" overflowY="auto">
-                    <MenuOptionGroup type="radio">
-                      {months.map((month) => (
-                        <MenuItemOption key={month.name} value={month.name} onClick={() => setSelectedMonth(month)}>
-                          {t(`months.${month.name}`)}
-                        </MenuItemOption>
-                      ))}
-                    </MenuOptionGroup>
-                  </MenuList>
-                </Menu>
-              )}
-            </>
-          ) : (
-            <Spinner />
-          )}
-        </Flex>
+            )}
+            {selectedYear && (
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  color={selectedMonth ? selectAccentText : undefined}
+                >
+                  {selectedMonth ? t(`months.${selectedMonth.name}`) : t('selects.chooseMonth')}
+                </MenuButton>
+                <MenuList maxH={60} overflow="hidden" overflowY="auto">
+                  <MenuOptionGroup type="radio">
+                    {months.map((month) => (
+                      <MenuItemOption key={month.name} value={month.name} onClick={() => setSelectedMonth(month)}>
+                        {t(`months.${month.name}`)}
+                      </MenuItemOption>
+                    ))}
+                  </MenuOptionGroup>
+                </MenuList>
+              </Menu>
+            )}
+          </Flex>
+        ) : (
+          <Spinner />
+        )}
         {selectedMonth && (
           <Flex
             wrap="wrap"
