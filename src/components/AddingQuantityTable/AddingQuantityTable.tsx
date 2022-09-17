@@ -3,16 +3,9 @@ import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { useErrorToast } from 'hooks/useErrorToast';
-import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, memo, useEffect, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
-
-interface IProductData {
-  id?: string | null;
-  code?: string;
-  name?: string;
-  image?: string;
-}
 
 export interface IQuantity {
   code: string;
@@ -34,38 +27,18 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
   ({ workerId, year, month }, ref) => {
     const { t } = useTranslation();
     const errorToast = useErrorToast();
-    const [productsData, setProductsData] = useState<IProductData[]>();
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
 
-    const [getProducts] = useGetProductsLazyQuery({
-      onError: (error) => {
-        errorToast(error);
-      },
-      onCompleted: ({ products }) => {
-        const newProductsData: IProductData[] = [];
-
-        products?.data.forEach(({ id, attributes }) => {
-          newProductsData.push({
-            id,
-            code: attributes?.code,
-            name: attributes?.name,
-            image: attributes?.image?.data?.attributes?.url,
-          });
-        });
-
-        setProductsData(newProductsData);
-      },
+    const [getProducts, { data: getProductsData }] = useGetProductsLazyQuery({
+      onError: (error) => errorToast(error),
     });
 
+    const productsData = getProductsData?.products?.data;
+
     const [getQuantities] = useGetQuantitiesLazyQuery({
-      onError: (error) => {
-        errorToast(error);
-      },
-      onCompleted: (quantities) => {
-        console.log(quantities);
-      },
+      onError: (error) => errorToast(error),
     });
 
     useImperativeHandle(ref, () => ({
@@ -171,8 +144,11 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
           </Text>
         </Flex>
         <Box>
-          {productsData?.map(({ id, image, code, name }, i) => {
-            if (!id || !code || !name) return null;
+          {productsData?.map(({ id, attributes }, i) => {
+            if (!id || !attributes) return null;
+
+            const { code, name, image } = attributes;
+            const imageUrl = image?.data?.attributes?.url;
 
             return (
               <AddingQuantityTableRow
@@ -181,7 +157,9 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
                   rowsRefs.current[i] = element as never;
                 }}
                 image={
-                  image && process.env.REACT_APP_IMAGE_URL ? `${process.env.REACT_APP_IMAGE_URL}${image}` : undefined
+                  imageUrl && process.env.REACT_APP_IMAGE_URL
+                    ? `${process.env.REACT_APP_IMAGE_URL}${imageUrl}`
+                    : undefined
                 }
                 name={name}
                 quantity={0}
