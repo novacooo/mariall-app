@@ -49,12 +49,9 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
           const code = rowRef.getCode();
           const quantity = rowRef.getCount();
 
-          if (quantity > 0) {
-            quantities.push({
-              code,
-              quantity,
-            });
-          }
+          if (quantity === 0) return;
+
+          quantities.push({ code, quantity });
         });
 
         return quantities;
