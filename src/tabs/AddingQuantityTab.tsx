@@ -27,9 +27,10 @@ import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
 import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
+import { monthNames } from 'constants/monthNames';
 
 interface IMonth {
-  id: number;
+  number: number;
   name: string;
 }
 
@@ -39,57 +40,6 @@ interface IWorker {
 }
 
 const years: number[] = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
-
-const months: IMonth[] = [
-  {
-    id: 1,
-    name: 'january',
-  },
-  {
-    id: 2,
-    name: 'february',
-  },
-  {
-    id: 3,
-    name: 'march',
-  },
-  {
-    id: 4,
-    name: 'april',
-  },
-  {
-    id: 5,
-    name: 'may',
-  },
-  {
-    id: 6,
-    name: 'june',
-  },
-  {
-    id: 7,
-    name: 'july',
-  },
-  {
-    id: 8,
-    name: 'august',
-  },
-  {
-    id: 9,
-    name: 'september',
-  },
-  {
-    id: 10,
-    name: 'october',
-  },
-  {
-    id: 11,
-    name: 'november',
-  },
-  {
-    id: 12,
-    name: 'december',
-  },
-];
 
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
@@ -101,6 +51,7 @@ const AddingQuantityTab = () => {
 
   const selectAccentText = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
 
+  const [months, setMonths] = useState<IMonth[]>([]);
   const [selectedWorker, setSelectedWorker] = useState<IWorker>();
   const [selectedYear, setSelectedYear] = useState<number>();
   const [selectedMonth, setSelectedMonth] = useState<IMonth>();
@@ -137,6 +88,22 @@ const AddingQuantityTab = () => {
     setQuantities(tableRef.current.getQuantities());
     setIsQuantitiesFetched(true);
   };
+
+  useEffect(() => {
+    if (!selectedWorker) return;
+
+    const date = new Date();
+    const monthIndex = date.getMonth() + 1; // getMonth() function returns an integer number between 0 and 11
+    const monthName = monthNames[monthIndex];
+    const monthNumber = monthIndex + 1;
+
+    setMonths([
+      {
+        number: monthNumber,
+        name: monthName,
+      },
+    ]);
+  }, [selectedWorker]);
 
   useEffect(() => {
     if (!isQuantitiesFetched) return;
@@ -235,7 +202,7 @@ const AddingQuantityTab = () => {
                 </MenuList>
               </Menu>
             )}
-            {selectedYear && (
+            {selectedYear && months && (
               <Menu>
                 <MenuButton
                   as={Button}
@@ -285,7 +252,7 @@ const AddingQuantityTab = () => {
         <AddingQuantityTable
           workerId={selectedWorker.id}
           year={selectedYear}
-          month={selectedMonth.id}
+          month={selectedMonth.number}
           setIsAddedAnyQuantity={setIsAddedAnyQuantity}
           ref={tableRef}
         />
