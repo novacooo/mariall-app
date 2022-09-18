@@ -19,16 +19,14 @@ import {
   Code,
   useToast,
 } from '@chakra-ui/react';
-import AddingQuantityTable, {
-  AddingQuantityTableHandle,
-  IQuantity,
-} from 'components/AddingQuantityTable/AddingQuantityTable';
+import AddingQuantityTable, { AddingQuantityTableHandle } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
 import { useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
+import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 
 interface IMonth {
   id: number;
@@ -118,6 +116,7 @@ const AddingQuantityTab = () => {
       errorToast(error);
     },
     onCompleted: () => {
+      setIsAddedAnyQuantity(false);
       setSelectedWorker(undefined);
       setSelectedYear(undefined);
       setSelectedMonth(undefined);
@@ -299,7 +298,9 @@ const AddingQuantityTab = () => {
               {t('alerts.bodies.addingQuantities')}
               <Flex mt={3} direction="column" gap={1}>
                 {quantities &&
-                  quantities.map((el) => <Code key={el.code}>{`${el.code.toUpperCase()}: ${el.quantity}`}</Code>)}
+                  quantities.map((el) => (
+                    <Code key={el.productCode}>{`${el.productCode.toUpperCase()}: ${el.quantity}`}</Code>
+                  ))}
               </Flex>
             </AlertDialogBody>
             <AlertDialogFooter>

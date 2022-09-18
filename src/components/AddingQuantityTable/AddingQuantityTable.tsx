@@ -1,16 +1,12 @@
 import { Box, Text, Flex, useColorModeValue, Spinner } from '@chakra-ui/react';
 import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
+  IQuantity,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { useErrorToast } from 'hooks';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
-
-export interface IQuantity {
-  code: string;
-  quantity: number;
-}
 
 export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];
@@ -55,12 +51,9 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
         const quantities: IQuantity[] = [];
 
         rowsRefs.current.forEach((rowRef) => {
-          const code = rowRef.getCode();
-          const quantity = rowRef.getCount();
-
-          if (quantity === 0) return;
-
-          quantities.push({ code, quantity });
+          const quantity = rowRef.getQuantity();
+          if (quantity.quantity === 0) return;
+          quantities.push(quantity);
         });
 
         return quantities;
@@ -201,14 +194,16 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
                   if (!element) return;
                   rowsRefs.current[i] = element;
                 }}
+                productId={productId}
+                productCode={productCode}
+                productName={productName}
+                quantityId={quantityId}
+                quantity={quantity || 0}
                 image={
                   productImageUrl && process.env.REACT_APP_IMAGE_URL
                     ? `${process.env.REACT_APP_IMAGE_URL}${productImageUrl}`
                     : undefined
                 }
-                name={productName}
-                quantity={quantity || 0}
-                code={productCode}
                 onValueChange={handleRowChange}
               />
             ),

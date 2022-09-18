@@ -5,22 +5,31 @@ import { useImperativeHandle, forwardRef, useState, ChangeEvent, useEffect } fro
 import { FiMinus, FiPlus } from 'react-icons/fi';
 import PlaceholderImage from '../../assets/images/placeholder.jpg';
 
+export interface IQuantity {
+  productId: string;
+  productCode: string;
+  quantityId: string | undefined;
+  quantity: number;
+}
+
 export interface AddingQuantityTableRowHandle {
   getCount: () => number;
-  getCode: () => string;
+  getQuantity: () => IQuantity;
   resetCount: () => void;
 }
 
 interface AddingQuantityTableRowProps {
-  code: string;
-  name: string;
+  productId: string;
+  productCode: string;
+  productName: string;
+  quantityId: string | undefined;
   quantity: number;
   image?: string;
   onValueChange?: () => void;
 }
 
 const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQuantityTableRowProps>(
-  ({ image, code, name, quantity, onValueChange }, ref) => {
+  ({ image, productId, productCode, productName, quantityId, quantity, onValueChange }, ref) => {
     const { accentColor } = useColorContext();
 
     const [count, setCount] = useState(0);
@@ -33,7 +42,12 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
 
     useImperativeHandle(ref, () => ({
       getCount: () => count,
-      getCode: () => code,
+      getQuantity: () => ({
+        productId,
+        productCode,
+        quantityId,
+        quantity: count,
+      }),
       resetCount: () => {
         setCount(0);
       },
@@ -135,7 +149,7 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
             flexShrink={0}
             textTransform="uppercase"
           >
-            {code}
+            {productCode}
           </Text>
           <Text
             fontSize={{
@@ -145,7 +159,7 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
             flexGrow={1}
             w="full"
           >
-            {name}
+            {productName}
           </Text>
         </Flex>
         <Text
