@@ -2,7 +2,7 @@ import { Box, Text, Flex, useColorModeValue, Spinner } from '@chakra-ui/react';
 import AddingQuantityTableRow, {
   AddingQuantityTableRowHandle,
 } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
-import { useErrorToast } from 'hooks/useErrorToast';
+import { useErrorToast } from 'hooks';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
@@ -30,10 +30,11 @@ interface AddingQuantityTableProps {
   workerId: string;
   year: number;
   month: number;
+  setIsAddedAnyQuantity: (param: boolean) => void;
 }
 
 const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantityTableProps>(
-  ({ workerId, year, month }, ref) => {
+  ({ workerId, year, month, setIsAddedAnyQuantity }, ref) => {
     const { t } = useTranslation();
     const errorToast = useErrorToast();
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
@@ -70,6 +71,16 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
         });
       },
     }));
+
+    const handleRowChange = () => {
+      const isNotAdded = rowsRefs.current.every((rowRef) => {
+        const quantity = rowRef.getCount();
+        if (quantity !== 0) return false;
+        return true;
+      });
+
+      setIsAddedAnyQuantity(!isNotAdded);
+    };
 
     useEffect(() => {
       const fetchData = async () => {
@@ -198,6 +209,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
                 name={productName}
                 quantity={quantity || 0}
                 code={productCode}
+                onValueChange={handleRowChange}
               />
             ),
           )}

@@ -26,7 +26,7 @@ import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from 'app';
 import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
-import { useErrorToast } from 'hooks/useErrorToast';
+import { useErrorToast } from 'hooks';
 import { useGetUserInfoLazyQuery, useLoginUserMutation } from 'graphql/generated/schema';
 import { RoleType } from 'types';
 

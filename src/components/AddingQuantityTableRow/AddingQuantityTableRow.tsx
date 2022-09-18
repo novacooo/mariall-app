@@ -1,6 +1,7 @@
 import { Box, Center, Flex, IconButton, Input, Text, useColorModeValue } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
-import { useImperativeHandle, forwardRef, useState, ChangeEvent } from 'react';
+import { usePrevious } from 'hooks';
+import { useImperativeHandle, forwardRef, useState, ChangeEvent, useEffect } from 'react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
 import PlaceholderImage from '../../assets/images/placeholder.jpg';
 
@@ -11,17 +12,19 @@ export interface AddingQuantityTableRowHandle {
 }
 
 interface AddingQuantityTableRowProps {
-  image?: string;
   code: string;
   name: string;
   quantity: number;
+  image?: string;
+  onValueChange?: () => void;
 }
 
 const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQuantityTableRowProps>(
-  ({ image, code, name, quantity }, ref) => {
+  ({ image, code, name, quantity, onValueChange }, ref) => {
     const { accentColor } = useColorContext();
 
     const [count, setCount] = useState(0);
+    const previousCount = usePrevious(count);
 
     const bgColorFirst = useColorModeValue('gray.50', 'gray.900');
     const bgColorSecond = useColorModeValue('white', 'gray.800');
@@ -45,13 +48,22 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-      setCount(() => {
-        const number = parseInt(e.target.value, 10);
-        if (number >= 0 && number <= 99) return number;
-        if (number > 99) return 99;
-        return 0;
-      });
+      let number = parseInt(e.target.value, 10);
+
+      if (number > 99) number = 99;
+      if (number < 0) number = 0;
+
+      setCount(number);
     };
+
+    useEffect(() => {
+      const previousCondition = previousCount !== 0;
+      const actualCondition = count !== 0;
+
+      if (previousCondition === actualCondition) return;
+
+      if (onValueChange) onValueChange();
+    }, [count]);
 
     return (
       <Flex

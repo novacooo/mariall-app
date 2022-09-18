@@ -24,7 +24,7 @@ import AddingQuantityTable, {
   IQuantity,
 } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
-import { useErrorToast } from 'hooks/useErrorToast';
+import { useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
@@ -103,12 +103,11 @@ const AddingQuantityTab = () => {
 
   const selectAccentText = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
 
-  const [quantities, setQuantities] = useState<IQuantity[]>([]);
-
   const [selectedWorker, setSelectedWorker] = useState<IWorker>();
   const [selectedYear, setSelectedYear] = useState<number>();
   const [selectedMonth, setSelectedMonth] = useState<IMonth>();
-
+  const [isAddedAnyQuantity, setIsAddedAnyQuantity] = useState<boolean>(false);
+  const [quantities, setQuantities] = useState<IQuantity[]>([]);
   const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
 
   const toast = useToast();
@@ -129,11 +128,13 @@ const AddingQuantityTab = () => {
 
   const handleResetButtonClick = () => {
     if (!tableRef.current) return;
+
     tableRef.current.resetQuantities();
   };
 
   const handleSaveButtonClick = () => {
     if (!tableRef.current) return;
+
     setQuantities(tableRef.current.getQuantities());
     setIsQuantitiesFetched(true);
   };
@@ -155,7 +156,7 @@ const AddingQuantityTab = () => {
     }
 
     setIsQuantitiesFetched(false);
-  }, [isQuantitiesFetched, onOpen, quantities.length, t, toast]);
+  }, [isQuantitiesFetched]);
 
   return (
     <Flex direction="column" gap={6}>
@@ -188,6 +189,7 @@ const AddingQuantityTab = () => {
                 as={Button}
                 rightIcon={<ChevronDownIcon />}
                 color={selectedWorker ? selectAccentText : undefined}
+                disabled={isAddedAnyQuantity}
               >
                 {selectedWorker?.name || t('selects.chooseWorker')}
               </MenuButton>
@@ -219,6 +221,7 @@ const AddingQuantityTab = () => {
                   as={Button}
                   rightIcon={<ChevronDownIcon />}
                   color={selectedYear ? selectAccentText : undefined}
+                  disabled={isAddedAnyQuantity}
                 >
                   {selectedYear || t('selects.chooseYear')}
                 </MenuButton>
@@ -239,6 +242,7 @@ const AddingQuantityTab = () => {
                   as={Button}
                   rightIcon={<ChevronDownIcon />}
                   color={selectedMonth ? selectAccentText : undefined}
+                  disabled={isAddedAnyQuantity}
                 >
                   {selectedMonth ? t(`months.${selectedMonth.name}`) : t('selects.chooseMonth')}
                 </MenuButton>
@@ -279,7 +283,13 @@ const AddingQuantityTab = () => {
         )}
       </Flex>
       {selectedWorker && selectedYear && selectedMonth && (
-        <AddingQuantityTable workerId={selectedWorker.id} year={selectedYear} month={selectedMonth.id} ref={tableRef} />
+        <AddingQuantityTable
+          workerId={selectedWorker.id}
+          year={selectedYear}
+          month={selectedMonth.id}
+          setIsAddedAnyQuantity={setIsAddedAnyQuantity}
+          ref={tableRef}
+        />
       )}
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose} isCentered>
         <AlertDialogOverlay>
