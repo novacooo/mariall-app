@@ -5,6 +5,9 @@ import { useLocation } from 'react-router-dom';
 import { routes } from 'routes';
 import SidebarItem from 'components/SidebarItem/SidebarItem';
 import SidebarMenu from 'components/SidebarMenu/SidebarMenu';
+import { useAppSelector } from 'app';
+import { selectUserRole } from 'features/user/userSlice';
+import { UserRole } from 'constants/UserRole';
 
 interface IPanelTab {
   id: string;
@@ -34,7 +37,7 @@ const tabs: IPanelTab[] = [
     groupId: SidebarGroup.PRODUCTS,
     tabId: SidebarTab.PRODUCTS_MANAGEMENT,
     route: routes.panelProductsManagement,
-    admin: true,
+    admin: false,
   },
   {
     id: 'panel-tab-03',
@@ -70,6 +73,8 @@ const SidebarTabs = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
+  const userRole = useAppSelector(selectUserRole);
+
   const getGroupName = (groupId: SidebarGroup) => {
     if (groupId === SidebarGroup.PRODUCTS) return t('sidebar.groups.products');
     if (groupId === SidebarGroup.SALARIES) return t('sidebar.groups.salaries');
@@ -90,6 +95,11 @@ const SidebarTabs = () => {
     return null;
   };
 
+  const checkAdmin = (isAdmin: boolean) => {
+    if (!isAdmin) return true;
+    return userRole === UserRole.AUTHENTICATED || userRole === UserRole.ADMINISTRATOR;
+  };
+
   return (
     <Flex direction="column" gap={5}>
       {groups.map((group) => {
@@ -98,20 +108,19 @@ const SidebarTabs = () => {
 
         return (
           <SidebarMenu key={groupName} name={groupName}>
-            {tabs.map((tab) => {
-              const tabName = getTabName(tab.tabId);
+            {tabs.map(({ id, tabId, route, groupId, admin }) => {
+              const tabName = getTabName(tabId);
+
               if (!tabName) return null;
-              if (tab.groupId === group) {
+
+              if (groupId === group && checkAdmin(admin)) {
                 return (
-                  <SidebarItem
-                    key={tab.id}
-                    active={`${routes.panel}/${tab.route}` === location.pathname}
-                    link={tab.route}
-                  >
+                  <SidebarItem key={id} active={`${routes.panel}/${route}` === location.pathname} link={route}>
                     {tabName}
                   </SidebarItem>
                 );
               }
+
               return null;
             })}
           </SidebarMenu>

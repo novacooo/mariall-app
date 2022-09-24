@@ -10,7 +10,15 @@ const SidebarMenu = ({ name, children }: SidebarMenuProps) => {
   const headerColor = useColorModeValue('gray.400', 'gray.500');
 
   return (
-    <Flex direction="column" gap={2}>
+    <Flex
+      direction="column"
+      gap={2}
+      sx={{
+        '&:has(div:empty)': {
+          display: 'none',
+        },
+      }}
+    >
       <Text
         fontSize="xs"
         textTransform="uppercase"
