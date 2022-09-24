@@ -1,0 +1,10 @@
+mutation UpdateQuantity($id: ID!, $quantity: Int!) {
+  updateQuantity(id: $id, data: { quantity: $quantity }) {
+    data {
+      id
+      attributes {
+        quantity
+      }
+    }
+  }
+}

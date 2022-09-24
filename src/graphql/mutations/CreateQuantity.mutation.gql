@@ -1,0 +1,32 @@
+mutation CreateQuantity($productId: ID!, $employeeId: ID!, $quantity: Int!, $year: Int!, $month: Int!) {
+  createQuantity(
+    data: { product: $productId, employee: $employeeId, quantity: $quantity, year: $year, month: $month }
+  ) {
+    data {
+      id
+      attributes {
+        quantity
+        year
+        month
+        employee {
+          data {
+            id
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+        product {
+          data {
+            id
+            attributes {
+              code
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}
