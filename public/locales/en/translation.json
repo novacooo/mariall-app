@@ -112,12 +112,14 @@
     "titles": {
       "somethingWentWrong": "Something went wrong!",
       "unableToSave": "Unable to save!",
-      "incorrectLoginCredentials": "Incorrect login credentials!"
+      "incorrectLoginCredentials": "Incorrect login credentials!",
+      "quantitiesAddSuccess": "Success!"
     },
     "descriptions": {
       "somethingWentWrong": "Ups... something went wrong. Error message:",
       "unableToSave": "You must modify any product to be able to save the changes.",
-      "incorrectLoginCredentials": "You entered incorrect login credentials. Login failed."
+      "incorrectLoginCredentials": "You entered incorrect login credentials. Login failed.",
+      "quantitiesAddSuccess": "The quantities have been added successfully."
     }
   },
   "copyright": "Copyright © 2022 Jacek Nowak. All rights reserved."

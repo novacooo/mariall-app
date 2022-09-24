@@ -112,12 +112,14 @@
     "titles": {
       "somethingWentWrong": "Coś poszło nie tak!",
       "unableToSave": "Nie można zapisać!",
-      "incorrectLoginCredentials": "Błędne dane logowania!"
+      "incorrectLoginCredentials": "Błędne dane logowania!",
+      "quantitiesAddSuccess": "Udało się!"
     },
     "descriptions": {
       "somethingWentWrong": "Ups... coś poszło nie tak. Komunikat błędu:",
       "unableToSave": "Musisz zmodyfikować jakikolwiek produkt, żeby móc zapisać zmiany.",
-      "incorrectLoginCredentials": "Podałeś błędne dane logowania. Nie udało się zalogować."
+      "incorrectLoginCredentials": "Podałeś błędne dane logowania. Nie udało się zalogować.",
+      "quantitiesAddSuccess": "Ilości zostały dodane pomyślnie."
     }
   },
   "copyright": "Copyright © 2022 Jacek Nowak. Wszystkie prawa zastrzeżone."

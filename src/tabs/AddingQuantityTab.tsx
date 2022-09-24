@@ -25,7 +25,7 @@ import { useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
-import { useGetEmployeesQuery } from 'graphql/generated/schema';
+import { useCreateQuantityMutation, useGetEmployeesQuery, useUpdateQuantityMutation } from 'graphql/generated/schema';
 import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { monthNames } from 'constants/monthNames';
 import { useAppSelector } from 'app';
@@ -80,6 +80,14 @@ const AddingQuantityTab = () => {
 
   const employeesData = getEmployeesData?.employees?.data;
 
+  const [updateQuantity] = useUpdateQuantityMutation({
+    onError: (error) => errorToast(error),
+  });
+
+  const [createQuantity] = useCreateQuantityMutation({
+    onError: (error) => errorToast(error),
+  });
+
   const handleResetButtonClick = () => {
     if (!tableRef.current) return;
 
@@ -95,15 +103,44 @@ const AddingQuantityTab = () => {
 
   const handleDialogSaveButtonClick = () => {
     if (quantities.length === 0) return;
+    if (!selectedWorker || !selectedYear || !selectedMonth) return;
 
-    console.table(quantities);
+    const employeeId = selectedWorker.id;
+    const year = selectedYear;
+    const month = selectedMonth.number;
 
     quantities.forEach(({ productId, quantityId, quantity }) => {
       if (quantityId) {
-        console.log('good');
+        void updateQuantity({
+          variables: {
+            quantity,
+            id: quantityId,
+          },
+        });
+
         return;
       }
-      console.log('bad');
+
+      void createQuantity({
+        variables: {
+          employeeId,
+          year,
+          month,
+          productId,
+          quantity,
+        },
+      });
+    });
+
+    onClose();
+
+    toast({
+      title: t('toasts.titles.quantitiesAddSuccess'),
+      description: t('toasts.descriptions.quantitiesAddSuccess'),
+      duration: 5000,
+      status: 'success',
+      isClosable: true,
+      position: 'top',
     });
   };
 
