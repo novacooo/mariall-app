@@ -42,8 +42,6 @@ interface IWorker {
   name: string;
 }
 
-const years: number[] = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
-
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
   const { accentColor } = useColorContext();
@@ -54,6 +52,7 @@ const AddingQuantityTab = () => {
 
   const selectAccentText = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
 
+  const [years, setYears] = useState<number[]>([]);
   const [months, setMonths] = useState<IMonth[]>([]);
   const [selectedWorker, setSelectedWorker] = useState<IWorker>();
   const [selectedYear, setSelectedYear] = useState<number>();
@@ -97,8 +96,23 @@ const AddingQuantityTab = () => {
   useEffect(() => {
     if (!selectedWorker) return;
 
+    const date = new Date();
+    const year = date.getFullYear();
+    const monthIndex = date.getMonth(); // getMonth() function returns an integer number between 0 and 11
+    const monthName = monthNames[monthIndex];
+    const monthNumber = monthIndex + 1;
+
     if (userRole === UserRole.AUTHENTICATED || userRole === UserRole.ADMINISTRATOR) {
+      const range = 2;
+      const startYear = year - range;
+      const endYear = year + range;
+
+      const yearsToSet: number[] = [];
       const monthsToSet: IMonth[] = [];
+
+      for (let i = startYear; i < endYear; i += 1) {
+        yearsToSet.push(i);
+      }
 
       for (let i = 0; i < 12; i += 1) {
         monthsToSet.push({
@@ -107,15 +121,12 @@ const AddingQuantityTab = () => {
         });
       }
 
+      setYears(yearsToSet);
       setMonths(monthsToSet);
       return;
     }
 
-    const date = new Date();
-    const monthIndex = date.getMonth(); // getMonth() function returns an integer number between 0 and 11
-    const monthName = monthNames[monthIndex];
-    const monthNumber = monthIndex + 1;
-
+    setYears([year]);
     setMonths([
       {
         number: monthNumber,
@@ -200,7 +211,7 @@ const AddingQuantityTab = () => {
                 </MenuOptionGroup>
               </MenuList>
             </Menu>
-            {selectedWorker && (
+            {selectedWorker && !!years.length && (
               <Menu>
                 <MenuButton
                   as={Button}
