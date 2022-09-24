@@ -71,7 +71,6 @@ export type Employee = {
   createdAt?: Maybe<Scalars['DateTime']>;
   firstName: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
-  publishedAt?: Maybe<Scalars['DateTime']>;
   quantities?: Maybe<QuantityRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -80,7 +79,6 @@ export type Employee = {
 export type EmployeeQuantitiesArgs = {
   filters?: InputMaybe<QuantityFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -109,7 +107,6 @@ export type EmployeeFiltersInput = {
   lastName?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<EmployeeFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<EmployeeFiltersInput>>>;
-  publishedAt?: InputMaybe<DateTimeFilterInput>;
   quantities?: InputMaybe<QuantityFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
@@ -117,7 +114,6 @@ export type EmployeeFiltersInput = {
 export type EmployeeInput = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
   quantities?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
 
@@ -502,7 +498,6 @@ export type Product = {
   createdAt?: Maybe<Scalars['DateTime']>;
   image?: Maybe<UploadFileEntityResponse>;
   name: Scalars['String'];
-  publishedAt?: Maybe<Scalars['DateTime']>;
   quantities?: Maybe<QuantityRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -511,7 +506,6 @@ export type Product = {
 export type ProductQuantitiesArgs = {
   filters?: InputMaybe<QuantityFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -540,7 +534,6 @@ export type ProductFiltersInput = {
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<ProductFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ProductFiltersInput>>>;
-  publishedAt?: InputMaybe<DateTimeFilterInput>;
   quantities?: InputMaybe<QuantityFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
@@ -549,14 +542,8 @@ export type ProductInput = {
   code?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
   quantities?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
-
-export enum PublicationState {
-  Live = 'LIVE',
-  Preview = 'PREVIEW'
-}
 
 export type Quantity = {
   __typename?: 'Quantity';
@@ -564,7 +551,6 @@ export type Quantity = {
   employee?: Maybe<EmployeeEntityResponse>;
   month: Scalars['Int'];
   product?: Maybe<ProductEntityResponse>;
-  publishedAt?: Maybe<Scalars['DateTime']>;
   quantity: Scalars['Int'];
   updatedAt?: Maybe<Scalars['DateTime']>;
   year: Scalars['Int'];
@@ -596,7 +582,6 @@ export type QuantityFiltersInput = {
   not?: InputMaybe<QuantityFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<QuantityFiltersInput>>>;
   product?: InputMaybe<ProductFiltersInput>;
-  publishedAt?: InputMaybe<DateTimeFilterInput>;
   quantity?: InputMaybe<IntFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   year?: InputMaybe<IntFilterInput>;
@@ -606,7 +591,6 @@ export type QuantityInput = {
   employee?: InputMaybe<Scalars['ID']>;
   month?: InputMaybe<Scalars['Int']>;
   product?: InputMaybe<Scalars['ID']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
   quantity?: InputMaybe<Scalars['Int']>;
   year?: InputMaybe<Scalars['Int']>;
 };
@@ -646,7 +630,6 @@ export type QueryEmployeeArgs = {
 export type QueryEmployeesArgs = {
   filters?: InputMaybe<EmployeeFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -671,7 +654,6 @@ export type QueryProductArgs = {
 export type QueryProductsArgs = {
   filters?: InputMaybe<ProductFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -679,7 +661,6 @@ export type QueryProductsArgs = {
 export type QueryQuantitiesArgs = {
   filters?: InputMaybe<QuantityFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -1138,6 +1119,17 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type CreateQuantityMutationVariables = Exact<{
+  productId: Scalars['ID'];
+  employeeId: Scalars['ID'];
+  quantity: Scalars['Int'];
+  year: Scalars['Int'];
+  month: Scalars['Int'];
+}>;
+
+
+export type CreateQuantityMutation = { __typename?: 'Mutation', createQuantity?: { __typename?: 'QuantityEntityResponse', data?: { __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number, year: number, month: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null } | null } | null, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string } | null } | null } | null } | null } | null } | null };
+
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -1145,6 +1137,14 @@ export type LoginUserMutationVariables = Exact<{
 
 
 export type LoginUserMutation = { __typename?: 'Mutation', login: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null } };
+
+export type UpdateQuantityMutationVariables = Exact<{
+  id: Scalars['ID'];
+  quantity: Scalars['Int'];
+}>;
+
+
+export type UpdateQuantityMutation = { __typename?: 'Mutation', updateQuantity?: { __typename?: 'QuantityEntityResponse', data?: { __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number } | null } | null } | null };
 
 export type GetEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1171,6 +1171,70 @@ export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUserInfoQuery = { __typename?: 'Query', me?: { __typename?: 'UsersPermissionsMe', id: string, email?: string | null, role?: { __typename?: 'UsersPermissionsMeRole', name: string } | null } | null };
 
 
+export const CreateQuantityDocument = gql`
+    mutation CreateQuantity($productId: ID!, $employeeId: ID!, $quantity: Int!, $year: Int!, $month: Int!) {
+  createQuantity(
+    data: {product: $productId, employee: $employeeId, quantity: $quantity, year: $year, month: $month}
+  ) {
+    data {
+      id
+      attributes {
+        quantity
+        year
+        month
+        employee {
+          data {
+            id
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+        product {
+          data {
+            id
+            attributes {
+              code
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export type CreateQuantityMutationFn = Apollo.MutationFunction<CreateQuantityMutation, CreateQuantityMutationVariables>;
+
+/**
+ * __useCreateQuantityMutation__
+ *
+ * To run a mutation, you first call `useCreateQuantityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateQuantityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createQuantityMutation, { data, loading, error }] = useCreateQuantityMutation({
+ *   variables: {
+ *      productId: // value for 'productId'
+ *      employeeId: // value for 'employeeId'
+ *      quantity: // value for 'quantity'
+ *      year: // value for 'year'
+ *      month: // value for 'month'
+ *   },
+ * });
+ */
+export function useCreateQuantityMutation(baseOptions?: Apollo.MutationHookOptions<CreateQuantityMutation, CreateQuantityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateQuantityMutation, CreateQuantityMutationVariables>(CreateQuantityDocument, options);
+      }
+export type CreateQuantityMutationHookResult = ReturnType<typeof useCreateQuantityMutation>;
+export type CreateQuantityMutationResult = Apollo.MutationResult<CreateQuantityMutation>;
+export type CreateQuantityMutationOptions = Apollo.BaseMutationOptions<CreateQuantityMutation, CreateQuantityMutationVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($email: String!, $password: String!) {
   login(input: {identifier: $email, password: $password}) {
@@ -1205,6 +1269,45 @@ export function useLoginUserMutation(baseOptions?: Apollo.MutationHookOptions<Lo
 export type LoginUserMutationHookResult = ReturnType<typeof useLoginUserMutation>;
 export type LoginUserMutationResult = Apollo.MutationResult<LoginUserMutation>;
 export type LoginUserMutationOptions = Apollo.BaseMutationOptions<LoginUserMutation, LoginUserMutationVariables>;
+export const UpdateQuantityDocument = gql`
+    mutation UpdateQuantity($id: ID!, $quantity: Int!) {
+  updateQuantity(id: $id, data: {quantity: $quantity}) {
+    data {
+      id
+      attributes {
+        quantity
+      }
+    }
+  }
+}
+    `;
+export type UpdateQuantityMutationFn = Apollo.MutationFunction<UpdateQuantityMutation, UpdateQuantityMutationVariables>;
+
+/**
+ * __useUpdateQuantityMutation__
+ *
+ * To run a mutation, you first call `useUpdateQuantityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateQuantityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateQuantityMutation, { data, loading, error }] = useUpdateQuantityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      quantity: // value for 'quantity'
+ *   },
+ * });
+ */
+export function useUpdateQuantityMutation(baseOptions?: Apollo.MutationHookOptions<UpdateQuantityMutation, UpdateQuantityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateQuantityMutation, UpdateQuantityMutationVariables>(UpdateQuantityDocument, options);
+      }
+export type UpdateQuantityMutationHookResult = ReturnType<typeof useUpdateQuantityMutation>;
+export type UpdateQuantityMutationResult = Apollo.MutationResult<UpdateQuantityMutation>;
+export type UpdateQuantityMutationOptions = Apollo.BaseMutationOptions<UpdateQuantityMutation, UpdateQuantityMutationVariables>;
 export const GetEmployeesDocument = gql`
     query GetEmployees {
   employees {
