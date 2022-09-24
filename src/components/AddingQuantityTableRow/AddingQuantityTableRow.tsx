@@ -10,6 +10,7 @@ export interface IQuantity {
   productCode: string;
   quantityId: string | undefined;
   quantity: number;
+  count: number;
 }
 
 export interface AddingQuantityTableRowHandle {
@@ -46,7 +47,8 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
         productId,
         productCode,
         quantityId,
-        quantity: count,
+        count,
+        quantity: quantity + count,
       }),
       resetCount: () => {
         setCount(0);

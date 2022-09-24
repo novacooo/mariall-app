@@ -93,6 +93,20 @@ const AddingQuantityTab = () => {
     setIsQuantitiesFetched(true);
   };
 
+  const handleDialogSaveButtonClick = () => {
+    if (quantities.length === 0) return;
+
+    console.table(quantities);
+
+    quantities.forEach(({ productId, quantityId, quantity }) => {
+      if (quantityId) {
+        console.log('good');
+        return;
+      }
+      console.log('bad');
+    });
+  };
+
   useEffect(() => {
     if (!selectedWorker) return;
 
@@ -295,8 +309,8 @@ const AddingQuantityTab = () => {
               {t('alerts.bodies.addingQuantities')}
               <Flex mt={3} direction="column" gap={1}>
                 {quantities &&
-                  quantities.map((el) => (
-                    <Code key={el.productCode}>{`${el.productCode.toUpperCase()}: ${el.quantity}`}</Code>
+                  quantities.map(({ productCode, count }) => (
+                    <Code key={productCode}>{`${productCode.toUpperCase()}: ${count}`}</Code>
                   ))}
               </Flex>
             </AlertDialogBody>
@@ -304,7 +318,7 @@ const AddingQuantityTab = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 {t('buttons.cancel')}
               </Button>
-              <Button colorScheme={accentColor} onClick={onClose} ml={3} rightIcon={<FiSave />}>
+              <Button colorScheme={accentColor} onClick={handleDialogSaveButtonClick} ml={3} rightIcon={<FiSave />}>
                 {t('buttons.saveChanges')}
               </Button>
             </AlertDialogFooter>

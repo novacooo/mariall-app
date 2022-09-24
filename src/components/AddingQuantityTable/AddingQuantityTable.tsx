@@ -186,7 +186,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
           </Text>
         </Flex>
         <Box>
-          {productsWithQuantities?.map(
+          {productsWithQuantities.map(
             ({ productId, productCode, productName, productImageUrl, quantityId, quantity }, i) => (
               <AddingQuantityTableRow
                 key={`${productId}-${productCode}`}
