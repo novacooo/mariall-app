@@ -28,6 +28,9 @@ import { FiRefreshCcw, FiSave } from 'react-icons/fi';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
 import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { monthNames } from 'constants/monthNames';
+import { useAppSelector } from 'app';
+import { selectUserRole } from 'features/user/userSlice';
+import { UserRole } from 'constants/UserRole';
 
 interface IMonth {
   number: number;
@@ -62,6 +65,8 @@ const AddingQuantityTab = () => {
   const toast = useToast();
   const errorToast = useErrorToast();
 
+  const userRole = useAppSelector(selectUserRole);
+
   const { data: getEmployeesData } = useGetEmployeesQuery({
     onError: (error) => {
       errorToast(error);
@@ -92,8 +97,22 @@ const AddingQuantityTab = () => {
   useEffect(() => {
     if (!selectedWorker) return;
 
+    if (userRole === UserRole.AUTHENTICATED || userRole === UserRole.ADMINISTRATOR) {
+      const monthsToSet: IMonth[] = [];
+
+      for (let i = 0; i < 12; i += 1) {
+        monthsToSet.push({
+          number: i + 1,
+          name: monthNames[i],
+        });
+      }
+
+      setMonths(monthsToSet);
+      return;
+    }
+
     const date = new Date();
-    const monthIndex = date.getMonth() + 1; // getMonth() function returns an integer number between 0 and 11
+    const monthIndex = date.getMonth(); // getMonth() function returns an integer number between 0 and 11
     const monthName = monthNames[monthIndex];
     const monthNumber = monthIndex + 1;
 
