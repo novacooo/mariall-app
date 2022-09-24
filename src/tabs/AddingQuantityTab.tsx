@@ -66,15 +66,19 @@ const AddingQuantityTab = () => {
 
   const userRole = useAppSelector(selectUserRole);
 
+  const resetEverything = () => {
+    setIsAddedAnyQuantity(false);
+    setSelectedWorker(undefined);
+    setSelectedYear(undefined);
+    setSelectedMonth(undefined);
+  };
+
   const { data: getEmployeesData } = useGetEmployeesQuery({
     onError: (error) => {
       errorToast(error);
     },
     onCompleted: () => {
-      setIsAddedAnyQuantity(false);
-      setSelectedWorker(undefined);
-      setSelectedYear(undefined);
-      setSelectedMonth(undefined);
+      resetEverything();
     },
   });
 
@@ -133,7 +137,7 @@ const AddingQuantityTab = () => {
     });
 
     onClose();
-
+    resetEverything();
     toast({
       title: t('toasts.titles.quantitiesAddSuccess'),
       description: t('toasts.descriptions.quantitiesAddSuccess'),
@@ -248,10 +252,7 @@ const AddingQuantityTab = () => {
                     const { firstName, lastName } = attributes;
                     const workerName = lastName ? `${firstName} ${lastName}` : firstName;
 
-                    const worker: IWorker = {
-                      id,
-                      name: workerName,
-                    };
+                    const worker: IWorker = { id, name: workerName };
 
                     return (
                       <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(worker)}>
