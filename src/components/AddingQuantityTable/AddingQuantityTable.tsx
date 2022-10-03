@@ -52,7 +52,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
 
         rowsRefs.current.forEach((rowRef) => {
           const quantity = rowRef.getQuantity();
-          if (quantity.quantity === 0) return;
+          if (quantity.count === 0) return;
           quantities.push(quantity);
         });
 
