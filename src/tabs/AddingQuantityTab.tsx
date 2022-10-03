@@ -60,6 +60,7 @@ const AddingQuantityTab = () => {
   const [isAddedAnyQuantity, setIsAddedAnyQuantity] = useState<boolean>(false);
   const [quantities, setQuantities] = useState<IQuantity[]>([]);
   const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
 
   const toast = useToast();
   const errorToast = useErrorToast();
@@ -105,7 +106,7 @@ const AddingQuantityTab = () => {
     setIsQuantitiesFetched(true);
   };
 
-  const handleDialogSaveButtonClick = () => {
+  const sendQuantities = async () => {
     if (quantities.length === 0) return;
     if (!selectedWorker || !selectedYear || !selectedMonth) return;
 
@@ -113,31 +114,44 @@ const AddingQuantityTab = () => {
     const year = selectedYear;
     const month = selectedMonth.number;
 
+    const promises: ReturnType<typeof updateQuantity | typeof createQuantity>[] = [];
+
+    setIsSending(true);
+
     quantities.forEach(({ productId, quantityId, quantity }) => {
       if (quantityId) {
-        void updateQuantity({
-          variables: {
-            quantity,
-            id: quantityId,
-          },
-        });
+        promises.push(
+          updateQuantity({
+            variables: {
+              quantity,
+              id: quantityId,
+            },
+          }),
+        );
 
         return;
       }
 
-      void createQuantity({
-        variables: {
-          employeeId,
-          year,
-          month,
-          productId,
-          quantity,
-        },
-      });
+      promises.push(
+        createQuantity({
+          variables: {
+            employeeId,
+            year,
+            month,
+            productId,
+            quantity,
+          },
+        }),
+      );
     });
+
+    await Promise.all(promises);
+
+    setIsSending(false);
 
     onClose();
     resetEverything();
+
     toast({
       title: t('toasts.titles.quantitiesAddSuccess'),
       description: t('toasts.descriptions.quantitiesAddSuccess'),
@@ -146,6 +160,10 @@ const AddingQuantityTab = () => {
       isClosable: true,
       position: 'top',
     });
+  };
+
+  const handleDialogSaveButtonClick = () => {
+    void sendQuantities();
   };
 
   useEffect(() => {
@@ -356,7 +374,13 @@ const AddingQuantityTab = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 {t('buttons.cancel')}
               </Button>
-              <Button colorScheme={accentColor} onClick={handleDialogSaveButtonClick} ml={3} rightIcon={<FiSave />}>
+              <Button
+                colorScheme={accentColor}
+                onClick={handleDialogSaveButtonClick}
+                ml={3}
+                rightIcon={<FiSave />}
+                isLoading={isSending}
+              >
                 {t('buttons.saveChanges')}
               </Button>
             </AlertDialogFooter>
