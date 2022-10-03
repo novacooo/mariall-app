@@ -14,7 +14,6 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useColorContext } from 'contexts/ColorContext';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -28,15 +27,16 @@ import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } fro
 import { useAppToast, useErrorToast } from 'hooks';
 import { useGetUserInfoLazyQuery, useLoginUserMutation } from 'graphql/generated/schema';
 import { RoleType } from 'types';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { accentColor } = useColorContext();
   const { t } = useTranslation();
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
+
   const isLogged = useAppSelector(selectUserIsLogged);
+  const themeAccentColor = useAppSelector(selectThemeAccentColor);
+
   const [emailValue, setEmailValue] = useState<string>('');
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [isPasswordCompleted, setIsPasswordCompleted] = useState<boolean>(true);
@@ -45,8 +45,12 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isRememberMeChecked, setIsRememberMeChecked] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const appToast = useAppToast();
   const errorToast = useErrorToast();
+
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
   const [getUserInfo] = useGetUserInfoLazyQuery({
     onCompleted: ({ me }) => {
@@ -231,7 +235,7 @@ const LoginPage = () => {
           {!isPasswordCompleted && <FormErrorMessage>{t('errors.notCompletedPassword')}</FormErrorMessage>}
         </FormControl>
         <Checkbox
-          colorScheme={accentColor}
+          colorScheme={themeAccentColor}
           mx={2}
           my={2}
           isChecked={isRememberMeChecked}
@@ -242,7 +246,7 @@ const LoginPage = () => {
         <Button
           mx={2}
           onClick={handleButtonClick}
-          colorScheme={accentColor}
+          colorScheme={themeAccentColor}
           type="submit"
           isLoading={isLoading}
           loadingText={t('loadingTexts.signInButton')}

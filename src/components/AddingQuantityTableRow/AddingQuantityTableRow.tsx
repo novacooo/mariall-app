@@ -1,5 +1,6 @@
 import { Box, Center, Flex, IconButton, Input, Text, useColorModeValue } from '@chakra-ui/react';
-import { useColorContext } from 'contexts/ColorContext';
+import { useAppSelector } from 'app';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { usePrevious } from 'hooks';
 import { useImperativeHandle, forwardRef, useState, ChangeEvent, useEffect } from 'react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
@@ -31,7 +32,7 @@ interface AddingQuantityTableRowProps {
 
 const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQuantityTableRowProps>(
   ({ image, productId, productCode, productName, quantityId, quantity, onValueChange }, ref) => {
-    const { accentColor } = useColorContext();
+    const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
     const [count, setCount] = useState(0);
     const previousCount = usePrevious(count);
@@ -198,7 +199,7 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
             aria-label="Decrement button"
             icon={<FiMinus />}
             size="xs"
-            colorScheme={accentColor}
+            colorScheme={themeAccentColor}
             onClick={handleMinusClick}
           />
           <Input
@@ -220,7 +221,7 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
             aria-label="Increment button"
             icon={<FiPlus />}
             size="xs"
-            colorScheme={accentColor}
+            colorScheme={themeAccentColor}
             onClick={handlePlusClick}
           />
         </Flex>

@@ -19,7 +19,6 @@ import {
   Code,
 } from '@chakra-ui/react';
 import AddingQuantityTable, { AddingQuantityTableHandle } from 'components/AddingQuantityTable/AddingQuantityTable';
-import { useColorContext } from 'contexts/ColorContext';
 import { useAppToast, useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +29,7 @@ import { monthNames } from 'constants/monthNames';
 import { useAppSelector } from 'app';
 import { selectUserRole } from 'features/user/userSlice';
 import { UserRole } from 'constants/UserRole';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 
 interface IMonth {
   number: number;
@@ -43,13 +43,15 @@ interface IWorker {
 
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
-  const { accentColor } = useColorContext();
   const tableRef = useRef<AddingQuantityTableHandle>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  const selectAccentText = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
+  const userRole = useAppSelector(selectUserRole);
+  const themeAccentColor = useAppSelector(selectThemeAccentColor);
+
+  const selectAccentText = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
   const [years, setYears] = useState<number[]>([]);
   const [months, setMonths] = useState<IMonth[]>([]);
@@ -63,8 +65,6 @@ const AddingQuantityTab = () => {
 
   const appToast = useAppToast();
   const errorToast = useErrorToast();
-
-  const userRole = useAppSelector(selectUserRole);
 
   const resetEverything = () => {
     setIsAddedAnyQuantity(false);
@@ -337,7 +337,7 @@ const AddingQuantityTab = () => {
             <Button rightIcon={<FiRefreshCcw />} onClick={handleResetButtonClick}>
               {t('buttons.resetChanges')}
             </Button>
-            <Button colorScheme={accentColor} onClick={handleSaveButtonClick} rightIcon={<FiSave />}>
+            <Button colorScheme={themeAccentColor} onClick={handleSaveButtonClick} rightIcon={<FiSave />}>
               {t('buttons.saveChanges')}
             </Button>
           </Flex>
@@ -370,7 +370,7 @@ const AddingQuantityTab = () => {
                 {t('buttons.cancel')}
               </Button>
               <Button
-                colorScheme={accentColor}
+                colorScheme={themeAccentColor}
                 onClick={handleDialogSaveButtonClick}
                 ml={3}
                 rightIcon={<FiSave />}

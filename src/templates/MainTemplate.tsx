@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Flex, useColorModeValue } from '@chakra-ui/react';
-import ColorContextProvider from 'contexts/ColorContext';
 import { ReactNode } from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -48,11 +47,9 @@ const MainTemplate = ({ children }: MainTemplateProps) => {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ColorContextProvider>
-        <Flex direction="column" minHeight="100%" bgColor={bgColor}>
-          {children}
-        </Flex>
-      </ColorContextProvider>
+      <Flex direction="column" minHeight="100%" bgColor={bgColor}>
+        {children}
+      </Flex>
     </ApolloProvider>
   );
 };

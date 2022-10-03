@@ -1,5 +1,6 @@
 import { Box, Text, useColorModeValue } from '@chakra-ui/react';
-import { useColorContext } from 'contexts/ColorContext';
+import { useAppSelector } from 'app';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { Link } from 'react-router-dom';
 
 interface SidebarItemProps {
@@ -9,12 +10,12 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({ children, active = false, link }: SidebarItemProps) => {
-  const { accentColor } = useColorContext();
+  const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
   const bgOpacity = useColorModeValue(0.4, 0.3);
   const bgColorHover = useColorModeValue('gray.100', 'gray.700');
-  const bgColorActive = useColorModeValue(`${accentColor}.100`, `${accentColor}.900`);
-  const textColorActive = useColorModeValue(`${accentColor}.700`, `${accentColor}.100`);
+  const bgColorActive = useColorModeValue(`${themeAccentColor}.100`, `${themeAccentColor}.900`);
+  const textColorActive = useColorModeValue(`${themeAccentColor}.700`, `${themeAccentColor}.100`);
 
   return (
     <Link to={link || '#'} data-testid="sidebar-item">

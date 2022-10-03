@@ -10,7 +10,8 @@ import {
   MenuOptionGroup,
   Tooltip,
 } from '@chakra-ui/react';
-import { AccentColorType, useColorContext } from 'contexts/ColorContext';
+import { useAppDispatch, useAppSelector } from 'app';
+import { AccentColorType, selectThemeAccentColor, setThemeAccentColor } from 'features/theme/themeSlice';
 import { useTranslation } from 'react-i18next';
 import { BiPalette } from 'react-icons/bi';
 
@@ -18,7 +19,12 @@ const colors: AccentColorType[] = ['red', 'orange', 'yellow', 'green', 'teal', '
 
 const ColorButton = () => {
   const { t } = useTranslation();
-  const { accentColor, changeAccentColor } = useColorContext();
+  const dispatch = useAppDispatch();
+  const themeAccentColor = useAppSelector(selectThemeAccentColor);
+
+  const handleItemClick = (color: AccentColorType) => {
+    dispatch(setThemeAccentColor(color));
+  };
 
   return (
     <Menu closeOnSelect={false}>
@@ -26,14 +32,14 @@ const ColorButton = () => {
         <MenuButton as={IconButton} variant="outline" aria-label={t('tooltips.changeColor')} icon={<BiPalette />} />
       </Tooltip>
       <MenuList>
-        <MenuOptionGroup defaultValue={accentColor} type="radio">
+        <MenuOptionGroup defaultValue={themeAccentColor} type="radio">
           {colors.map((color) => (
             <MenuItemOption
               key={color}
               value={color}
               fontSize="sm"
               textTransform="capitalize"
-              onClick={() => changeAccentColor(color)}
+              onClick={() => handleItemClick(color)}
             >
               <HStack>
                 <Box width={3} height={3} rounded="full" bgColor={`${color}.400`} />

@@ -1,5 +1,6 @@
 import { Heading, Icon, useColorModeValue, VStack } from '@chakra-ui/react';
-import { useColorContext } from 'contexts/ColorContext';
+import { useAppSelector } from 'app';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { IconType } from 'react-icons';
 
 interface MenuCardProps {
@@ -9,10 +10,11 @@ interface MenuCardProps {
 }
 
 const MenuCard = ({ name, icon, onClick = undefined }: MenuCardProps) => {
-  const { accentColor } = useColorContext();
+  const themeAccentColor = useAppSelector(selectThemeAccentColor);
+
   const bg = useColorModeValue('white', 'gray.800');
   const iconColor = useColorModeValue('gray.400', 'gray.600');
-  const adaptiveAccentColor = useColorModeValue(`${accentColor}.600`, `${accentColor}.200`);
+  const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
   return (
     <VStack
