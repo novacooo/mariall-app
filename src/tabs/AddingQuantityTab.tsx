@@ -17,11 +17,10 @@ import {
   useColorModeValue,
   useDisclosure,
   Code,
-  useToast,
 } from '@chakra-ui/react';
 import AddingQuantityTable, { AddingQuantityTableHandle } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { useColorContext } from 'contexts/ColorContext';
-import { useErrorToast } from 'hooks';
+import { useAppToast, useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
@@ -62,7 +61,7 @@ const AddingQuantityTab = () => {
   const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
 
-  const toast = useToast();
+  const appToast = useAppToast();
   const errorToast = useErrorToast();
 
   const userRole = useAppSelector(selectUserRole);
@@ -155,13 +154,9 @@ const AddingQuantityTab = () => {
     onClose();
     resetEverything();
 
-    toast({
+    appToast({
       title: t('toasts.titles.quantitiesAddSuccess'),
       description: t('toasts.descriptions.quantitiesAddSuccess'),
-      duration: 5000,
-      status: 'success',
-      isClosable: true,
-      position: 'top',
     });
   };
 
@@ -217,13 +212,10 @@ const AddingQuantityTab = () => {
     if (quantities.length > 0) {
       onOpen();
     } else {
-      toast({
+      appToast({
         title: t('toasts.titles.unableToSave'),
         description: t('toasts.descriptions.unableToSave'),
-        duration: 5000,
         status: 'warning',
-        isClosable: true,
-        position: 'top',
       });
     }
 

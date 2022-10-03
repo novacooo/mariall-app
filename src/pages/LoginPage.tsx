@@ -13,7 +13,6 @@ import {
   InputRightElement,
   Tooltip,
   useColorModeValue,
-  useToast,
 } from '@chakra-ui/react';
 import { useColorContext } from 'contexts/ColorContext';
 import { useState } from 'react';
@@ -26,7 +25,7 @@ import validator from 'validator';
 import PageTemplate from 'templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from 'app';
 import { selectUserIsLogged, setUserInfo, setUserIsLogged, setUserJwtToken } from 'features/user/userSlice';
-import { useErrorToast } from 'hooks';
+import { useAppToast, useErrorToast } from 'hooks';
 import { useGetUserInfoLazyQuery, useLoginUserMutation } from 'graphql/generated/schema';
 import { RoleType } from 'types';
 
@@ -46,7 +45,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isRememberMeChecked, setIsRememberMeChecked] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const toast = useToast();
+  const appToast = useAppToast();
   const errorToast = useErrorToast();
 
   const [getUserInfo] = useGetUserInfoLazyQuery({
@@ -79,13 +78,10 @@ const LoginPage = () => {
       void getUserInfo();
     },
     onError: () => {
-      toast({
+      appToast({
         title: t('toasts.titles.incorrectLoginCredentials'),
         description: t('toasts.descriptions.incorrectLoginCredentials'),
-        duration: 5000,
         status: 'error',
-        isClosable: true,
-        position: 'top',
       });
 
       setEmailValue('');
