@@ -86,11 +86,15 @@ const AddingQuantityTab = () => {
   const employeesData = getEmployeesData?.employees?.data;
 
   const [updateQuantity] = useUpdateQuantityMutation({
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+    },
   });
 
   const [createQuantity] = useCreateQuantityMutation({
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+    },
   });
 
   const handleResetButtonClick = () => {
@@ -148,7 +152,6 @@ const AddingQuantityTab = () => {
     await Promise.all(promises);
 
     setIsSending(false);
-
     onClose();
     resetEverything();
 
