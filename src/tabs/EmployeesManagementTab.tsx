@@ -1,7 +1,11 @@
+import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
+
 const EmployeesManagementTab = () => (
-  <div>
-    <p>employees-management-tab</p>
-  </div>
+  <ProtectedTabTemplate>
+    <div>
+      <p>employees-management-tab</p>
+    </div>
+  </ProtectedTabTemplate>
 );
 
 export default EmployeesManagementTab;

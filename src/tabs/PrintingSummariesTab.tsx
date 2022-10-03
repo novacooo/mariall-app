@@ -1,7 +1,11 @@
+import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
+
 const PrintingSummariesTab = () => (
-  <div>
-    <p>printing-summaries-tab</p>
-  </div>
+  <ProtectedTabTemplate>
+    <div>
+      <p>printing-summaries-tab</p>
+    </div>
+  </ProtectedTabTemplate>
 );
 
 export default PrintingSummariesTab;

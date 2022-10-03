@@ -1,7 +1,11 @@
+import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
+
 const SalariesTab = () => (
-  <div>
-    <p>salaries-tab</p>
-  </div>
+  <ProtectedTabTemplate>
+    <div>
+      <p>salaries-tab</p>
+    </div>
+  </ProtectedTabTemplate>
 );
 
 export default SalariesTab;

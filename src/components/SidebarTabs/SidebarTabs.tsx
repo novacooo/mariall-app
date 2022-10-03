@@ -37,7 +37,7 @@ const tabs: IPanelTab[] = [
     groupId: SidebarGroup.PRODUCTS,
     tabId: SidebarTab.PRODUCTS_MANAGEMENT,
     route: routes.panelProductsManagement,
-    admin: false,
+    admin: true,
   },
   {
     id: 'panel-tab-03',
