@@ -1,4 +1,4 @@
-import { Spinner } from '@chakra-ui/react';
+import { Flex, Spinner } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard/ProductCard';
 import { useGetProductsQuery } from 'graphql/generated/schema';
 import { getImageUrl } from 'helpers/getImageUrl';
@@ -18,7 +18,7 @@ const ProductsManagementTab = () => {
 
   return (
     <ProtectedTabTemplate>
-      <div>
+      <Flex gap={4} wrap="wrap">
         {productsData ? (
           productsData.map(({ id, attributes }) => {
             if (!id || !attributes) return null;
@@ -33,7 +33,7 @@ const ProductsManagementTab = () => {
         ) : (
           <Spinner />
         )}
-      </div>
+      </Flex>
     </ProtectedTabTemplate>
   );
 };
