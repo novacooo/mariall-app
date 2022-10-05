@@ -3,7 +3,7 @@ import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector, usePrevious } from 'hooks';
 import { useImperativeHandle, forwardRef, useState, ChangeEvent, useEffect } from 'react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
-import PlaceholderImage from '../../assets/images/placeholder.jpg';
+import PlaceholderImage from 'assets/images/placeholder.jpg';
 
 export interface IQuantity {
   productId: string;

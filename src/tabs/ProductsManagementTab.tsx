@@ -1,5 +1,7 @@
-import { Flex, Image, Spinner, Text } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
+import ProductCard from 'components/ProductCard/ProductCard';
 import { useGetProductsQuery } from 'graphql/generated/schema';
+import { getImageUrl } from 'helpers/getImageUrl';
 import { useErrorToast } from 'hooks';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 
@@ -18,24 +20,16 @@ const ProductsManagementTab = () => {
     <ProtectedTabTemplate>
       <div>
         {productsData ? (
-          productsData.map((product) => (
-            <Flex gap={4} align="center" key={product.id}>
-              <Image
-                w={20}
-                h={20}
-                rounded="md"
-                borderWidth={1}
-                borderStyle="solid"
-                src="https://placekitten.com/200/200"
+          productsData.map(({ id, attributes }) => {
+            if (!id || !attributes) return null;
+            return (
+              <ProductCard
+                key={id}
+                name={attributes.code}
+                image={getImageUrl(attributes.image?.data?.attributes?.url)}
               />
-              <Flex direction="column">
-                <Text fontSize="sm" fontWeight="medium" color="gray.500" textTransform="uppercase">
-                  Code
-                </Text>
-                <Text fontSize="lg">Product name</Text>
-              </Flex>
-            </Flex>
-          ))
+            );
+          })
         ) : (
           <Spinner />
         )}

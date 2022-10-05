@@ -7,6 +7,7 @@ import { useErrorToast } from 'hooks';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
+import { getImageUrl } from 'helpers/getImageUrl';
 
 export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];
@@ -199,11 +200,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
                 productName={productName}
                 quantityId={quantityId}
                 quantity={quantity || 0}
-                image={
-                  productImageUrl && process.env.REACT_APP_IMAGE_URL
-                    ? `${process.env.REACT_APP_IMAGE_URL}${productImageUrl}`
-                    : undefined
-                }
+                image={getImageUrl(productImageUrl)}
                 onValueChange={handleRowChange}
               />
             ),
