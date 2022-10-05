@@ -5,9 +5,9 @@ import { useLocation } from 'react-router-dom';
 import { routes } from 'routes';
 import SidebarItem from 'components/SidebarItem/SidebarItem';
 import SidebarMenu from 'components/SidebarMenu/SidebarMenu';
-import { useAppSelector } from 'app';
 import { selectUserRole } from 'features/user/userSlice';
 import { UserRole } from 'constants/UserRole';
+import { useAppSelector } from 'hooks';
 
 interface IPanelTab {
   id: string;

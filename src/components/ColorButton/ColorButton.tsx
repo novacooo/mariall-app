@@ -10,8 +10,8 @@ import {
   MenuOptionGroup,
   Tooltip,
 } from '@chakra-ui/react';
-import { useAppDispatch, useAppSelector } from 'app';
 import { AccentColorType, selectThemeAccentColor, setThemeAccentColor } from 'features/theme/themeSlice';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { BiPalette } from 'react-icons/bi';
 

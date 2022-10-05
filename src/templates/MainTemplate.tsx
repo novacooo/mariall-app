@@ -3,8 +3,8 @@ import { Flex, useColorModeValue } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { useAppSelector } from 'app';
 import { selectUserJwtToken } from 'features/user/userSlice';
+import { useAppSelector } from 'hooks';
 
 interface MainTemplateProps {
   children: ReactNode;

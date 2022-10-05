@@ -11,9 +11,8 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useAppSelector } from 'app';
 import { selectUserEmail } from 'features/user/userSlice';
-import { useSignOut } from 'hooks';
+import { useAppSelector, useSignOut } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiLogOut, FiSettings } from 'react-icons/fi';
 

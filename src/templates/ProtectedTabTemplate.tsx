@@ -1,6 +1,6 @@
-import { useAppSelector } from 'app';
 import { UserRole } from 'constants/UserRole';
 import { selectUserRole } from 'features/user/userSlice';
+import { useAppSelector } from 'hooks';
 import { Navigate } from 'react-router-dom';
 import { routes } from 'routes';
 

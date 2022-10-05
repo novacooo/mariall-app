@@ -1,6 +1,6 @@
 import { Box, Text, useColorModeValue } from '@chakra-ui/react';
-import { useAppSelector } from 'app';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import { useAppSelector } from 'hooks';
 import { Link } from 'react-router-dom';
 
 interface SidebarItemProps {

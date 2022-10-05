@@ -1,8 +1,8 @@
 import { useApolloClient } from '@apollo/client';
-import { useAppDispatch } from 'app';
 import { logoutUser } from 'features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
+import { useAppDispatch } from './useAppDispatch';
 import { useErrorToast } from './useErrorToast';
 
 export const useSignOut = () => {

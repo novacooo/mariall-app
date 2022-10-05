@@ -1,7 +1,6 @@
 import { Box, Center, Flex, IconButton, Input, Text, useColorModeValue } from '@chakra-ui/react';
-import { useAppSelector } from 'app';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
-import { usePrevious } from 'hooks';
+import { useAppSelector, usePrevious } from 'hooks';
 import { useImperativeHandle, forwardRef, useState, ChangeEvent, useEffect } from 'react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
 import PlaceholderImage from '../../assets/images/placeholder.jpg';

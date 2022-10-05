@@ -1,7 +1,6 @@
-import { useAppSelector } from 'app';
 import { authSessionsCount } from 'constants/session';
 import { selectUserIsLogged, selectUserRememberCredentials } from 'features/user/userSlice';
-import { useSignOut } from 'hooks';
+import { useAppSelector, useSignOut } from 'hooks';
 import { Navigate } from 'react-router-dom';
 import { routes } from 'routes';
 

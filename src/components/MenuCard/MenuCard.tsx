@@ -1,6 +1,6 @@
 import { Heading, Icon, useColorModeValue, VStack } from '@chakra-ui/react';
-import { useAppSelector } from 'app';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import { useAppSelector } from 'hooks';
 import { IconType } from 'react-icons';
 
 interface MenuCardProps {

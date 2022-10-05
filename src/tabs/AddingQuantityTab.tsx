@@ -19,14 +19,13 @@ import {
   Code,
 } from '@chakra-ui/react';
 import AddingQuantityTable, { AddingQuantityTableHandle } from 'components/AddingQuantityTable/AddingQuantityTable';
-import { useAppToast, useErrorToast } from 'hooks';
+import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
 import { useCreateQuantityMutation, useGetEmployeesQuery, useUpdateQuantityMutation } from 'graphql/generated/schema';
 import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { monthNames } from 'constants/monthNames';
-import { useAppSelector } from 'app';
 import { selectUserRole } from 'features/user/userSlice';
 import { UserRole } from 'constants/UserRole';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
