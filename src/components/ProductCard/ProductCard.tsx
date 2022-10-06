@@ -1,15 +1,17 @@
-import { useColorModeValue, VStack, Image, Heading } from '@chakra-ui/react';
+import { useColorModeValue, VStack, Image, Heading, Text } from '@chakra-ui/react';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector } from 'hooks';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
 
 interface ProductCardProps {
+  code: string;
   name: string;
+  price: number;
   image?: string;
   onClick?: () => void;
 }
 
-const ProductCard = ({ name, image, onClick }: ProductCardProps) => {
+const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) => {
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
   const bg = useColorModeValue('white', 'gray.800');
@@ -17,9 +19,9 @@ const ProductCard = ({ name, image, onClick }: ProductCardProps) => {
 
   return (
     <VStack
-      spacing={5}
-      p={8}
-      w={['full', 48]}
+      spacing={4}
+      p={4}
+      w={['full', 36]}
       bg={bg}
       borderWidth={1}
       rounded="md"
@@ -34,8 +36,9 @@ const ProductCard = ({ name, image, onClick }: ProductCardProps) => {
     >
       <Image w={20} h={20} rounded="md" borderWidth={1} borderStyle="solid" src={image || PlaceholderImage} />
       <Heading as="h4" size="sm" textAlign="center" userSelect="none">
-        {name}
+        {code}
       </Heading>
+      <Text>{name}</Text>
     </VStack>
   );
 };

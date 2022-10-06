@@ -498,6 +498,7 @@ export type Product = {
   createdAt?: Maybe<Scalars['DateTime']>;
   image?: Maybe<UploadFileEntityResponse>;
   name: Scalars['String'];
+  price: Scalars['Float'];
   quantities?: Maybe<QuantityRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -534,6 +535,7 @@ export type ProductFiltersInput = {
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<ProductFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ProductFiltersInput>>>;
+  price?: InputMaybe<FloatFilterInput>;
   quantities?: InputMaybe<QuantityFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
@@ -542,6 +544,7 @@ export type ProductInput = {
   code?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  price?: InputMaybe<Scalars['Float']>;
   quantities?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
 
@@ -1154,7 +1157,7 @@ export type GetEmployeesQuery = { __typename?: 'Query', employees?: { __typename
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null }> } | null };
+export type GetProductsQuery = { __typename?: 'Query', products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, price: number, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null }> } | null };
 
 export type GetQuantitiesQueryVariables = Exact<{
   workerId: Scalars['ID'];
@@ -1356,6 +1359,7 @@ export const GetProductsDocument = gql`
       attributes {
         code
         name
+        price
         image {
           data {
             attributes {

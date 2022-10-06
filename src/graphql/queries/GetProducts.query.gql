@@ -5,6 +5,7 @@ query GetProducts {
       attributes {
         code
         name
+        price
         image {
           data {
             attributes {

@@ -22,10 +22,15 @@ const ProductsManagementTab = () => {
         {productsData ? (
           productsData.map(({ id, attributes }) => {
             if (!id || !attributes) return null;
+
+            const { code, name, price } = attributes;
+
             return (
               <ProductCard
                 key={id}
-                name={attributes.code}
+                name={name}
+                code={code}
+                price={price}
                 image={getImageUrl(attributes.image?.data?.attributes?.url)}
               />
             );
