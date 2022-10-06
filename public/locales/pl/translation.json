@@ -125,5 +125,9 @@
       "quantitiesAddSuccess": "Ilości zostały dodane pomyślnie."
     }
   },
+  "indicators": {
+    "active": "Aktywny",
+    "inactive": "Nieaktywny"
+  },
   "copyright": "Copyright © 2022 Jacek Nowak. Wszystkie prawa zastrzeżone."
 }

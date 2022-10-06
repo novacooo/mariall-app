@@ -24,9 +24,9 @@ const ProductCard = ({ code, name, price, active, image, onClick }: ProductCardP
 
   return (
     <VStack
-      spacing={3}
+      spacing={4}
       p={4}
-      w={['full', 40]}
+      w={['full', 44]}
       bg={bg}
       borderWidth={1}
       rounded="md"

@@ -125,5 +125,9 @@
       "quantitiesAddSuccess": "The quantities have been added successfully."
     }
   },
+  "indicators": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
   "copyright": "Copyright © 2022 Jacek Nowak. All rights reserved."
 }
