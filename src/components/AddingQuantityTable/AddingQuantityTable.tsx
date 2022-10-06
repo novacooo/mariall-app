@@ -89,6 +89,8 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
         productsData?.forEach(({ id: productId, attributes: productAttributes }) => {
           if (!productId || !productAttributes) return;
 
+          if (!productAttributes.active) return;
+
           const { code: productCode, name: productName, image: productImage } = productAttributes;
 
           const quantityIndex = quantitiesData?.findIndex(

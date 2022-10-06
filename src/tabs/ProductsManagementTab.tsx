@@ -27,10 +27,10 @@ const ProductsManagementTab = () => {
         }}
       >
         {productsData ? (
-          productsData.map(({ id, attributes }, index) => {
+          productsData.map(({ id, attributes }) => {
             if (!id || !attributes) return null;
 
-            const { code, name, price } = attributes;
+            const { code, name, price, active } = attributes;
 
             return (
               <ProductCard
@@ -38,7 +38,7 @@ const ProductsManagementTab = () => {
                 name={name}
                 code={code}
                 price={price}
-                active={!!(index % 2)}
+                active={active}
                 image={getImageUrl(attributes.image?.data?.attributes?.url)}
               />
             );
