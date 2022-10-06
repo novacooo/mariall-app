@@ -494,6 +494,7 @@ export type PaginationArg = {
 
 export type Product = {
   __typename?: 'Product';
+  active: Scalars['Boolean'];
   code: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   image?: Maybe<UploadFileEntityResponse>;
@@ -528,6 +529,7 @@ export type ProductEntityResponseCollection = {
 };
 
 export type ProductFiltersInput = {
+  active?: InputMaybe<BooleanFilterInput>;
   and?: InputMaybe<Array<InputMaybe<ProductFiltersInput>>>;
   code?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
@@ -541,6 +543,7 @@ export type ProductFiltersInput = {
 };
 
 export type ProductInput = {
+  active?: InputMaybe<Scalars['Boolean']>;
   code?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
@@ -1157,7 +1160,7 @@ export type GetEmployeesQuery = { __typename?: 'Query', employees?: { __typename
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, price: number, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null }> } | null };
+export type GetProductsQuery = { __typename?: 'Query', products?: { __typename?: 'ProductEntityResponseCollection', data: Array<{ __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, price: number, active: boolean, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null }> } | null };
 
 export type GetQuantitiesQueryVariables = Exact<{
   workerId: Scalars['ID'];
@@ -1360,6 +1363,7 @@ export const GetProductsDocument = gql`
         code
         name
         price
+        active
         image {
           data {
             attributes {
