@@ -1,5 +1,6 @@
-import { Flex, Spinner } from '@chakra-ui/react';
+import { Flex, Spinner, useDisclosure } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard/ProductCard';
+import ProductDrawer from 'components/ProductDrawer/ProductDrawer';
 import { useGetProductsQuery } from 'graphql/generated/schema';
 import { getImageUrl } from 'helpers/getImageUrl';
 import { useErrorToast } from 'hooks';
@@ -7,6 +8,7 @@ import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 
 const ProductsManagementTab = () => {
   const errorToast = useErrorToast();
+  const { isOpen: isProductDrawerOpen, onOpen: productDrawerOnOpen, onClose: productDrawerOnClose } = useDisclosure();
 
   const { data: getProductsData } = useGetProductsQuery({
     onError: (error) => {
@@ -40,6 +42,7 @@ const ProductsManagementTab = () => {
                 price={price}
                 active={active}
                 image={getImageUrl(attributes.image?.data?.attributes?.url)}
+                onClick={productDrawerOnOpen}
               />
             );
           })
@@ -47,6 +50,7 @@ const ProductsManagementTab = () => {
           <Spinner />
         )}
       </Flex>
+      <ProductDrawer isOpen={isProductDrawerOpen} onClose={productDrawerOnClose} />
     </ProtectedTabTemplate>
   );
 };

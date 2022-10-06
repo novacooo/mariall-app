@@ -1,11 +1,13 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+import { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
 import { UserRole } from 'constants/UserRole';
 import { selectUserRole } from 'features/user/userSlice';
 import { useAppSelector } from 'hooks';
-import { Navigate } from 'react-router-dom';
 import { routes } from 'routes';
 
 interface ProtectedTabTemplateProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 const ProtectedTabTemplate = ({ children }: ProtectedTabTemplateProps) => {
@@ -15,7 +17,7 @@ const ProtectedTabTemplate = ({ children }: ProtectedTabTemplateProps) => {
     return <Navigate to={`${routes.panel}/${routes.panelAddingQuantity}`} replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedTabTemplate;
