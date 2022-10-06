@@ -65,6 +65,9 @@
     "signIn": "Sign in",
     "menu": "Menu"
   },
+  "texts": {
+    "currency": "PLN"
+  },
   "inputs": {
     "email": "Email",
     "password": "Password"

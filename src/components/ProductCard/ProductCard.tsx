@@ -1,7 +1,8 @@
-import { useColorModeValue, VStack, Image, Heading, Text } from '@chakra-ui/react';
+import { useColorModeValue, VStack, Image, Text, HStack, Flex } from '@chakra-ui/react';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector } from 'hooks';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
+import { useTranslation } from 'react-i18next';
 
 interface ProductCardProps {
   code: string;
@@ -12,16 +13,17 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) => {
+  const { t } = useTranslation();
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
   const bg = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
+  const accentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
   return (
     <VStack
-      spacing={4}
+      spacing={3}
       p={4}
-      w={['full', 36]}
+      w={['full', 40]}
       bg={bg}
       borderWidth={1}
       rounded="md"
@@ -29,16 +31,25 @@ const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) =>
       role="group"
       _hover={{
         cursor: 'pointer',
-        borderColor,
+        borderColor: accentColor,
         transform: 'scale(1.02)',
       }}
       onClick={onClick}
     >
       <Image w={20} h={20} rounded="md" borderWidth={1} borderStyle="solid" src={image || PlaceholderImage} />
-      <Heading as="h4" size="sm" textAlign="center" userSelect="none">
-        {code}
-      </Heading>
-      <Text>{name}</Text>
+      <Flex w="full" justify="space-between" direction="column" gap={2} flexGrow={1}>
+        <Text fontSize="sm" noOfLines={2}>
+          {name}
+        </Text>
+        <HStack justify="space-between" align="center">
+          <Text fontSize="sm" textAlign="center" fontWeight="semibold" noOfLines={1}>
+            {code}
+          </Text>
+          <Text fontSize="sm" textAlign="center" fontWeight="semibold" noOfLines={1} color={accentColor}>
+            {`${price} ${t('texts.currency')}`}
+          </Text>
+        </HStack>
+      </Flex>
     </VStack>
   );
 };

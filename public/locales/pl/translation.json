@@ -65,6 +65,9 @@
     "signIn": "Logowanie",
     "menu": "Menu"
   },
+  "texts": {
+    "currency": "zł"
+  },
   "inputs": {
     "email": "Adres email",
     "password": "Hasło"
