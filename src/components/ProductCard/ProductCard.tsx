@@ -3,16 +3,18 @@ import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector } from 'hooks';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
 import { useTranslation } from 'react-i18next';
+import StatusIndicator from 'components/StatusIndicator/StatusIndicator';
 
 interface ProductCardProps {
   code: string;
   name: string;
   price: number;
+  active: boolean;
   image?: string;
   onClick?: () => void;
 }
 
-const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) => {
+const ProductCard = ({ code, name, price, active, image, onClick }: ProductCardProps) => {
   const { t } = useTranslation();
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
@@ -37,6 +39,7 @@ const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) =>
       }}
       onClick={onClick}
     >
+      <StatusIndicator active={active} />
       <Image w={20} h={20} rounded="md" borderWidth={1} borderStyle="solid" src={image || PlaceholderImage} />
       <Flex w="full" justify="space-between" direction="column" gap={2} flexGrow={1}>
         <Text fontSize="sm" noOfLines={2} color={nameColor}>
