@@ -18,7 +18,14 @@ const ProductsManagementTab = () => {
 
   return (
     <ProtectedTabTemplate>
-      <Flex gap={4} wrap="wrap">
+      <Flex
+        gap={4}
+        wrap="wrap"
+        justify={{
+          base: 'center',
+          md: 'flex-start',
+        }}
+      >
         {productsData ? (
           productsData.map(({ id, attributes }) => {
             if (!id || !attributes) return null;

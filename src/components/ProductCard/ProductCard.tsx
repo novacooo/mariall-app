@@ -45,7 +45,15 @@ const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) =>
           <Text fontSize="sm" textAlign="center" fontWeight="semibold" noOfLines={1}>
             {code}
           </Text>
-          <Text fontSize="sm" textAlign="center" fontWeight="semibold" noOfLines={1} color={accentColor}>
+          <Text
+            fontSize="sm"
+            textAlign="center"
+            fontWeight="semibold"
+            noOfLines={1}
+            color={accentColor}
+            overflow="unset"
+            whiteSpace="nowrap"
+          >
             {`${price} ${t('texts.currency')}`}
           </Text>
         </HStack>
