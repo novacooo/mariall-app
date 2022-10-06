@@ -1,14 +1,17 @@
 import { Flex, Spinner, useDisclosure } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard/ProductCard';
-import ProductDrawer from 'components/ProductDrawer/ProductDrawer';
+import ProductDrawer, { IDrawerProduct } from 'components/ProductDrawer/ProductDrawer';
 import { useGetProductsQuery } from 'graphql/generated/schema';
 import { getImageUrl } from 'helpers/getImageUrl';
 import { useErrorToast } from 'hooks';
+import { useState } from 'react';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 
 const ProductsManagementTab = () => {
   const errorToast = useErrorToast();
-  const { isOpen: isProductDrawerOpen, onOpen: productDrawerOnOpen, onClose: productDrawerOnClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [product, setProduct] = useState<IDrawerProduct>();
 
   const { data: getProductsData } = useGetProductsQuery({
     onError: (error) => {
@@ -17,6 +20,16 @@ const ProductsManagementTab = () => {
   });
 
   const productsData = getProductsData?.products?.data;
+
+  const handleDrawerOpen = (productItem: IDrawerProduct) => {
+    setProduct(productItem);
+    onOpen();
+  };
+
+  const handleDrawerClose = () => {
+    setProduct(undefined);
+    onClose();
+  };
 
   return (
     <ProtectedTabTemplate>
@@ -34,6 +47,8 @@ const ProductsManagementTab = () => {
 
             const { code, name, price, active } = attributes;
 
+            const productItem: IDrawerProduct = { id, code, name, price, active };
+
             return (
               <ProductCard
                 key={id}
@@ -42,7 +57,7 @@ const ProductsManagementTab = () => {
                 price={price}
                 active={active}
                 image={getImageUrl(attributes.image?.data?.attributes?.url)}
-                onClick={productDrawerOnOpen}
+                onClick={() => handleDrawerOpen(productItem)}
               />
             );
           })
@@ -50,7 +65,7 @@ const ProductsManagementTab = () => {
           <Spinner />
         )}
       </Flex>
-      <ProductDrawer isOpen={isProductDrawerOpen} onClose={productDrawerOnClose} />
+      <ProductDrawer product={product} isOpen={isOpen} onClose={handleDrawerClose} />
     </ProtectedTabTemplate>
   );
 };
