@@ -52,7 +52,8 @@
     "signOut": "Sign out",
     "saveChanges": "Save changes",
     "resetChanges": "Reset changes",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "deleteProduct": "Delete product"
   },
   "loadingTexts": {
     "signInButton": "Signing in..."
@@ -128,6 +129,11 @@
   "indicators": {
     "active": "Active",
     "inactive": "Inactive"
+  },
+  "drawers": {
+    "headers": {
+      "productEdition": "Product edition"
+    }
   },
   "copyright": "Copyright © 2022 Jacek Nowak. All rights reserved."
 }
