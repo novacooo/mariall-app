@@ -18,6 +18,7 @@ const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) =>
 
   const bg = useColorModeValue('white', 'gray.800');
   const accentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
+  const nameColor = useColorModeValue('gray.500', 'gray.400');
 
   return (
     <VStack
@@ -38,7 +39,7 @@ const ProductCard = ({ code, name, price, image, onClick }: ProductCardProps) =>
     >
       <Image w={20} h={20} rounded="md" borderWidth={1} borderStyle="solid" src={image || PlaceholderImage} />
       <Flex w="full" justify="space-between" direction="column" gap={2} flexGrow={1}>
-        <Text fontSize="sm" noOfLines={2}>
+        <Text fontSize="sm" noOfLines={2} color={nameColor}>
           {name}
         </Text>
         <HStack justify="space-between" align="center">
