@@ -18,10 +18,12 @@ import {
   Spinner,
   useColorModeValue,
   Box,
+  Text,
   VStack,
+  Switch,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useId, useState } from 'react';
+import { ChangeEvent, useEffect, useId, useState } from 'react';
 import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 'react-icons/fi';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector } from 'hooks';
@@ -47,6 +49,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
+  const [isActive, setIsActive] = useState<boolean>();
   const [nameValue, setNameValue] = useState<string>();
   const [codeValue, setCodeValue] = useState<string>();
   const [priceValue, setPriceValue] = useState<string>();
@@ -54,20 +57,26 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const nameId = useId();
   const codeId = useId();
   const priceId = useId();
+  const activeId = useId();
 
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleActiveSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.target;
+    setIsActive(checked);
+  };
+
+  const handleNameInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setNameValue(value);
   };
 
-  const handleCodeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCodeInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setCodeValue(value);
   };
 
-  const handlePriceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePriceInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setPriceValue(value);
   };
@@ -75,8 +84,9 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   useEffect(() => {
     if (!product) return;
 
-    const { name, code, price } = product;
+    const { name, code, price, active } = product;
 
+    setIsActive(active);
     setNameValue(name);
     setCodeValue(code);
     setPriceValue(price.toString());
@@ -106,7 +116,21 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                   {t('buttons.uploadImage')}
                 </Button>
               </VStack>
-              <Flex direction="column" gap={4}>
+              <Flex direction="column" gap={6}>
+                <FormControl>
+                  <FormLabel>{t('labels.productVisibility')}</FormLabel>
+                  <Flex justify="space-between" align="center">
+                    <Text as="label" htmlFor={activeId}>
+                      {t('switches.productVisibility')}
+                    </Text>
+                    <Switch
+                      id={activeId}
+                      colorScheme={themeAccentColor}
+                      isChecked={isActive}
+                      onChange={handleActiveSwitchChange}
+                    />
+                  </Flex>
+                </FormControl>
                 <FormControl>
                   <FormLabel htmlFor={nameId}>{t('inputs.productName')}</FormLabel>
                   <InputGroup>

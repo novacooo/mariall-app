@@ -140,5 +140,11 @@
       "productEdition": "Product edition"
     }
   },
+  "labels": {
+    "productVisibility": "Product visibility"
+  },
+  "switches": {
+    "productVisibility": "Is the product active?"
+  },
   "copyright": "Copyright © 2022 Jacek Nowak. All rights reserved."
 }
