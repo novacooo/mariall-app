@@ -13,11 +13,11 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightAddon,
   Spinner,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { FiFileText, FiHash, FiSave, FiTrash2 } from 'react-icons/fi';
+import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2 } from 'react-icons/fi';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector } from 'hooks';
 import { useTranslation } from 'react-i18next';
@@ -44,9 +44,11 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const [nameValue, setNameValue] = useState<string>();
   const [codeValue, setCodeValue] = useState<string>();
+  const [priceValue, setPriceValue] = useState<string>();
 
   const nameId = useId();
   const codeId = useId();
+  const priceId = useId();
 
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
@@ -60,13 +62,19 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     setCodeValue(value);
   };
 
+  const handlePriceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setPriceValue(value);
+  };
+
   useEffect(() => {
     if (!product) return;
 
-    const { name, code } = product;
+    const { name, code, price } = product;
 
     setNameValue(name);
     setCodeValue(code);
+    setPriceValue(price.toString());
   }, [product]);
 
   return (
@@ -113,9 +121,25 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                     />
                   </InputGroup>
                 </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor={priceId}>{t('inputs.productPrice')}</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.500">
+                      <FiDollarSign />
+                    </InputLeftElement>
+                    <Input
+                      id={priceId}
+                      type="number"
+                      focusBorderColor={adaptiveAccentColor}
+                      value={priceValue}
+                      placeholder={t('inputs.productPrice')}
+                      onChange={handlePriceInputChange}
+                      variant="filled"
+                    />
+                    <InputRightAddon>{t('texts.currency')}</InputRightAddon>
+                  </InputGroup>
+                </FormControl>
               </Flex>
-              <Text>{product.price}</Text>
-              <Text>{product.active}</Text>
             </DrawerBody>
             <DrawerFooter flexDirection="column" alignItems="stretch" gap={4}>
               <Button colorScheme={themeAccentColor} rightIcon={<FiSave />}>
