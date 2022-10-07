@@ -13,15 +13,21 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Image,
   InputRightAddon,
   Spinner,
   useColorModeValue,
+  IconButton,
+  Tooltip,
+  Box,
+  Center,
 } from '@chakra-ui/react';
-import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2 } from 'react-icons/fi';
-import { selectThemeAccentColor } from 'features/theme/themeSlice';
-import { useAppSelector } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useId, useState } from 'react';
+import { FiDollarSign, FiEdit, FiEdit2, FiFileText, FiHash, FiImage, FiSave, FiTrash2 } from 'react-icons/fi';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import { useAppSelector } from 'hooks';
+import PlaceholderImage from 'assets/images/placeholder.jpg';
 
 export interface IDrawerProduct {
   id: string;
@@ -29,6 +35,7 @@ export interface IDrawerProduct {
   name: string;
   price: number;
   active: boolean;
+  imageUrl?: string;
 }
 
 interface ProductDrawerProps {
@@ -86,6 +93,28 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         {product ? (
           <>
             <DrawerBody>
+              <Center mb={8}>
+                <Box position="relative">
+                  <Image
+                    w={40}
+                    h={40}
+                    rounded="md"
+                    borderWidth={1}
+                    borderStyle="solid"
+                    src={product.imageUrl || PlaceholderImage}
+                  />
+                  <Tooltip label={t('tooltips.editImage')}>
+                    <IconButton
+                      colorScheme={themeAccentColor}
+                      aria-label={t('tooltips.editImage')}
+                      icon={<FiEdit2 />}
+                      position="absolute"
+                      bottom={-3}
+                      right={-3}
+                    />
+                  </Tooltip>
+                </Box>
+              </Center>
               <Flex direction="column" gap={4}>
                 <FormControl>
                   <FormLabel htmlFor={nameId}>{t('inputs.productName')}</FormLabel>

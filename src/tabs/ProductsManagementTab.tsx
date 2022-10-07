@@ -45,9 +45,11 @@ const ProductsManagementTab = () => {
           productsData.map(({ id, attributes }) => {
             if (!id || !attributes) return null;
 
-            const { code, name, price, active } = attributes;
+            const { code, name, price, active, image } = attributes;
 
-            const productItem: IDrawerProduct = { id, code, name, price, active };
+            const imageUrl = getImageUrl(image?.data?.attributes?.url);
+
+            const productItem: IDrawerProduct = { id, code, name, price, active, imageUrl };
 
             return (
               <ProductCard
@@ -56,7 +58,7 @@ const ProductsManagementTab = () => {
                 code={code}
                 price={price}
                 active={active}
-                image={getImageUrl(attributes.image?.data?.attributes?.url)}
+                image={imageUrl}
                 onClick={() => handleDrawerOpen(productItem)}
               />
             );

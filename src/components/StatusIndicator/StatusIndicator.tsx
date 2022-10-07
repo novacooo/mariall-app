@@ -32,13 +32,13 @@ const StatusIndicator = ({ active }: StatusIndicatorProps) => {
         rounded: 'full',
       }}
     >
-      <Box w={2} h={2} bgColor={active ? activeColor : inactiveColor} rounded="full" zIndex={1} />
+      <Box w={2} h={2} bgColor={active ? activeColor : inactiveColor} rounded="full" zIndex={0} />
       <Text
         fontSize="xs"
         fontWeight="semibold"
         lineHeight="none"
         color={active ? activeColor : inactiveColor}
-        zIndex={1}
+        zIndex={0}
       >
         {active ? t('indicators.active') : t('indicators.inactive')}
       </Text>

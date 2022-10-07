@@ -44,7 +44,8 @@
     "changeColor": "Zmień kolor",
     "changeApp": "Zmień aplikację",
     "changeLanguage": "Zmień język",
-    "signOut": "Wyloguj się"
+    "signOut": "Wyloguj się",
+    "editImage": "Edytuj zdjęcie"
   },
   "buttons": {
     "userSettings": "Ustawienia użytkownika",

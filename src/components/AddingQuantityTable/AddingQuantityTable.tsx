@@ -18,9 +18,9 @@ interface IProductWithQuantities {
   productId: string;
   productCode: string;
   productName: string;
-  productImageUrl: string | undefined;
-  quantityId: string | undefined;
-  quantity: number | undefined;
+  productImageUrl?: string;
+  quantityId?: string;
+  quantity?: number;
 }
 
 interface AddingQuantityTableProps {
