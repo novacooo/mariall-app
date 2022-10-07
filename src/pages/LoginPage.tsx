@@ -14,7 +14,7 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
@@ -44,6 +44,9 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isRememberMeChecked, setIsRememberMeChecked] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const emailId = useId();
+  const passwordId = useId();
 
   const appToast = useAppToast();
   const errorToast = useErrorToast();
@@ -181,13 +184,13 @@ const LoginPage = () => {
           {t('headers.signIn')}
         </Heading>
         <FormControl isRequired isInvalid={!isEmailValid || !isEmailCompleted}>
-          <FormLabel htmlFor="email">{t('inputs.email')}</FormLabel>
+          <FormLabel htmlFor={emailId}>{t('inputs.email')}</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none" color="gray.500">
               <FiMail />
             </InputLeftElement>
             <Input
-              id="email"
+              id={emailId}
               type="email"
               focusBorderColor={adaptiveAccentColor}
               value={emailValue}
@@ -203,13 +206,13 @@ const LoginPage = () => {
           )}
         </FormControl>
         <FormControl isRequired isInvalid={!isPasswordCompleted}>
-          <FormLabel htmlFor="password">{t('inputs.password')}</FormLabel>
+          <FormLabel htmlFor={passwordId}>{t('inputs.password')}</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none" color="gray.500">
               <FiLock />
             </InputLeftElement>
             <Input
-              id="password"
+              id={passwordId}
               type={showPassword ? 'text' : 'password'}
               value={passwordValue}
               placeholder={t('inputs.password')}

@@ -71,7 +71,10 @@
   },
   "inputs": {
     "email": "Adres email",
-    "password": "Hasło"
+    "password": "Hasło",
+    "productName": "Nazwa produktu",
+    "productCode": "Kod produktu",
+    "productPrice": "Cena produktu"
   },
   "selects": {
     "chooseWorker": "Wybierz pracownika",

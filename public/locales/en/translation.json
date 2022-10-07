@@ -71,7 +71,10 @@
   },
   "inputs": {
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "productName": "Product name",
+    "productCode": "Product code",
+    "productPrice": "Product price"
   },
   "selects": {
     "chooseWorker": "Choose worker",

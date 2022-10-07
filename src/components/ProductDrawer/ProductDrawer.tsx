@@ -7,13 +7,21 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Spinner,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import { FiSave, FiTrash2 } from 'react-icons/fi';
+import { FiFileText, FiHash, FiSave, FiTrash2 } from 'react-icons/fi';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useId, useState } from 'react';
 
 export interface IDrawerProduct {
   id: string;
@@ -34,6 +42,33 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
+  const [nameValue, setNameValue] = useState<string>();
+  const [codeValue, setCodeValue] = useState<string>();
+
+  const nameId = useId();
+  const codeId = useId();
+
+  const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
+
+  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setNameValue(value);
+  };
+
+  const handleCodeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setCodeValue(value);
+  };
+
+  useEffect(() => {
+    if (!product) return;
+
+    const { name, code } = product;
+
+    setNameValue(name);
+    setCodeValue(code);
+  }, [product]);
+
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
@@ -43,9 +78,42 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         {product ? (
           <>
             <DrawerBody>
-              <Text>{product.id}</Text>
-              <Text>{product.code}</Text>
-              <Text>{product.name}</Text>
+              <Flex direction="column" gap={4}>
+                <FormControl>
+                  <FormLabel htmlFor={nameId}>{t('inputs.productName')}</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.500">
+                      <FiFileText />
+                    </InputLeftElement>
+                    <Input
+                      id={nameId}
+                      type="text"
+                      focusBorderColor={adaptiveAccentColor}
+                      value={nameValue}
+                      placeholder={t('inputs.productName')}
+                      onChange={handleNameInputChange}
+                      variant="filled"
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor={codeId}>{t('inputs.productCode')}</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.500">
+                      <FiHash />
+                    </InputLeftElement>
+                    <Input
+                      id={codeId}
+                      type="text"
+                      focusBorderColor={adaptiveAccentColor}
+                      value={codeValue}
+                      placeholder={t('inputs.productCode')}
+                      onChange={handleCodeInputChange}
+                      variant="filled"
+                    />
+                  </InputGroup>
+                </FormControl>
+              </Flex>
               <Text>{product.price}</Text>
               <Text>{product.active}</Text>
             </DrawerBody>
