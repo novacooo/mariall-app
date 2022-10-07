@@ -189,7 +189,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
               <Button colorScheme={themeAccentColor} rightIcon={<FiSave />}>
                 {t('buttons.saveChanges')}
               </Button>
-              <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="outline">
+              <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost">
                 {t('buttons.deleteProduct')}
               </Button>
             </DrawerFooter>
