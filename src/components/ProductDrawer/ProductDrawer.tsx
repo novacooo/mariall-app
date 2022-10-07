@@ -17,14 +17,12 @@ import {
   InputRightAddon,
   Spinner,
   useColorModeValue,
-  IconButton,
-  Tooltip,
   Box,
-  Center,
+  VStack,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useId, useState } from 'react';
-import { FiDollarSign, FiEdit, FiEdit2, FiFileText, FiHash, FiImage, FiSave, FiTrash2 } from 'react-icons/fi';
+import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 'react-icons/fi';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useAppSelector } from 'hooks';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
@@ -93,7 +91,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         {product ? (
           <>
             <DrawerBody>
-              <Center mb={8}>
+              <VStack spacing={4} mb={8}>
                 <Box position="relative">
                   <Image
                     w={40}
@@ -103,18 +101,11 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                     borderStyle="solid"
                     src={product.imageUrl || PlaceholderImage}
                   />
-                  <Tooltip label={t('tooltips.editImage')}>
-                    <IconButton
-                      colorScheme={themeAccentColor}
-                      aria-label={t('tooltips.editImage')}
-                      icon={<FiEdit2 />}
-                      position="absolute"
-                      bottom={-3}
-                      right={-3}
-                    />
-                  </Tooltip>
                 </Box>
-              </Center>
+                <Button size="sm" variant="outline" rightIcon={<FiUpload />}>
+                  {t('buttons.uploadImage')}
+                </Button>
+              </VStack>
               <Flex direction="column" gap={4}>
                 <FormControl>
                   <FormLabel htmlFor={nameId}>{t('inputs.productName')}</FormLabel>

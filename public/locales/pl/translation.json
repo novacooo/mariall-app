@@ -44,8 +44,7 @@
     "changeColor": "Zmień kolor",
     "changeApp": "Zmień aplikację",
     "changeLanguage": "Zmień język",
-    "signOut": "Wyloguj się",
-    "editImage": "Edytuj zdjęcie"
+    "signOut": "Wyloguj się"
   },
   "buttons": {
     "userSettings": "Ustawienia użytkownika",
@@ -54,7 +53,8 @@
     "saveChanges": "Zapisz zmiany",
     "resetChanges": "Zresetuj zmiany",
     "cancel": "Anuluj",
-    "deleteProduct": "Usuń produkt"
+    "deleteProduct": "Usuń produkt",
+    "uploadImage": "Wgraj zdjęcie"
   },
   "loadingTexts": {
     "signInButton": "Logowanie..."
@@ -75,7 +75,8 @@
     "password": "Hasło",
     "productName": "Nazwa produktu",
     "productCode": "Kod produktu",
-    "productPrice": "Cena produktu"
+    "productPrice": "Cena produktu",
+    "productImage": "Zdjęcie produktu"
   },
   "selects": {
     "chooseWorker": "Wybierz pracownika",

@@ -44,8 +44,7 @@
     "changeColor": "Change color",
     "changeApp": "Change application",
     "changeLanguage": "Change language",
-    "signOut": "Sign out",
-    "editImage": "Edit image"
+    "signOut": "Sign out"
   },
   "buttons": {
     "userSettings": "User settings",
@@ -54,7 +53,8 @@
     "saveChanges": "Save changes",
     "resetChanges": "Reset changes",
     "cancel": "Cancel",
-    "deleteProduct": "Delete product"
+    "deleteProduct": "Delete product",
+    "uploadImage": "Upload image"
   },
   "loadingTexts": {
     "signInButton": "Signing in..."
@@ -75,7 +75,8 @@
     "password": "Password",
     "productName": "Product name",
     "productCode": "Product code",
-    "productPrice": "Product price"
+    "productPrice": "Product price",
+    "productImage": "Product price"
   },
   "selects": {
     "chooseWorker": "Choose worker",
