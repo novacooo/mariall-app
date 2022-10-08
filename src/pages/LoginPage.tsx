@@ -14,7 +14,7 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useId, useState } from 'react';
+import { FormEvent, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { routes } from 'routes';
@@ -127,6 +127,11 @@ const LoginPage = () => {
     void signIn();
   };
 
+  const handleButtonSubmit = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    handleButtonClick();
+  };
+
   const debouncedEmailCheck = useDebouncedCallback((value: string) => {
     setIsEmailValid(validator.isEmail(value));
     setIsEmailCompleted(value !== '');
@@ -172,6 +177,8 @@ const LoginPage = () => {
   return (
     <PageTemplate name={t('pagesHeaders.signIn')}>
       <Flex
+        as="form"
+        noValidate
         direction="column"
         gap={4}
         p={6}
@@ -247,11 +254,12 @@ const LoginPage = () => {
         </Checkbox>
         <Button
           mx={2}
-          onClick={handleButtonClick}
-          colorScheme={themeAccentColor}
           type="submit"
+          colorScheme={themeAccentColor}
           isLoading={isLoading}
           loadingText={t('loadingTexts.signInButton')}
+          onClick={handleButtonClick}
+          onSubmit={handleButtonSubmit}
         >
           {t('buttons.signIn')}
         </Button>
