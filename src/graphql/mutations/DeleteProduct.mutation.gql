@@ -1,0 +1,10 @@
+mutation DeleteProduct($id: ID!) {
+  updateProduct(id: $id, data: { deleted: true }) {
+    data {
+      id
+      attributes {
+        deleted
+      }
+    }
+  }
+}
