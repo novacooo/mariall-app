@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   Button,
   Drawer,
@@ -23,10 +24,11 @@ import {
   Switch,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, useEffect, useId, useState } from 'react';
 import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 'react-icons/fi';
-import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import { useFormik } from 'formik';
+
 import { useAppSelector } from 'hooks';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
 
 export interface IDrawerProduct {
@@ -38,6 +40,13 @@ export interface IDrawerProduct {
   imageUrl?: string;
 }
 
+interface IProductValues {
+  productValueActive: boolean;
+  productValueName: string;
+  productValueCode: string;
+  productValuePrice: number;
+}
+
 interface ProductDrawerProps {
   product: IDrawerProduct | undefined;
   isOpen: boolean;
@@ -46,50 +55,34 @@ interface ProductDrawerProps {
 
 const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const { t } = useTranslation();
-
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
-
-  const [isActive, setIsActive] = useState<boolean>();
-  const [nameValue, setNameValue] = useState<string>();
-  const [codeValue, setCodeValue] = useState<string>();
-  const [priceValue, setPriceValue] = useState<string>();
-
-  const nameId = useId();
-  const codeId = useId();
-  const priceId = useId();
-  const activeId = useId();
 
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
-  const handleActiveSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { checked } = e.target;
-    setIsActive(checked);
-  };
-
-  const handleNameInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setNameValue(value);
-  };
-
-  const handleCodeInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setCodeValue(value);
-  };
-
-  const handlePriceInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setPriceValue(value);
-  };
+  const formik = useFormik<IProductValues>({
+    initialValues: {
+      productValueActive: false,
+      productValueName: '',
+      productValueCode: '',
+      productValuePrice: 0,
+    },
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   useEffect(() => {
     if (!product) return;
 
-    const { name, code, price, active } = product;
+    const { code, name, price, active } = product;
 
-    setIsActive(active);
-    setNameValue(name);
-    setCodeValue(code);
-    setPriceValue(price.toString());
+    void formik.setValues({
+      productValueActive: active,
+      productValueName: name,
+      productValueCode: code,
+      productValuePrice: price,
+    });
   }, [product]);
 
   return (
@@ -116,77 +109,79 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                   {t('buttons.uploadImage')}
                 </Button>
               </VStack>
-              <Flex direction="column" gap={6}>
-                <FormControl>
-                  <FormLabel>{t('labels.productVisibility')}</FormLabel>
-                  <Flex justify="space-between" align="center">
-                    <Text as="label" htmlFor={activeId}>
-                      {t('switches.productVisibility')}
-                    </Text>
-                    <Switch
-                      id={activeId}
-                      colorScheme={themeAccentColor}
-                      isChecked={isActive}
-                      onChange={handleActiveSwitchChange}
-                    />
-                  </Flex>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor={nameId}>{t('inputs.productName')}</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.500">
-                      <FiFileText />
-                    </InputLeftElement>
-                    <Input
-                      id={nameId}
-                      type="text"
-                      focusBorderColor={adaptiveAccentColor}
-                      value={nameValue}
-                      placeholder={t('inputs.productName')}
-                      onChange={handleNameInputChange}
-                      variant="filled"
-                    />
-                  </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor={codeId}>{t('inputs.productCode')}</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.500">
-                      <FiHash />
-                    </InputLeftElement>
-                    <Input
-                      id={codeId}
-                      type="text"
-                      focusBorderColor={adaptiveAccentColor}
-                      value={codeValue}
-                      placeholder={t('inputs.productCode')}
-                      onChange={handleCodeInputChange}
-                      variant="filled"
-                    />
-                  </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor={priceId}>{t('inputs.productPrice')}</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.500">
-                      <FiDollarSign />
-                    </InputLeftElement>
-                    <Input
-                      id={priceId}
-                      type="number"
-                      focusBorderColor={adaptiveAccentColor}
-                      value={priceValue}
-                      placeholder={t('inputs.productPrice')}
-                      onChange={handlePriceInputChange}
-                      variant="filled"
-                    />
-                    <InputRightAddon>{t('texts.currency')}</InputRightAddon>
-                  </InputGroup>
-                </FormControl>
-                <Button colorScheme={themeAccentColor} rightIcon={<FiSave />}>
-                  {t('buttons.saveChanges')}
-                </Button>
-              </Flex>
+              <form onSubmit={formik.handleSubmit}>
+                <Flex direction="column" gap={6}>
+                  <FormControl>
+                    <FormLabel>{t('labels.productVisibility')}</FormLabel>
+                    <Flex justify="space-between" align="center">
+                      <Text as="label" htmlFor="productValueActive">
+                        {t('switches.productVisibility')}
+                      </Text>
+                      <Switch
+                        id="productValueActive"
+                        colorScheme={themeAccentColor}
+                        isChecked={formik.values.productValueActive}
+                        onChange={formik.handleChange}
+                      />
+                    </Flex>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="productValueName">{t('inputs.productName')}</FormLabel>
+                    <InputGroup>
+                      <InputLeftElement pointerEvents="none" color="gray.500">
+                        <FiFileText />
+                      </InputLeftElement>
+                      <Input
+                        id="productValueName"
+                        type="text"
+                        focusBorderColor={adaptiveAccentColor}
+                        value={formik.values.productValueName}
+                        placeholder={t('inputs.productName')}
+                        onChange={formik.handleChange}
+                        variant="filled"
+                      />
+                    </InputGroup>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="productValueCode">{t('inputs.productCode')}</FormLabel>
+                    <InputGroup>
+                      <InputLeftElement pointerEvents="none" color="gray.500">
+                        <FiHash />
+                      </InputLeftElement>
+                      <Input
+                        id="productValueCode"
+                        type="text"
+                        focusBorderColor={adaptiveAccentColor}
+                        value={formik.values.productValueCode}
+                        placeholder={t('inputs.productCode')}
+                        onChange={formik.handleChange}
+                        variant="filled"
+                      />
+                    </InputGroup>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="productValuePrice">{t('inputs.productPrice')}</FormLabel>
+                    <InputGroup>
+                      <InputLeftElement pointerEvents="none" color="gray.500">
+                        <FiDollarSign />
+                      </InputLeftElement>
+                      <Input
+                        id="productValuePrice"
+                        type="number"
+                        focusBorderColor={adaptiveAccentColor}
+                        value={formik.values.productValuePrice}
+                        placeholder={t('inputs.productPrice')}
+                        onChange={formik.handleChange}
+                        variant="filled"
+                      />
+                      <InputRightAddon>{t('texts.currency')}</InputRightAddon>
+                    </InputGroup>
+                  </FormControl>
+                  <Button type="submit" colorScheme={themeAccentColor} rightIcon={<FiSave />}>
+                    {t('buttons.saveChanges')}
+                  </Button>
+                </Flex>
+              </form>
             </DrawerBody>
             <DrawerFooter flexDirection="column" alignItems="stretch" gap={4}>
               <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost">
