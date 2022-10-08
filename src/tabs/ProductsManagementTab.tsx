@@ -2,7 +2,7 @@ import { Flex, Spinner, useDisclosure } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard/ProductCard';
 import ProductDrawer, { IDrawerProduct } from 'components/ProductDrawer/ProductDrawer';
 import { useGetProductsQuery } from 'graphql/generated/schema';
-import { getImageUrl } from 'helpers/getImageUrl';
+import { getImageUrl } from 'helpers';
 import { useErrorToast } from 'hooks';
 import { useState } from 'react';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';

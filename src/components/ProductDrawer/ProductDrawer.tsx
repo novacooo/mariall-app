@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   Button,
   Drawer,
@@ -32,6 +31,7 @@ import * as yup from 'yup';
 import { useAppSelector } from 'hooks';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
+import { checkIsNumberDecimal } from 'helpers';
 
 export interface IDrawerProduct {
   id: string;
@@ -55,18 +55,17 @@ interface ProductDrawerProps {
   onClose: () => void;
 }
 
-const initialProductValues = {
-  productValueActive: false,
-  productValueName: '',
-  productValueCode: '',
-  productValuePrice: 0,
-};
-
 const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const { t } = useTranslation();
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
-
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
+
+  const initialProductValues = {
+    productValueActive: product ? product.active : false,
+    productValueName: product ? product.name : '',
+    productValueCode: product ? product.code : '',
+    productValuePrice: product ? product.price : 0,
+  };
 
   const productValidationSchema: yup.SchemaOf<IProductValues> = yup.object().shape({
     productValueActive: yup.boolean().required(),
@@ -83,29 +82,18 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     productValuePrice: yup
       .number()
       .min(0, t('errors.productPriceTooSmall'))
+      .test('is-decimal', t('errors.productPriceWrongPattern'), checkIsNumberDecimal)
       .required(t('errors.notCompletedProductPrice')),
   });
 
   const formik = useFormik<IProductValues>({
     initialValues: initialProductValues,
+    enableReinitialize: true,
     validationSchema: productValidationSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
   });
-
-  useEffect(() => {
-    if (!product) return;
-
-    const { code, name, price, active } = product;
-
-    void formik.setValues({
-      productValueActive: active,
-      productValueName: name,
-      productValueCode: code,
-      productValuePrice: price,
-    });
-  }, [product]);
 
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -133,7 +121,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
               </VStack>
               <form onSubmit={formik.handleSubmit}>
                 <Flex direction="column" gap={6}>
-                  <FormControl isInvalid={!!formik.errors.productValueActive && formik.touched.productValueActive}>
+                  <FormControl isInvalid={!!formik.errors.productValueActive}>
                     <FormLabel>{t('labels.productVisibility')}</FormLabel>
                     <Flex justify="space-between" align="center">
                       <Text as="label" htmlFor="productValueActive">
@@ -146,11 +134,11 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                         onChange={formik.handleChange}
                       />
                     </Flex>
-                    {formik.errors.productValueActive && formik.touched.productValueActive && (
+                    {formik.errors.productValueActive && (
                       <FormErrorMessage>{formik.errors.productValueActive}</FormErrorMessage>
                     )}
                   </FormControl>
-                  <FormControl isInvalid={!!formik.errors.productValueName && formik.touched.productValueName}>
+                  <FormControl isInvalid={!!formik.errors.productValueName}>
                     <FormLabel htmlFor="productValueName">{t('inputs.productName')}</FormLabel>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none" color="gray.500">
@@ -166,11 +154,11 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                         variant="filled"
                       />
                     </InputGroup>
-                    {formik.errors.productValueName && formik.touched.productValueName && (
+                    {formik.errors.productValueName && (
                       <FormErrorMessage>{formik.errors.productValueName}</FormErrorMessage>
                     )}
                   </FormControl>
-                  <FormControl isInvalid={!!formik.errors.productValueCode && formik.touched.productValueCode}>
+                  <FormControl isInvalid={!!formik.errors.productValueCode}>
                     <FormLabel htmlFor="productValueCode">{t('inputs.productCode')}</FormLabel>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none" color="gray.500">
@@ -186,11 +174,11 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                         variant="filled"
                       />
                     </InputGroup>
-                    {formik.errors.productValueCode && formik.touched.productValueCode && (
+                    {formik.errors.productValueCode && (
                       <FormErrorMessage>{formik.errors.productValueCode}</FormErrorMessage>
                     )}
                   </FormControl>
-                  <FormControl isInvalid={!!formik.errors.productValuePrice && formik.touched.productValuePrice}>
+                  <FormControl isInvalid={!!formik.errors.productValuePrice}>
                     <FormLabel htmlFor="productValuePrice">{t('inputs.productPrice')}</FormLabel>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none" color="gray.500">
@@ -207,13 +195,13 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                       />
                       <InputRightAddon>{t('texts.currency')}</InputRightAddon>
                     </InputGroup>
-                    {formik.errors.productValuePrice && formik.touched.productValuePrice && (
+                    {formik.errors.productValuePrice && (
                       <FormErrorMessage>{formik.errors.productValuePrice}</FormErrorMessage>
                     )}
                   </FormControl>
                   <Button
                     type="submit"
-                    disabled={!formik.isValid}
+                    disabled={!formik.isValid || !formik.dirty}
                     colorScheme={themeAccentColor}
                     rightIcon={<FiSave />}
                   >

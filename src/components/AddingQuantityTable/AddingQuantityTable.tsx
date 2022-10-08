@@ -7,7 +7,7 @@ import { useErrorToast } from 'hooks';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
-import { getImageUrl } from 'helpers/getImageUrl';
+import { getImageUrl } from 'helpers';
 
 export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];

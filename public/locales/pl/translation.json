@@ -108,7 +108,8 @@
     "productCodeTooShort": "Kod produktu jest za krótki!",
     "productNameTooLong": "Nazwa produktu jest za długa!",
     "productCodeTooLong": "Kod produktu jest za długi!",
-    "productPriceTooSmall": "Cena produktu jest zbyt mała!"
+    "productPriceTooSmall": "Cena produktu jest zbyt mała!",
+    "productPriceWrongPattern": "Cena może mieć maksymalnie dwie cyfry po przecinku!"
   },
   "tables": {
     "productImage": "Zdjęcie",
