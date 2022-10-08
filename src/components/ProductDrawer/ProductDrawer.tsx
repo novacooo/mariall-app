@@ -118,6 +118,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     });
 
     setIsDeleting(false);
+    onDeleteModalClose();
     onClose();
 
     appToast({
@@ -167,7 +168,6 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const handleModalDeleteButtonClick = () => {
     void sendDeleteProduct();
-    onDeleteModalClose();
   };
 
   return (
@@ -288,14 +288,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
               </form>
             </DrawerBody>
             <DrawerFooter flexDirection="column" alignItems="stretch" gap={4}>
-              <Button
-                rightIcon={<FiTrash2 />}
-                colorScheme="red"
-                variant="ghost"
-                isLoading={isDeleting}
-                loadingText={t('loading.deleting')}
-                onClick={handleDeleteButtonClick}
-              >
+              <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost" onClick={handleDeleteButtonClick}>
                 {t('buttons.deleteProduct')}
               </Button>
             </DrawerFooter>
@@ -308,6 +301,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
       </DrawerContent>
       <DeleteProductModal
         isOpen={isDeleteModalOpen}
+        isLoading={isDeleting}
         onClose={onDeleteModalClose}
         onDeleteButtonClick={handleModalDeleteButtonClick}
       />

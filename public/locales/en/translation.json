@@ -155,6 +155,14 @@
       "productEdition": "Product edition"
     }
   },
+  "modals": {
+    "headers": {
+      "deleteProduct": "Delete product"
+    },
+    "descriptions": {
+      "deleteProduct": "Are you sure you want to remove this product?"
+    }
+  },
   "labels": {
     "productVisibility": "Product visibility"
   },
