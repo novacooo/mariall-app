@@ -374,6 +374,7 @@ const AddingQuantityTab = () => {
                 ml={3}
                 rightIcon={<FiSave />}
                 isLoading={isSending}
+                loadingText={t('loading.saving')}
               >
                 {t('buttons.saveChanges')}
               </Button>

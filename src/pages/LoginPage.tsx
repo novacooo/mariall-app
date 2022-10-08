@@ -257,7 +257,7 @@ const LoginPage = () => {
           type="submit"
           colorScheme={themeAccentColor}
           isLoading={isLoading}
-          loadingText={t('loadingTexts.signInButton')}
+          loadingText={t('loading.signInButton')}
           onClick={handleButtonClick}
           onSubmit={handleButtonSubmit}
         >

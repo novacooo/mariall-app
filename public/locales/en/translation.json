@@ -56,8 +56,9 @@
     "deleteProduct": "Delete product",
     "uploadImage": "Upload image"
   },
-  "loadingTexts": {
-    "signInButton": "Signing in..."
+  "loading": {
+    "signInButton": "Signing in...",
+    "saving": "Saving..."
   },
   "headers": {
     "signIn": "Sign in",
@@ -131,13 +132,15 @@
       "somethingWentWrong": "Something went wrong!",
       "unableToSave": "Unable to save!",
       "incorrectLoginCredentials": "Incorrect login credentials!",
-      "quantitiesAddSuccess": "Success!"
+      "quantitiesAddSuccess": "Success!",
+      "updateProductSuccess": "Update success!"
     },
     "descriptions": {
       "somethingWentWrong": "Ups... something went wrong. Error message:",
       "unableToSave": "You must modify any product to be able to save the changes.",
       "incorrectLoginCredentials": "You entered incorrect login credentials. Login failed.",
-      "quantitiesAddSuccess": "The quantities have been added successfully."
+      "quantitiesAddSuccess": "The quantities have been added successfully.",
+      "updateProductSuccess": "Changes have been saved!"
     }
   },
   "indicators": {

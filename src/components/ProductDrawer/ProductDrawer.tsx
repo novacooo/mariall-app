@@ -28,10 +28,12 @@ import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 're
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
 import { checkIsNumberDecimal } from 'helpers';
+import { useUpdateProductMutation } from 'graphql/generated/schema';
+import { useState } from 'react';
 
 export interface IDrawerProduct {
   id: string;
@@ -57,8 +59,46 @@ interface ProductDrawerProps {
 
 const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const { t } = useTranslation();
+  const appToast = useAppToast();
+  const errorToast = useErrorToast();
+
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
+
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
+
+  const [isSending, setIsSending] = useState<boolean>();
+
+  const [updateProduct] = useUpdateProductMutation({
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
+  const sendUpdateProduct = async (values: IProductValues) => {
+    if (!product) return;
+
+    const { productValueActive, productValueName, productValueCode, productValuePrice } = values;
+
+    setIsSending(true);
+
+    await updateProduct({
+      variables: {
+        id: product.id,
+        code: productValueCode,
+        name: productValueName,
+        price: productValuePrice,
+        active: productValueActive,
+      },
+    });
+
+    setIsSending(false);
+    onClose();
+
+    appToast({
+      title: t('toasts.titles.updateProductSuccess'),
+      description: t('toasts.descriptions.updateProductSuccess'),
+    });
+  };
 
   const initialProductValues = {
     productValueActive: product ? product.active : false,
@@ -91,7 +131,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     enableReinitialize: true,
     validationSchema: productValidationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      void sendUpdateProduct(values);
     },
   });
 
@@ -204,6 +244,8 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                     disabled={!formik.isValid || !formik.dirty}
                     colorScheme={themeAccentColor}
                     rightIcon={<FiSave />}
+                    isLoading={isSending}
+                    loadingText={t('loading.saving')}
                   >
                     {t('buttons.saveChanges')}
                   </Button>
