@@ -1463,7 +1463,7 @@ export type GetEmployeesLazyQueryHookResult = ReturnType<typeof useGetEmployeesL
 export type GetEmployeesQueryResult = Apollo.QueryResult<GetEmployeesQuery, GetEmployeesQueryVariables>;
 export const GetProductsDocument = gql`
     query GetProducts {
-  products {
+  products(filters: {deleted: {eq: false}}) {
     data {
       id
       attributes {
