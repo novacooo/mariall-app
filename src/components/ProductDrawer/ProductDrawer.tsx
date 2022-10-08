@@ -32,7 +32,7 @@ import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
 import { checkIsNumberDecimal } from 'helpers';
-import { useUpdateProductMutation } from 'graphql/generated/schema';
+import { useDeleteProductMutation, useUpdateProductMutation } from 'graphql/generated/schema';
 import { useState } from 'react';
 
 export interface IDrawerProduct {
@@ -67,11 +67,14 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
   const [isSending, setIsSending] = useState<boolean>();
+  const [isDeleting, setIsDeleting] = useState<boolean>();
 
   const [updateProduct] = useUpdateProductMutation({
-    onError: (error) => {
-      errorToast(error);
-    },
+    onError: (error) => errorToast(error),
+  });
+
+  const [deleteProduct] = useDeleteProductMutation({
+    onError: (error) => errorToast(error),
   });
 
   const sendUpdateProduct = async (values: IProductValues) => {
@@ -97,6 +100,26 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     appToast({
       title: t('toasts.titles.updateProductSuccess'),
       description: t('toasts.descriptions.updateProductSuccess'),
+    });
+  };
+
+  const sendDeleteProduct = async () => {
+    if (!product) return;
+
+    setIsDeleting(true);
+
+    await deleteProduct({
+      variables: {
+        id: product.id,
+      },
+    });
+
+    setIsDeleting(false);
+    onClose();
+
+    appToast({
+      title: t('toasts.titles.deleteProductSuccess'),
+      description: t('toasts.descriptions.deleteProductSuccess'),
     });
   };
 
@@ -134,6 +157,10 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
       void sendUpdateProduct(values);
     },
   });
+
+  const handleDeleteButtonClick = () => {
+    void sendDeleteProduct();
+  };
 
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -253,7 +280,14 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
               </form>
             </DrawerBody>
             <DrawerFooter flexDirection="column" alignItems="stretch" gap={4}>
-              <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost">
+              <Button
+                rightIcon={<FiTrash2 />}
+                colorScheme="red"
+                variant="ghost"
+                isLoading={isDeleting}
+                loadingText={t('loading.deleting')}
+                onClick={handleDeleteButtonClick}
+              >
                 {t('buttons.deleteProduct')}
               </Button>
             </DrawerFooter>

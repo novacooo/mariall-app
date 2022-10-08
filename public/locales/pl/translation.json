@@ -58,7 +58,8 @@
   },
   "loading": {
     "signInButton": "Logowanie...",
-    "saving": "Zapisywanie..."
+    "saving": "Zapisywanie...",
+    "deleting": "Usuwanie..."
   },
   "headers": {
     "signIn": "Zaloguj się",
@@ -133,14 +134,16 @@
       "unableToSave": "Nie można zapisać!",
       "incorrectLoginCredentials": "Błędne dane logowania!",
       "quantitiesAddSuccess": "Udało się!",
-      "updateProductSuccess": "Udało się!"
+      "updateProductSuccess": "Udało się!",
+      "deleteProductSuccess": "Usunięto!"
     },
     "descriptions": {
       "somethingWentWrong": "Ups... coś poszło nie tak. Komunikat błędu:",
       "unableToSave": "Musisz zmodyfikować jakikolwiek produkt, żeby móc zapisać zmiany.",
       "incorrectLoginCredentials": "Podałeś błędne dane logowania. Nie udało się zalogować.",
       "quantitiesAddSuccess": "Ilości zostały dodane pomyślnie.",
-      "updateProductSuccess": "Zmiany zostały zapisane!"
+      "updateProductSuccess": "Zmiany zostały zapisane!",
+      "deleteProductSuccess": "Produkt został usunięty pomyślnie!"
     }
   },
   "indicators": {
