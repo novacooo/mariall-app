@@ -22,10 +22,12 @@ import {
   Text,
   VStack,
   Switch,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 'react-icons/fi';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import { useAppSelector } from 'hooks';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
@@ -53,6 +55,13 @@ interface ProductDrawerProps {
   onClose: () => void;
 }
 
+const productValidationSchema: yup.SchemaOf<IProductValues> = yup.object().shape({
+  productValueActive: yup.boolean().required(),
+  productValueName: yup.string().min(2, 'Too short!').max(80, 'Too long!').required('dfdsfsdfsd'),
+  productValueCode: yup.string().min(2, 'Too short!').max(15, 'Too long!').required(),
+  productValuePrice: yup.number().min(0, 'Too small price!').required(),
+});
+
 const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const { t } = useTranslation();
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
@@ -67,6 +76,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
       productValuePrice: 0,
     },
     enableReinitialize: true,
+    validationSchema: productValidationSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
@@ -125,7 +135,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                       />
                     </Flex>
                   </FormControl>
-                  <FormControl>
+                  <FormControl isInvalid={!!formik.errors.productValueName && formik.touched.productValueName}>
                     <FormLabel htmlFor="productValueName">{t('inputs.productName')}</FormLabel>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none" color="gray.500">
@@ -141,6 +151,9 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                         variant="filled"
                       />
                     </InputGroup>
+                    {formik.errors.productValueName && formik.touched.productValueName && (
+                      <FormErrorMessage>{formik.errors.productValueName}</FormErrorMessage>
+                    )}
                   </FormControl>
                   <FormControl>
                     <FormLabel htmlFor="productValueCode">{t('inputs.productCode')}</FormLabel>
