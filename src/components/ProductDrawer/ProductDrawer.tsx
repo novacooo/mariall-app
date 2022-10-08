@@ -183,12 +183,12 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                     <InputRightAddon>{t('texts.currency')}</InputRightAddon>
                   </InputGroup>
                 </FormControl>
+                <Button colorScheme={themeAccentColor} rightIcon={<FiSave />}>
+                  {t('buttons.saveChanges')}
+                </Button>
               </Flex>
             </DrawerBody>
             <DrawerFooter flexDirection="column" alignItems="stretch" gap={4}>
-              <Button colorScheme={themeAccentColor} rightIcon={<FiSave />}>
-                {t('buttons.saveChanges')}
-              </Button>
               <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost">
                 {t('buttons.deleteProduct')}
               </Button>
