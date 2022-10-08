@@ -88,7 +88,6 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const formik = useFormik<IProductValues>({
     initialValues: initialProductValues,
-    enableReinitialize: true,
     validationSchema: productValidationSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
@@ -212,7 +211,12 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                       <FormErrorMessage>{formik.errors.productValuePrice}</FormErrorMessage>
                     )}
                   </FormControl>
-                  <Button type="submit" colorScheme={themeAccentColor} rightIcon={<FiSave />}>
+                  <Button
+                    type="submit"
+                    disabled={!formik.isValid}
+                    colorScheme={themeAccentColor}
+                    rightIcon={<FiSave />}
+                  >
                     {t('buttons.saveChanges')}
                   </Button>
                 </Flex>
