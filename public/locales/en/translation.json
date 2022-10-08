@@ -100,7 +100,15 @@
   "errors": {
     "notCompletedEmail": "You must provide an email address!",
     "notCompletedPassword": "You must enter a password!",
-    "invalidEmail": "The email address provided is not valid!"
+    "invalidEmail": "The email address provided is not valid!",
+    "notCompletedProductName": "You must enter a product name!",
+    "notCompletedProductCode": "You must enter a product code!",
+    "notCompletedProductPrice": "You must enter the price of the product!",
+    "productNameTooShort": "The product name is too short!",
+    "productCodeTooShort": "The product code is too short!",
+    "productNameTooLong": "The product name is too long!",
+    "productCodeTooLong": "The product code is too long!",
+    "productPriceTooSmall": "The product price is too small!"
   },
   "tables": {
     "productImage": "Image",

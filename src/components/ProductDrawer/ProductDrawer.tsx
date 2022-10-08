@@ -55,12 +55,12 @@ interface ProductDrawerProps {
   onClose: () => void;
 }
 
-const productValidationSchema: yup.SchemaOf<IProductValues> = yup.object().shape({
-  productValueActive: yup.boolean().required(),
-  productValueName: yup.string().min(2, 'Too short!').max(80, 'Too long!').required('dfdsfsdfsd'),
-  productValueCode: yup.string().min(2, 'Too short!').max(15, 'Too long!').required(),
-  productValuePrice: yup.number().min(0, 'Too small price!').required(),
-});
+const initialProductValues = {
+  productValueActive: false,
+  productValueName: '',
+  productValueCode: '',
+  productValuePrice: 0,
+};
 
 const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const { t } = useTranslation();
@@ -68,13 +68,26 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
+  const productValidationSchema: yup.SchemaOf<IProductValues> = yup.object().shape({
+    productValueActive: yup.boolean().required(),
+    productValueName: yup
+      .string()
+      .min(2, t('errors.productNameTooShort'))
+      .max(80, t('errors.productNameTooLong'))
+      .required(t('errors.notCompletedProductName')),
+    productValueCode: yup
+      .string()
+      .min(2, t('errors.productCodeTooShort'))
+      .max(15, t('errors.productCodeTooLong'))
+      .required(t('errors.notCompletedProductCode')),
+    productValuePrice: yup
+      .number()
+      .min(0, t('errors.productPriceTooSmall'))
+      .required(t('errors.notCompletedProductPrice')),
+  });
+
   const formik = useFormik<IProductValues>({
-    initialValues: {
-      productValueActive: false,
-      productValueName: '',
-      productValueCode: '',
-      productValuePrice: 0,
-    },
+    initialValues: initialProductValues,
     enableReinitialize: true,
     validationSchema: productValidationSchema,
     onSubmit: (values) => {
@@ -121,7 +134,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
               </VStack>
               <form onSubmit={formik.handleSubmit}>
                 <Flex direction="column" gap={6}>
-                  <FormControl>
+                  <FormControl isInvalid={!!formik.errors.productValueActive && formik.touched.productValueActive}>
                     <FormLabel>{t('labels.productVisibility')}</FormLabel>
                     <Flex justify="space-between" align="center">
                       <Text as="label" htmlFor="productValueActive">
@@ -134,6 +147,9 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                         onChange={formik.handleChange}
                       />
                     </Flex>
+                    {formik.errors.productValueActive && formik.touched.productValueActive && (
+                      <FormErrorMessage>{formik.errors.productValueActive}</FormErrorMessage>
+                    )}
                   </FormControl>
                   <FormControl isInvalid={!!formik.errors.productValueName && formik.touched.productValueName}>
                     <FormLabel htmlFor="productValueName">{t('inputs.productName')}</FormLabel>
@@ -155,7 +171,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                       <FormErrorMessage>{formik.errors.productValueName}</FormErrorMessage>
                     )}
                   </FormControl>
-                  <FormControl>
+                  <FormControl isInvalid={!!formik.errors.productValueCode && formik.touched.productValueCode}>
                     <FormLabel htmlFor="productValueCode">{t('inputs.productCode')}</FormLabel>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none" color="gray.500">
@@ -171,8 +187,11 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                         variant="filled"
                       />
                     </InputGroup>
+                    {formik.errors.productValueCode && formik.touched.productValueCode && (
+                      <FormErrorMessage>{formik.errors.productValueCode}</FormErrorMessage>
+                    )}
                   </FormControl>
-                  <FormControl>
+                  <FormControl isInvalid={!!formik.errors.productValuePrice && formik.touched.productValuePrice}>
                     <FormLabel htmlFor="productValuePrice">{t('inputs.productPrice')}</FormLabel>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none" color="gray.500">
@@ -189,6 +208,9 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                       />
                       <InputRightAddon>{t('texts.currency')}</InputRightAddon>
                     </InputGroup>
+                    {formik.errors.productValuePrice && formik.touched.productValuePrice && (
+                      <FormErrorMessage>{formik.errors.productValuePrice}</FormErrorMessage>
+                    )}
                   </FormControl>
                   <Button type="submit" colorScheme={themeAccentColor} rightIcon={<FiSave />}>
                     {t('buttons.saveChanges')}

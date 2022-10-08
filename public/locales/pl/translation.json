@@ -100,7 +100,15 @@
   "errors": {
     "notCompletedEmail": "Musisz podać adres email!",
     "notCompletedPassword": "Musisz podać hasło!",
-    "invalidEmail": "Podany adres email jest nieprawidłowy!"
+    "invalidEmail": "Podany adres email jest nieprawidłowy!",
+    "notCompletedProductName": "Musisz podać nazwę produktu!",
+    "notCompletedProductCode": "Musisz podać kod produktu!",
+    "notCompletedProductPrice": "Musisz podać cenę produktu!",
+    "productNameTooShort": "Nazwa produktu jest za krótka!",
+    "productCodeTooShort": "Kod produktu jest za krótki!",
+    "productNameTooLong": "Nazwa produktu jest za długa!",
+    "productCodeTooLong": "Kod produktu jest za długi!",
+    "productPriceTooSmall": "Cena produktu jest zbyt mała!"
   },
   "tables": {
     "productImage": "Zdjęcie",
