@@ -22,6 +22,7 @@ import {
   VStack,
   Switch,
   FormErrorMessage,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 'react-icons/fi';
@@ -34,6 +35,7 @@ import PlaceholderImage from 'assets/images/placeholder.jpg';
 import { checkIsNumberDecimal } from 'helpers';
 import { useDeleteProductMutation, useUpdateProductMutation } from 'graphql/generated/schema';
 import { useState } from 'react';
+import DeleteProductModal from 'components/DeleteProductModal/DeleteProductModal';
 
 export interface IDrawerProduct {
   id: string;
@@ -61,6 +63,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const { t } = useTranslation();
   const appToast = useAppToast();
   const errorToast = useErrorToast();
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
@@ -159,7 +162,12 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   });
 
   const handleDeleteButtonClick = () => {
+    onDeleteModalOpen();
+  };
+
+  const handleModalDeleteButtonClick = () => {
     void sendDeleteProduct();
+    onDeleteModalClose();
   };
 
   return (
@@ -298,6 +306,11 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
           </DrawerBody>
         )}
       </DrawerContent>
+      <DeleteProductModal
+        isOpen={isDeleteModalOpen}
+        onClose={onDeleteModalClose}
+        onDeleteButtonClick={handleModalDeleteButtonClick}
+      />
     </Drawer>
   );
 };
