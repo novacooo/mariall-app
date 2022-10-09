@@ -169,14 +169,18 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     },
   });
 
-  const handleUploadButtonClick = () => {
-    fileInputRef.current?.click();
-  };
-
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0];
     if (!file) return;
     void formik.setFieldValue('productValueImage', file);
+  };
+
+  const handleUploadButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleTrashButtonClick = () => {
+    void formik.setFieldValue('productValueImage', undefined);
   };
 
   const handleDeleteButtonClick = () => {
@@ -220,6 +224,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                     <FileUploadIndicator
                       file={formik.values.productValueImage}
                       error={formik.errors.productValueImage}
+                      onTrashButtonClick={handleTrashButtonClick}
                     />
                   )}
                   <Button size="sm" variant="outline" rightIcon={<FiUpload />} onClick={handleUploadButtonClick}>
