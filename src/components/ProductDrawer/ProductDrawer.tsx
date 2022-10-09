@@ -77,10 +77,22 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [updateProduct] = useUpdateProductMutation({
+    onCompleted: () => {
+      appToast({
+        title: t('toasts.titles.updateProductSuccess'),
+        description: t('toasts.descriptions.updateProductSuccess'),
+      });
+    },
     onError: (error) => errorToast(error),
   });
 
   const [deleteProduct] = useDeleteProductMutation({
+    onCompleted: () => {
+      appToast({
+        title: t('toasts.titles.deleteProductSuccess'),
+        description: t('toasts.descriptions.deleteProductSuccess'),
+      });
+    },
     onError: (error) => errorToast(error),
   });
 
@@ -105,11 +117,6 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
     setIsSending(false);
     onClose();
-
-    appToast({
-      title: t('toasts.titles.updateProductSuccess'),
-      description: t('toasts.descriptions.updateProductSuccess'),
-    });
   };
 
   const sendDeleteProduct = async () => {
@@ -126,11 +133,6 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     setIsDeleting(false);
     onDeleteModalClose();
     onClose();
-
-    appToast({
-      title: t('toasts.titles.deleteProductSuccess'),
-      description: t('toasts.descriptions.deleteProductSuccess'),
-    });
   };
 
   const initialProductValues = {

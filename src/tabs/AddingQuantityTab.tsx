@@ -84,12 +84,24 @@ const AddingQuantityTab = () => {
   const employeesData = getEmployeesData?.employees?.data;
 
   const [updateQuantity] = useUpdateQuantityMutation({
+    onCompleted: () => {
+      appToast({
+        title: t('toasts.titles.quantitiesAddSuccess'),
+        description: t('toasts.descriptions.quantitiesAddSuccess'),
+      });
+    },
     onError: (error) => {
       errorToast(error);
     },
   });
 
   const [createQuantity] = useCreateQuantityMutation({
+    onCompleted: () => {
+      appToast({
+        title: t('toasts.titles.quantitiesAddSuccess'),
+        description: t('toasts.descriptions.quantitiesAddSuccess'),
+      });
+    },
     onError: (error) => {
       errorToast(error);
     },
@@ -152,11 +164,6 @@ const AddingQuantityTab = () => {
     setIsSending(false);
     onClose();
     resetEverything();
-
-    appToast({
-      title: t('toasts.titles.quantitiesAddSuccess'),
-      description: t('toasts.descriptions.quantitiesAddSuccess'),
-    });
   };
 
   const handleDialogSaveButtonClick = () => {
