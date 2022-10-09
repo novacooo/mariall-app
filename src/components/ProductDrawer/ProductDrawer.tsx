@@ -1,3 +1,4 @@
+import { ChangeEvent, useRef, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -23,7 +24,6 @@ import {
   Switch,
   FormErrorMessage,
   useDisclosure,
-  Heading,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 'react-icons/fi';
@@ -31,12 +31,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
+import { checkIsFileImage, checkIsNumberDecimal } from 'helpers';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
-import { checkIsFileImage, checkIsNumberDecimal } from 'helpers';
 import { useDeleteProductMutation, useUpdateProductMutation } from 'graphql/generated/schema';
-import { ChangeEvent, useRef, useState } from 'react';
 import DeleteProductModal from 'components/DeleteProductModal/DeleteProductModal';
+import FileUploadIndicator from 'components/FileUploadIndicator/FileUploadIndicator';
 
 export interface IDrawerProduct {
   id: string;
@@ -208,9 +208,6 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                       src={product.imageUrl || PlaceholderImage}
                     />
                   </Box>
-                  <Button size="sm" variant="outline" rightIcon={<FiUpload />} onClick={handleUploadButtonClick}>
-                    {t('buttons.uploadImage')}
-                  </Button>
                   <Input
                     id="productValueImage"
                     display="none"
@@ -219,8 +216,15 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                     accept="image/png,image/jpeg"
                     onChange={handleFileInputChange}
                   />
-                  {formik.values.productValueImage && <Heading>{formik.values.productValueImage.name}</Heading>}
-                  {formik.errors.productValueImage && <Text>{formik.errors.productValueImage}</Text>}
+                  {formik.values.productValueImage && (
+                    <FileUploadIndicator
+                      file={formik.values.productValueImage}
+                      error={formik.errors.productValueImage}
+                    />
+                  )}
+                  <Button size="sm" variant="outline" rightIcon={<FiUpload />} onClick={handleUploadButtonClick}>
+                    {t('buttons.uploadImage')}
+                  </Button>
                 </VStack>
                 <Flex direction="column" gap={6}>
                   <FormControl isInvalid={!!formik.errors.productValueActive}>
