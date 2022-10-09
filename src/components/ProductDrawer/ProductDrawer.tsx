@@ -23,6 +23,7 @@ import {
   Switch,
   FormErrorMessage,
   useDisclosure,
+  Heading,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiDollarSign, FiFileText, FiHash, FiSave, FiTrash2, FiUpload } from 'react-icons/fi';
@@ -32,9 +33,9 @@ import * as yup from 'yup';
 import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
-import { checkIsNumberDecimal } from 'helpers';
+import { checkIsFileImage, checkIsNumberDecimal } from 'helpers';
 import { useDeleteProductMutation, useUpdateProductMutation } from 'graphql/generated/schema';
-import { useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import DeleteProductModal from 'components/DeleteProductModal/DeleteProductModal';
 
 export interface IDrawerProduct {
@@ -47,6 +48,7 @@ export interface IDrawerProduct {
 }
 
 interface IProductValues {
+  productValueImage?: File;
   productValueActive: boolean;
   productValueName: string;
   productValueCode: string;
@@ -72,6 +74,8 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const [isSending, setIsSending] = useState<boolean>();
   const [isDeleting, setIsDeleting] = useState<boolean>();
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [updateProduct] = useUpdateProductMutation({
     onError: (error) => errorToast(error),
   });
@@ -82,6 +86,8 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const sendUpdateProduct = async (values: IProductValues) => {
     if (!product) return;
+
+    if (values.productValueImage) return;
 
     const { productValueActive, productValueName, productValueCode, productValuePrice } = values;
 
@@ -135,6 +141,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   };
 
   const productValidationSchema: yup.SchemaOf<IProductValues> = yup.object().shape({
+    productValueImage: yup.mixed().test('is-image', 'Plik musi być zdjęciem!', checkIsFileImage),
     productValueActive: yup.boolean().required(),
     productValueName: yup
       .string()
@@ -162,6 +169,16 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     },
   });
 
+  const handleUploadButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    void formik.setFieldValue('productValueImage', file);
+  };
+
   const handleDeleteButtonClick = () => {
     onDeleteModalOpen();
   };
@@ -179,22 +196,32 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         {product ? (
           <>
             <DrawerBody>
-              <VStack spacing={4} mb={8}>
-                <Box position="relative">
-                  <Image
-                    w={40}
-                    h={40}
-                    rounded="md"
-                    borderWidth={1}
-                    borderStyle="solid"
-                    src={product.imageUrl || PlaceholderImage}
-                  />
-                </Box>
-                <Button size="sm" variant="outline" rightIcon={<FiUpload />}>
-                  {t('buttons.uploadImage')}
-                </Button>
-              </VStack>
               <form onSubmit={formik.handleSubmit}>
+                <VStack spacing={4} mb={8}>
+                  <Box position="relative">
+                    <Image
+                      w={40}
+                      h={40}
+                      rounded="md"
+                      borderWidth={1}
+                      borderStyle="solid"
+                      src={product.imageUrl || PlaceholderImage}
+                    />
+                  </Box>
+                  <Button size="sm" variant="outline" rightIcon={<FiUpload />} onClick={handleUploadButtonClick}>
+                    {t('buttons.uploadImage')}
+                  </Button>
+                  <Input
+                    id="productValueImage"
+                    display="none"
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg"
+                    onChange={handleFileInputChange}
+                  />
+                  {formik.values.productValueImage && <Heading>{formik.values.productValueImage.name}</Heading>}
+                  {formik.errors.productValueImage && <Text>{formik.errors.productValueImage}</Text>}
+                </VStack>
                 <Flex direction="column" gap={6}>
                   <FormControl isInvalid={!!formik.errors.productValueActive}>
                     <FormLabel>{t('labels.productVisibility')}</FormLabel>
