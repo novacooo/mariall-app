@@ -111,7 +111,8 @@
     "productNameTooLong": "The product name is too long!",
     "productCodeTooLong": "The product code is too long!",
     "productPriceTooSmall": "The product price is too small!",
-    "productPriceWrongPattern": "The price can be up to two digits after the decimal point!"
+    "productPriceWrongPattern": "The price can be up to two digits after the decimal point!",
+    "productImageWrongType": "Wrong file format! Acceptable formats are .jpg and .png"
   },
   "tables": {
     "productImage": "Image",

@@ -111,7 +111,8 @@
     "productNameTooLong": "Nazwa produktu jest za długa!",
     "productCodeTooLong": "Kod produktu jest za długi!",
     "productPriceTooSmall": "Cena produktu jest zbyt mała!",
-    "productPriceWrongPattern": "Cena może mieć maksymalnie dwie cyfry po przecinku!"
+    "productPriceWrongPattern": "Cena może mieć maksymalnie dwie cyfry po przecinku!",
+    "productImageWrongType": "Błędny format pliku! Dopuszczalne formaty to .jpg oraz .png"
   },
   "tables": {
     "productImage": "Zdjęcie",

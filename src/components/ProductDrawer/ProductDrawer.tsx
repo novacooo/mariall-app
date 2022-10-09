@@ -141,7 +141,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   };
 
   const productValidationSchema: yup.SchemaOf<IProductValues> = yup.object().shape({
-    productValueImage: yup.mixed().test('is-image', 'Plik musi być zdjęciem!', checkIsFileImage),
+    productValueImage: yup.mixed().test('is-image', t('errors.productImageWrongType'), checkIsFileImage),
     productValueActive: yup.boolean().required(),
     productValueName: yup
       .string()

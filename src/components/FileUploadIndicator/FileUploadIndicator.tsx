@@ -43,7 +43,7 @@ const FileUploadIndicator = ({ file, error, onTrashButtonClick }: FileUploadIndi
             {file.name}
           </Text>
           {error && (
-            <Text fontSize="sm" color={textColorError}>
+            <Text fontSize="xs" color={textColorError}>
               {error}
             </Text>
           )}
