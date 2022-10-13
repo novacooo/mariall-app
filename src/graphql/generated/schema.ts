@@ -1158,12 +1158,13 @@ export type UpdateProductMutationVariables = Exact<{
   id: Scalars['ID'];
   code: Scalars['String'];
   name: Scalars['String'];
+  image?: InputMaybe<Scalars['ID']>;
   price: Scalars['Float'];
   active: Scalars['Boolean'];
 }>;
 
 
-export type UpdateProductMutation = { __typename?: 'Mutation', updateProduct?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, price: number, active: boolean } | null } | null } | null };
+export type UpdateProductMutation = { __typename?: 'Mutation', updateProduct?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, price: number, active: boolean, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null } | null } | null };
 
 export type UpdateQuantityMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -1342,10 +1343,10 @@ export type LoginUserMutationHookResult = ReturnType<typeof useLoginUserMutation
 export type LoginUserMutationResult = Apollo.MutationResult<LoginUserMutation>;
 export type LoginUserMutationOptions = Apollo.BaseMutationOptions<LoginUserMutation, LoginUserMutationVariables>;
 export const UpdateProductDocument = gql`
-    mutation UpdateProduct($id: ID!, $code: String!, $name: String!, $price: Float!, $active: Boolean!) {
+    mutation UpdateProduct($id: ID!, $code: String!, $name: String!, $image: ID, $price: Float!, $active: Boolean!) {
   updateProduct(
     id: $id
-    data: {code: $code, name: $name, price: $price, active: $active}
+    data: {code: $code, name: $name, image: $image, price: $price, active: $active}
   ) {
     data {
       id
@@ -1354,6 +1355,14 @@ export const UpdateProductDocument = gql`
         name
         price
         active
+        image {
+          data {
+            id
+            attributes {
+              url
+            }
+          }
+        }
       }
     }
   }
@@ -1377,6 +1386,7 @@ export type UpdateProductMutationFn = Apollo.MutationFunction<UpdateProductMutat
  *      id: // value for 'id'
  *      code: // value for 'code'
  *      name: // value for 'name'
+ *      image: // value for 'image'
  *      price: // value for 'price'
  *      active: // value for 'active'
  *   },

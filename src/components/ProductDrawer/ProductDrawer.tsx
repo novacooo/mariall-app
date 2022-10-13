@@ -105,23 +105,21 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
     const { productValueActive, productValueName, productValueCode, productValuePrice, productValueImage } = values;
 
-    if (productValueImage) {
-      await uploadFile({
-        variables: {
-          file: productValueImage,
-        },
-      });
-
-      return;
-    }
+    let imageId;
 
     setIsSending(true);
+
+    if (productValueImage) {
+      const uploadFileResponse = await uploadFile({ variables: { file: productValueImage } });
+      imageId = uploadFileResponse.data?.upload.data?.id;
+    }
 
     await updateProduct({
       variables: {
         id: product.id,
         code: productValueCode,
         name: productValueName,
+        image: imageId,
         price: productValuePrice,
         active: productValueActive,
       },

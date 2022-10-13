@@ -1,5 +1,5 @@
-mutation UpdateProduct($id: ID!, $code: String!, $name: String!, $price: Float!, $active: Boolean!) {
-  updateProduct(id: $id, data: { code: $code, name: $name, price: $price, active: $active }) {
+mutation UpdateProduct($id: ID!, $code: String!, $name: String!, $image: ID, $price: Float!, $active: Boolean!) {
+  updateProduct(id: $id, data: { code: $code, name: $name, image: $image, price: $price, active: $active }) {
     data {
       id
       attributes {
@@ -7,6 +7,14 @@ mutation UpdateProduct($id: ID!, $code: String!, $name: String!, $price: Float!,
         name
         price
         active
+        image {
+          data {
+            id
+            attributes {
+              url
+            }
+          }
+        }
       }
     }
   }
