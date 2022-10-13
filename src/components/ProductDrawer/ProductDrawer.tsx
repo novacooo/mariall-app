@@ -99,7 +99,8 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const sendUpdateProduct = async (values: IProductValues) => {
     if (!product) return;
 
-    if (values.productValueImage) return;
+    // if (values.productValueImage) {
+    // }
 
     const { productValueActive, productValueName, productValueCode, productValuePrice } = values;
 
