@@ -29,6 +29,7 @@ import { monthNames } from 'constants/monthNames';
 import { selectUserRole } from 'features/user/userSlice';
 import { UserRole } from 'constants/UserRole';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface IMonth {
   number: number;
@@ -65,6 +66,13 @@ const AddingQuantityTab = () => {
   const appToast = useAppToast();
   const errorToast = useErrorToast();
 
+  const debouncedUpdateToast = useDebouncedCallback(() => {
+    appToast({
+      title: t('toasts.titles.quantitiesAddSuccess'),
+      description: t('toasts.descriptions.quantitiesAddSuccess'),
+    });
+  }, 100);
+
   const resetEverything = () => {
     setIsAddedAnyQuantity(false);
     setSelectedWorker(undefined);
@@ -85,10 +93,7 @@ const AddingQuantityTab = () => {
 
   const [updateQuantity] = useUpdateQuantityMutation({
     onCompleted: () => {
-      appToast({
-        title: t('toasts.titles.quantitiesAddSuccess'),
-        description: t('toasts.descriptions.quantitiesAddSuccess'),
-      });
+      debouncedUpdateToast();
     },
     onError: (error) => {
       errorToast(error);

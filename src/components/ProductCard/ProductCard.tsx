@@ -54,7 +54,7 @@ const ProductCard = ({ code, name, price, active, image, onClick }: ProductCardP
           {name}
         </Text>
         <HStack justify="space-between" align="center">
-          <Text fontSize="sm" textAlign="center" fontWeight="semibold" noOfLines={1}>
+          <Text fontSize="sm" textAlign="center" textTransform="uppercase" fontWeight="semibold" noOfLines={1}>
             {code}
           </Text>
           <Text
