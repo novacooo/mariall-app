@@ -19,7 +19,7 @@ import {
   Code,
 } from '@chakra-ui/react';
 import AddingQuantityTable, { AddingQuantityTableHandle } from 'components/AddingQuantityTable/AddingQuantityTable';
-import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
+import { ISuccessToastPayload, useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
@@ -66,11 +66,8 @@ const AddingQuantityTab = () => {
   const appToast = useAppToast();
   const errorToast = useErrorToast();
 
-  const debouncedUpdateToast = useDebouncedCallback(() => {
-    appToast({
-      title: t('toasts.titles.quantitiesAddSuccess'),
-      description: t('toasts.descriptions.quantitiesAddSuccess'),
-    });
+  const debouncedAppToast = useDebouncedCallback(({ title, description }: ISuccessToastPayload) => {
+    appToast({ title, description });
   }, 100);
 
   const resetEverything = () => {
@@ -93,7 +90,10 @@ const AddingQuantityTab = () => {
 
   const [updateQuantity] = useUpdateQuantityMutation({
     onCompleted: () => {
-      debouncedUpdateToast();
+      debouncedAppToast({
+        title: t('toasts.titles.quantitiesAddSuccess'),
+        description: t('toasts.descriptions.quantitiesAddSuccess'),
+      });
     },
     onError: (error) => {
       errorToast(error);
@@ -102,7 +102,7 @@ const AddingQuantityTab = () => {
 
   const [createQuantity] = useCreateQuantityMutation({
     onCompleted: () => {
-      appToast({
+      debouncedAppToast({
         title: t('toasts.titles.quantitiesAddSuccess'),
         description: t('toasts.descriptions.quantitiesAddSuccess'),
       });

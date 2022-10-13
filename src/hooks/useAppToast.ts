@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-interface ISuccessToastPayload {
+export interface ISuccessToastPayload {
   title: string;
   description: string;
   status?: 'info' | 'warning' | 'success' | 'error' | 'loading' | undefined;
