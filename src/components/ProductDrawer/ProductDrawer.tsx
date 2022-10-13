@@ -220,6 +220,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
                       h={40}
                       rounded="md"
                       borderWidth={1}
+                      objectFit="cover"
                       borderStyle="solid"
                       src={product.imageUrl || PlaceholderImage}
                     />

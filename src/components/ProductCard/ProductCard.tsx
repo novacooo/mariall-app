@@ -40,7 +40,15 @@ const ProductCard = ({ code, name, price, active, image, onClick }: ProductCardP
       onClick={onClick}
     >
       <StatusIndicator active={active} />
-      <Image w={20} h={20} rounded="md" borderWidth={1} borderStyle="solid" src={image || PlaceholderImage} />
+      <Image
+        w={20}
+        h={20}
+        rounded="md"
+        borderWidth={1}
+        borderStyle="solid"
+        objectFit="cover"
+        src={image || PlaceholderImage}
+      />
       <Flex w="full" justify="space-between" direction="column" gap={2} flexGrow={1}>
         <Text fontSize="sm" noOfLines={2} color={nameColor}>
           {name}
