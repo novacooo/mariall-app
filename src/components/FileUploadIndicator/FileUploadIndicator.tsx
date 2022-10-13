@@ -39,7 +39,13 @@ const FileUploadIndicator = ({ file, error, onTrashButtonClick }: FileUploadIndi
       <Flex align="center" gap={3}>
         <Image w={16} h={16} rounded="md" alt={file.name} objectFit="cover" src={image} />
         <Flex direction="column">
-          <Text noOfLines={2} fontSize="sm" fontWeight="semibold" color={error ? textColorError : textColor}>
+          <Text
+            noOfLines={2}
+            wordBreak="break-word"
+            fontSize="sm"
+            fontWeight="semibold"
+            color={error ? textColorError : textColor}
+          >
             {file.name}
           </Text>
           {error && (

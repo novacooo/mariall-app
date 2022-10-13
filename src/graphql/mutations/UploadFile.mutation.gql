@@ -1,5 +1,5 @@
-mutation UploadImage($image: UploadFileInput!) {
-  createUploadFile(data: $image) {
+mutation UploadFile($file: Upload!) {
+  upload(file: $file) {
     data {
       id
       attributes {

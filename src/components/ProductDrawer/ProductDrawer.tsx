@@ -34,7 +34,7 @@ import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { checkIsFileImage, checkIsNumberDecimal } from 'helpers';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
-import { useDeleteProductMutation, useUpdateProductMutation } from 'graphql/generated/schema';
+import { useDeleteProductMutation, useUpdateProductMutation, useUploadFileMutation } from 'graphql/generated/schema';
 import DeleteProductModal from 'components/DeleteProductModal/DeleteProductModal';
 import FileUploadIndicator from 'components/FileUploadIndicator/FileUploadIndicator';
 
@@ -76,6 +76,10 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [uploadFile] = useUploadFileMutation({
+    onError: (error) => errorToast(error),
+  });
+
   const [updateProduct] = useUpdateProductMutation({
     onCompleted: () => {
       appToast({
@@ -99,10 +103,17 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const sendUpdateProduct = async (values: IProductValues) => {
     if (!product) return;
 
-    // if (values.productValueImage) {
-    // }
+    const { productValueActive, productValueName, productValueCode, productValuePrice, productValueImage } = values;
 
-    const { productValueActive, productValueName, productValueCode, productValuePrice } = values;
+    if (productValueImage) {
+      await uploadFile({
+        variables: {
+          file: productValueImage,
+        },
+      });
+
+      return;
+    }
 
     setIsSending(true);
 

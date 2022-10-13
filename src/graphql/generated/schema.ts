@@ -1173,12 +1173,12 @@ export type UpdateQuantityMutationVariables = Exact<{
 
 export type UpdateQuantityMutation = { __typename?: 'Mutation', updateQuantity?: { __typename?: 'QuantityEntityResponse', data?: { __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number } | null } | null } | null };
 
-export type UploadImageMutationVariables = Exact<{
-  image: UploadFileInput;
+export type UploadFileMutationVariables = Exact<{
+  file: Scalars['Upload'];
 }>;
 
 
-export type UploadImageMutation = { __typename?: 'Mutation', createUploadFile?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, formats?: any | null, hash: string, ext?: string | null, mime: string, size: number, url: string, previewUrl?: string | null, provider: string, provider_metadata?: any | null } | null } | null } | null };
+export type UploadFileMutation = { __typename?: 'Mutation', upload: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, formats?: any | null, hash: string, ext?: string | null, mime: string, size: number, url: string, previewUrl?: string | null, provider: string, provider_metadata?: any | null } | null } | null } };
 
 export type GetEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1428,9 +1428,9 @@ export function useUpdateQuantityMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateQuantityMutationHookResult = ReturnType<typeof useUpdateQuantityMutation>;
 export type UpdateQuantityMutationResult = Apollo.MutationResult<UpdateQuantityMutation>;
 export type UpdateQuantityMutationOptions = Apollo.BaseMutationOptions<UpdateQuantityMutation, UpdateQuantityMutationVariables>;
-export const UploadImageDocument = gql`
-    mutation UploadImage($image: UploadFileInput!) {
-  createUploadFile(data: $image) {
+export const UploadFileDocument = gql`
+    mutation UploadFile($file: Upload!) {
+  upload(file: $file) {
     data {
       id
       attributes {
@@ -1453,32 +1453,32 @@ export const UploadImageDocument = gql`
   }
 }
     `;
-export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation, UploadImageMutationVariables>;
+export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, UploadFileMutationVariables>;
 
 /**
- * __useUploadImageMutation__
+ * __useUploadFileMutation__
  *
- * To run a mutation, you first call `useUploadImageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUploadImageMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUploadFileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadFileMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [uploadImageMutation, { data, loading, error }] = useUploadImageMutation({
+ * const [uploadFileMutation, { data, loading, error }] = useUploadFileMutation({
  *   variables: {
- *      image: // value for 'image'
+ *      file: // value for 'file'
  *   },
  * });
  */
-export function useUploadImageMutation(baseOptions?: Apollo.MutationHookOptions<UploadImageMutation, UploadImageMutationVariables>) {
+export function useUploadFileMutation(baseOptions?: Apollo.MutationHookOptions<UploadFileMutation, UploadFileMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UploadImageMutation, UploadImageMutationVariables>(UploadImageDocument, options);
+        return Apollo.useMutation<UploadFileMutation, UploadFileMutationVariables>(UploadFileDocument, options);
       }
-export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMutation>;
-export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
-export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
+export type UploadFileMutationHookResult = ReturnType<typeof useUploadFileMutation>;
+export type UploadFileMutationResult = Apollo.MutationResult<UploadFileMutation>;
+export type UploadFileMutationOptions = Apollo.BaseMutationOptions<UploadFileMutation, UploadFileMutationVariables>;
 export const GetEmployeesDocument = gql`
     query GetEmployees {
   employees {
