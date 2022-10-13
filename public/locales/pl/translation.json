@@ -54,7 +54,8 @@
     "resetChanges": "Zresetuj zmiany",
     "cancel": "Anuluj",
     "deleteProduct": "Usuń produkt",
-    "uploadImage": "Wgraj zdjęcie"
+    "uploadImage": "Wgraj zdjęcie",
+    "addNewProduct": "Dodaj nowy produkt"
   },
   "loading": {
     "signInButton": "Logowanie...",

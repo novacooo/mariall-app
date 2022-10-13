@@ -1,4 +1,5 @@
 import { Flex, Spinner, useDisclosure } from '@chakra-ui/react';
+import AddProductCard from 'components/AddProductCard/AddProductCard';
 import ProductCard from 'components/ProductCard/ProductCard';
 import ProductDrawer, { IDrawerProduct } from 'components/ProductDrawer/ProductDrawer';
 import { useGetProductsQuery } from 'graphql/generated/schema';
@@ -42,27 +43,28 @@ const ProductsManagementTab = () => {
         }}
       >
         {productsData ? (
-          productsData.map(({ id, attributes }) => {
-            if (!id || !attributes) return null;
+          <>
+            {productsData.map(({ id, attributes }) => {
+              if (!id || !attributes) return null;
 
-            const { code, name, price, active, image } = attributes;
+              const { code, name, price, active, image } = attributes;
+              const imageUrl = getImageUrl(image?.data?.attributes?.url);
+              const productItem: IDrawerProduct = { id, code, name, price, active, imageUrl };
 
-            const imageUrl = getImageUrl(image?.data?.attributes?.url);
-
-            const productItem: IDrawerProduct = { id, code, name, price, active, imageUrl };
-
-            return (
-              <ProductCard
-                key={id}
-                name={name}
-                code={code}
-                price={price}
-                active={active}
-                image={imageUrl}
-                onClick={() => handleDrawerOpen(productItem)}
-              />
-            );
-          })
+              return (
+                <ProductCard
+                  key={id}
+                  name={name}
+                  code={code}
+                  price={price}
+                  active={active}
+                  image={imageUrl}
+                  onClick={() => handleDrawerOpen(productItem)}
+                />
+              );
+            })}
+            <AddProductCard onClick={() => console.log('add-click')} />
+          </>
         ) : (
           <Spinner />
         )}
