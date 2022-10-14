@@ -8,7 +8,7 @@ import {
   DrawerOverlay,
 } from '@chakra-ui/react';
 import ProductForm, { IProductValues } from 'components/ProductForm/ProductForm';
-import { useCreateProductMutation, useUploadFileMutation } from 'graphql/generated/schema';
+import { GetProductsDocument, useCreateProductMutation, useUploadFileMutation } from 'graphql/generated/schema';
 import { useAppToast, useErrorToast } from 'hooks';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +37,7 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
   });
 
   const [createProduct] = useCreateProductMutation({
+    refetchQueries: [GetProductsDocument],
     onCompleted: () => {
       appToast({
         title: t('toasts.titles.quantitiesAddSuccess'),
