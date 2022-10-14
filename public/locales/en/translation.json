@@ -154,7 +154,8 @@
   },
   "drawers": {
     "headers": {
-      "productEdition": "Product edition"
+      "productEdition": "Product edition",
+      "addingProduct": "Adding a product"
     }
   },
   "modals": {

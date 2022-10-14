@@ -154,7 +154,8 @@
   },
   "drawers": {
     "headers": {
-      "productEdition": "Edycja produktu"
+      "productEdition": "Edycja produktu",
+      "addingProduct": "Dodawanie produktu"
     }
   },
   "modals": {

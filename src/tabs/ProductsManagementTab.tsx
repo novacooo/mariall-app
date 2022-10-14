@@ -28,6 +28,10 @@ const ProductsManagementTab = () => {
 
   const productsData = getProductsData?.products?.data;
 
+  const handleAddProductDrawerClose = () => {
+    onAddProductDrawerClose();
+  };
+
   const handleProductDrawerOpen = (productItem: IDrawerProduct) => {
     setProduct(productItem);
     onProductDrawerOpen();
@@ -75,7 +79,7 @@ const ProductsManagementTab = () => {
           <Spinner />
         )}
       </Flex>
-      <AddProductDrawer isOpen={isAddProductDrawerOpen} onClose={onAddProductDrawerClose} />
+      <AddProductDrawer isOpen={isAddProductDrawerOpen} onClose={handleAddProductDrawerClose} />
       <ProductDrawer product={product} isOpen={isProductDrawerOpen} onClose={handleProductDrawerClose} />
     </ProtectedTabTemplate>
   );

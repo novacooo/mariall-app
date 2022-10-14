@@ -67,6 +67,13 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
     onError: (error) => errorToast(error),
   });
 
+  const initialProductValues: IProductValues = {
+    productValueActive: product ? product.active : false,
+    productValueName: product ? product.name : '',
+    productValueCode: product ? product.code : '',
+    productValuePrice: product ? product.price : 0,
+  };
+
   const sendUpdateProduct = async (values: IProductValues) => {
     if (!product) return;
 
@@ -129,7 +136,12 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         {product ? (
           <>
             <DrawerBody>
-              <ProductForm product={product} onSubmit={sendUpdateProduct} isLoadingSaveButton={isSending} />
+              <ProductForm
+                initialProductValues={initialProductValues}
+                product={product}
+                onSubmit={sendUpdateProduct}
+                isLoadingSaveButton={isSending}
+              />
             </DrawerBody>
             <DrawerFooter flexDirection="column" alignItems="stretch" gap={4}>
               <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost" onClick={handleDeleteButtonClick}>

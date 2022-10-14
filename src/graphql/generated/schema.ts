@@ -1128,6 +1128,17 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type CreateProductMutationVariables = Exact<{
+  code: Scalars['String'];
+  name: Scalars['String'];
+  image?: InputMaybe<Scalars['ID']>;
+  price: Scalars['Float'];
+  active: Scalars['Boolean'];
+}>;
+
+
+export type CreateProductMutation = { __typename?: 'Mutation', createProduct?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null } | null } | null };
+
 export type CreateQuantityMutationVariables = Exact<{
   productId: Scalars['ID'];
   employeeId: Scalars['ID'];
@@ -1206,6 +1217,47 @@ export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUserInfoQuery = { __typename?: 'Query', me?: { __typename?: 'UsersPermissionsMe', id: string, email?: string | null, role?: { __typename?: 'UsersPermissionsMeRole', name: string } | null } | null };
 
 
+export const CreateProductDocument = gql`
+    mutation CreateProduct($code: String!, $name: String!, $image: ID, $price: Float!, $active: Boolean!) {
+  createProduct(
+    data: {code: $code, name: $name, image: $image, price: $price, active: $active}
+  ) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export type CreateProductMutationFn = Apollo.MutationFunction<CreateProductMutation, CreateProductMutationVariables>;
+
+/**
+ * __useCreateProductMutation__
+ *
+ * To run a mutation, you first call `useCreateProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProductMutation, { data, loading, error }] = useCreateProductMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      name: // value for 'name'
+ *      image: // value for 'image'
+ *      price: // value for 'price'
+ *      active: // value for 'active'
+ *   },
+ * });
+ */
+export function useCreateProductMutation(baseOptions?: Apollo.MutationHookOptions<CreateProductMutation, CreateProductMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateProductMutation, CreateProductMutationVariables>(CreateProductDocument, options);
+      }
+export type CreateProductMutationHookResult = ReturnType<typeof useCreateProductMutation>;
+export type CreateProductMutationResult = Apollo.MutationResult<CreateProductMutation>;
+export type CreateProductMutationOptions = Apollo.BaseMutationOptions<CreateProductMutation, CreateProductMutationVariables>;
 export const CreateQuantityDocument = gql`
     mutation CreateQuantity($productId: ID!, $employeeId: ID!, $quantity: Int!, $year: Int!, $month: Int!) {
   createQuantity(

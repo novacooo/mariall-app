@@ -37,12 +37,13 @@ export interface IProductValues {
 }
 
 interface ProductFormProps {
-  product: IDrawerProduct;
+  initialProductValues: IProductValues;
+  product?: IDrawerProduct;
   onSubmit: (values: IProductValues) => Promise<void>;
   isLoadingSaveButton?: boolean;
 }
 
-const ProductForm = ({ product, onSubmit, isLoadingSaveButton }: ProductFormProps) => {
+const ProductForm = ({ initialProductValues, product, onSubmit, isLoadingSaveButton }: ProductFormProps) => {
   const { t } = useTranslation();
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
@@ -50,13 +51,6 @@ const ProductForm = ({ product, onSubmit, isLoadingSaveButton }: ProductFormProp
   const adaptiveAccentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const initialProductValues = {
-    productValueActive: product ? product.active : false,
-    productValueName: product ? product.name : '',
-    productValueCode: product ? product.code : '',
-    productValuePrice: product ? product.price : 0,
-  };
 
   const productValidationSchema: yup.SchemaOf<IProductValues> = yup.object().shape({
     productValueImage: yup.mixed().test('is-image', t('errors.productImageWrongType'), checkIsFileImage),
@@ -112,7 +106,7 @@ const ProductForm = ({ product, onSubmit, isLoadingSaveButton }: ProductFormProp
             borderWidth={1}
             objectFit="cover"
             borderStyle="solid"
-            src={product.imageUrl || PlaceholderImage}
+            src={product?.imageUrl || PlaceholderImage}
           />
         </Box>
         <Input
