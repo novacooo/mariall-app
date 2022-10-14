@@ -14,6 +14,7 @@ const AddProductCard = ({ onClick }: AddProductCardProps) => {
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
   const grayColor = useColorModeValue('gray.600', 'gray.300');
+  const bgColor = useColorModeValue(`${themeAccentColor}.50`, `${themeAccentColor}.900`);
   const borderColor = useColorModeValue('gray.300', 'gray.600');
   const accentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
 
@@ -26,9 +27,10 @@ const AddProductCard = ({ onClick }: AddProductCardProps) => {
       borderStyle="dashed"
       borderColor={borderColor}
       rounded="md"
-      transition="border-color 0.2s, transform 0.2s"
+      transition="background-color 0.2s, border-color 0.2s, transform 0.2s"
       role="group"
       _hover={{
+        bgColor,
         cursor: 'pointer',
         borderColor: accentColor,
         transform: 'scale(1.02)',
