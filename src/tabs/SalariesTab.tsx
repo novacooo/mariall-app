@@ -1,37 +1,57 @@
-import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
-import { Box, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 
-const SalariesTab = () => (
-  <ProtectedTabTemplate>
-    <Flex direction="column" gap={6}>
-      <Box w="full" overflowX="auto" bgColor="white" borderWidth={1} rounded="md">
-        <TableContainer>
-          <Table variant="striped">
-            <Thead>
-              <Tr>
-                <Th>Pracownik</Th>
-                <Th isNumeric>Wypłata</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Jacek Nowak</Td>
-                <Td isNumeric>5434,33 zł</Td>
-              </Tr>
-              <Tr>
-                <Td>Krzysztof Nowak</Td>
-                <Td isNumeric>8546,99 zł</Td>
-              </Tr>
-              <Tr>
-                <Td>Justyna Nowak</Td>
-                <Td isNumeric>2534,32 zł</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </Flex>
-  </ProtectedTabTemplate>
-);
+import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
+import { useGetEmployeesQuery } from 'graphql/generated/schema';
+import { useErrorToast } from 'hooks';
+
+const SalariesTab = () => {
+  const errorToast = useErrorToast();
+
+  const { data: getEmployeesData } = useGetEmployeesQuery({
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
+  const employeesData = getEmployeesData?.employees?.data;
+
+  return (
+    <ProtectedTabTemplate>
+      <Flex direction="column" gap={6}>
+        {employeesData ? (
+          <Box w="full" overflowX="auto" bgColor="white" borderWidth={1} rounded="md">
+            <TableContainer>
+              <Table variant="striped">
+                <Thead>
+                  <Tr>
+                    <Th>Pracownik</Th>
+                    <Th isNumeric>Wypłata</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {employeesData.map(({ id, attributes }) => {
+                    if (!id || !attributes) return null;
+
+                    const { firstName, lastName } = attributes;
+                    const workerName = lastName ? `${firstName} ${lastName}` : firstName;
+
+                    return (
+                      <Tr>
+                        <Td>{workerName}</Td>
+                        <Td isNumeric>1000,00 zł</Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Box>
+        ) : (
+          <Spinner />
+        )}
+      </Flex>
+    </ProtectedTabTemplate>
+  );
+};
 
 export default SalariesTab;
