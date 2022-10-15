@@ -9,13 +9,14 @@ import {
   Flex,
   useDisclosure,
   Code,
+  Spinner,
 } from '@chakra-ui/react';
 import AddingQuantityTable, { AddingQuantityTableHandle } from 'components/AddingQuantityTable/AddingQuantityTable';
 import { ISuccessToastPayload, useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
-import { useCreateQuantityMutation, useUpdateQuantityMutation } from 'graphql/generated/schema';
+import { useCreateQuantityMutation, useGetEmployeesQuery, useUpdateQuantityMutation } from 'graphql/generated/schema';
 import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useDebouncedCallback } from 'use-debounce';
@@ -48,6 +49,15 @@ const AddingQuantityTab = () => {
     setIsAddedAnyQuantity(false);
     workerSelectsRef.current?.resetSelects();
   };
+
+  const { data: getEmployeesQueryData } = useGetEmployeesQuery({
+    onError: (error) => {
+      errorToast(error);
+    },
+    onCompleted: () => {
+      resetEverything();
+    },
+  });
 
   const [updateQuantity] = useUpdateQuantityMutation({
     onCompleted: () => {
@@ -167,11 +177,16 @@ const AddingQuantityTab = () => {
         }}
         wrap="wrap"
       >
-        <WorkerSelects
-          ref={workerSelectsRef}
-          disabled={isAddedAnyQuantity}
-          setWorkerSelectsData={setWorkerSelectsData}
-        />
+        {getEmployeesQueryData ? (
+          <WorkerSelects
+            ref={workerSelectsRef}
+            getEmployeesQueryData={getEmployeesQueryData}
+            disabled={isAddedAnyQuantity}
+            setWorkerSelectsData={setWorkerSelectsData}
+          />
+        ) : (
+          <Spinner />
+        )}
         {workerSelectsData && (
           <Flex
             wrap="wrap"
