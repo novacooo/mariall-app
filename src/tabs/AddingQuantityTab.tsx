@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -8,13 +7,6 @@ import {
   AlertDialogOverlay,
   Button,
   Flex,
-  Menu,
-  MenuButton,
-  MenuItemOption,
-  MenuList,
-  MenuOptionGroup,
-  Spinner,
-  useColorModeValue,
   useDisclosure,
   Code,
 } from '@chakra-ui/react';
@@ -23,41 +15,23 @@ import { ISuccessToastPayload, useAppSelector, useAppToast, useErrorToast } from
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
-import { useCreateQuantityMutation, useGetEmployeesQuery, useUpdateQuantityMutation } from 'graphql/generated/schema';
+import { useCreateQuantityMutation, useUpdateQuantityMutation } from 'graphql/generated/schema';
 import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
-import { monthNames } from 'constants/monthNames';
-import { selectUserRole } from 'features/user/userSlice';
-import { UserRole } from 'constants/UserRole';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useDebouncedCallback } from 'use-debounce';
-
-interface IMonth {
-  number: number;
-  name: string;
-}
-
-interface IWorker {
-  id: string;
-  name: string;
-}
+import WorkerSelects, { IWorkerSelectsData, WorkerSelectsHandle } from 'components/WorkerSelects/WorkerSelects';
 
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
   const tableRef = useRef<AddingQuantityTableHandle>(null);
+  const workerSelectsRef = useRef<WorkerSelectsHandle>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  const userRole = useAppSelector(selectUserRole);
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
-  const selectAccentText = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
-
-  const [years, setYears] = useState<number[]>([]);
-  const [months, setMonths] = useState<IMonth[]>([]);
-  const [selectedWorker, setSelectedWorker] = useState<IWorker>();
-  const [selectedYear, setSelectedYear] = useState<number>();
-  const [selectedMonth, setSelectedMonth] = useState<IMonth>();
+  const [workerSelectsData, setWorkerSelectsData] = useState<IWorkerSelectsData>();
   const [isAddedAnyQuantity, setIsAddedAnyQuantity] = useState<boolean>(false);
   const [quantities, setQuantities] = useState<IQuantity[]>([]);
   const [isQuantitiesFetched, setIsQuantitiesFetched] = useState<boolean>(false);
@@ -72,21 +46,8 @@ const AddingQuantityTab = () => {
 
   const resetEverything = () => {
     setIsAddedAnyQuantity(false);
-    setSelectedWorker(undefined);
-    setSelectedYear(undefined);
-    setSelectedMonth(undefined);
+    workerSelectsRef.current?.resetSelects();
   };
-
-  const { data: getEmployeesData } = useGetEmployeesQuery({
-    onError: (error) => {
-      errorToast(error);
-    },
-    onCompleted: () => {
-      resetEverything();
-    },
-  });
-
-  const employeesData = getEmployeesData?.employees?.data;
 
   const [updateQuantity] = useUpdateQuantityMutation({
     onCompleted: () => {
@@ -127,11 +88,12 @@ const AddingQuantityTab = () => {
 
   const sendQuantities = async () => {
     if (quantities.length === 0) return;
-    if (!selectedWorker || !selectedYear || !selectedMonth) return;
+    if (!workerSelectsData) return;
 
-    const employeeId = selectedWorker.id;
-    const year = selectedYear;
-    const month = selectedMonth.number;
+    const { worker, year, month: workerSelectsDataMonth } = workerSelectsData;
+
+    const employeeId = worker.id;
+    const month = workerSelectsDataMonth.number;
 
     const promises: ReturnType<typeof updateQuantity | typeof createQuantity>[] = [];
 
@@ -176,48 +138,6 @@ const AddingQuantityTab = () => {
   };
 
   useEffect(() => {
-    if (!selectedWorker) return;
-
-    const date = new Date();
-    const year = date.getFullYear();
-    const monthIndex = date.getMonth(); // getMonth() function returns an integer number between 0 and 11
-    const monthName = monthNames[monthIndex];
-    const monthNumber = monthIndex + 1;
-
-    if (userRole === UserRole.AUTHENTICATED || userRole === UserRole.ADMINISTRATOR) {
-      const range = 2;
-      const startYear = year - range;
-      const endYear = year + range;
-
-      const yearsToSet: number[] = [];
-      const monthsToSet: IMonth[] = [];
-
-      for (let i = startYear; i < endYear; i += 1) {
-        yearsToSet.push(i);
-      }
-
-      for (let i = 0; i < 12; i += 1) {
-        monthsToSet.push({
-          number: i + 1,
-          name: monthNames[i],
-        });
-      }
-
-      setYears(yearsToSet);
-      setMonths(monthsToSet);
-      return;
-    }
-
-    setYears([year]);
-    setMonths([
-      {
-        number: monthNumber,
-        name: monthName,
-      },
-    ]);
-  }, [selectedWorker]);
-
-  useEffect(() => {
     if (!isQuantitiesFetched) return;
 
     if (quantities.length > 0) {
@@ -247,93 +167,12 @@ const AddingQuantityTab = () => {
         }}
         wrap="wrap"
       >
-        {employeesData ? (
-          <Flex
-            wrap="wrap"
-            gap={{
-              base: 3,
-              md: 4,
-            }}
-            direction={{
-              base: 'column',
-              md: 'row',
-            }}
-          >
-            <Menu>
-              <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                color={selectedWorker ? selectAccentText : undefined}
-                disabled={isAddedAnyQuantity}
-              >
-                {selectedWorker?.name || t('selects.chooseWorker')}
-              </MenuButton>
-              <MenuList maxH={60} overflow="hidden" overflowY="auto">
-                <MenuOptionGroup type="radio">
-                  {employeesData.map(({ id, attributes }) => {
-                    if (!id || !attributes) return null;
-
-                    const { firstName, lastName } = attributes;
-                    const workerName = lastName ? `${firstName} ${lastName}` : firstName;
-
-                    const worker: IWorker = { id, name: workerName };
-
-                    return (
-                      <MenuItemOption key={id} value={id} onClick={() => setSelectedWorker(worker)}>
-                        {workerName}
-                      </MenuItemOption>
-                    );
-                  })}
-                </MenuOptionGroup>
-              </MenuList>
-            </Menu>
-            {selectedWorker && !!years.length && (
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                  color={selectedYear ? selectAccentText : undefined}
-                  disabled={isAddedAnyQuantity}
-                >
-                  {selectedYear || t('selects.chooseYear')}
-                </MenuButton>
-                <MenuList maxH={60} overflow="hidden" overflowY="auto">
-                  <MenuOptionGroup type="radio">
-                    {years.map((year) => (
-                      <MenuItemOption key={year} value={`${year}`} onClick={() => setSelectedYear(year)}>
-                        {year}
-                      </MenuItemOption>
-                    ))}
-                  </MenuOptionGroup>
-                </MenuList>
-              </Menu>
-            )}
-            {selectedYear && months && (
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                  color={selectedMonth ? selectAccentText : undefined}
-                  disabled={isAddedAnyQuantity}
-                >
-                  {selectedMonth ? t(`months.${selectedMonth.name}`) : t('selects.chooseMonth')}
-                </MenuButton>
-                <MenuList maxH={60} overflow="hidden" overflowY="auto">
-                  <MenuOptionGroup type="radio">
-                    {months.map((month) => (
-                      <MenuItemOption key={month.name} value={month.name} onClick={() => setSelectedMonth(month)}>
-                        {t(`months.${month.name}`)}
-                      </MenuItemOption>
-                    ))}
-                  </MenuOptionGroup>
-                </MenuList>
-              </Menu>
-            )}
-          </Flex>
-        ) : (
-          <Spinner />
-        )}
-        {selectedMonth && (
+        <WorkerSelects
+          ref={workerSelectsRef}
+          disabled={isAddedAnyQuantity}
+          setWorkerSelectsData={setWorkerSelectsData}
+        />
+        {workerSelectsData && (
           <Flex
             wrap="wrap"
             gap={{
@@ -354,11 +193,11 @@ const AddingQuantityTab = () => {
           </Flex>
         )}
       </Flex>
-      {selectedWorker && selectedYear && selectedMonth && (
+      {workerSelectsData && (
         <AddingQuantityTable
-          workerId={selectedWorker.id}
-          year={selectedYear}
-          month={selectedMonth.number}
+          workerId={workerSelectsData.worker.id}
+          year={workerSelectsData.year}
+          month={workerSelectsData.month.number}
           setIsAddedAnyQuantity={setIsAddedAnyQuantity}
           ref={tableRef}
         />
