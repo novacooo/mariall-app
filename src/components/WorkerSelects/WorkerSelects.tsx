@@ -17,14 +17,10 @@ import { GetEmployeesQuery } from 'graphql/generated/schema';
 import { monthNames } from 'constants/monthNames';
 import { UserRole } from 'constants/UserRole';
 import { selectUserRole } from 'features/user/userSlice';
+import { getMonths, getYears, IMonth } from 'helpers';
 
 interface IWorker {
   id: string;
-  name: string;
-}
-
-interface IMonth {
-  number: number;
   name: string;
 }
 
@@ -81,26 +77,12 @@ const WorkerSelects = forwardRef<WorkerSelectsHandle, WorkerSelectsProps>(
       const monthNumber = monthIndex + 1;
 
       if (userRole === UserRole.AUTHENTICATED || userRole === UserRole.ADMINISTRATOR) {
-        const range = 2;
-        const startYear = year - range;
-        const endYear = year + range;
-
-        const yearsToSet: number[] = [];
-        const monthsToSet: IMonth[] = [];
-
-        for (let i = startYear; i < endYear; i += 1) {
-          yearsToSet.push(i);
-        }
-
-        for (let i = 0; i < 12; i += 1) {
-          monthsToSet.push({
-            number: i + 1,
-            name: monthNames[i],
-          });
-        }
+        const yearsToSet = getYears();
+        const monthsToSet = getMonths();
 
         setYears(yearsToSet);
         setMonths(monthsToSet);
+
         return;
       }
 
