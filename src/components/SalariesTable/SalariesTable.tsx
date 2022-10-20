@@ -60,8 +60,28 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
       const getEmployeesWithQuantitiesResponse = await getEmployeesWithQuantities({ variables: { year, month } });
       const employeesWithQuantitiesData = getEmployeesWithQuantitiesResponse.data?.employees?.data;
 
-      if (!employeesWithQuantitiesData) return;
+      employeesWithQuantitiesData?.forEach(({ attributes: employeeAttributes }) => {
+        if (!employeeAttributes) return;
 
+        const { firstName, lastName } = employeeAttributes;
+        const quantitiesData = employeeAttributes.quantities?.data;
+
+        const employeeName = lastName ? `${firstName} ${lastName}` : firstName;
+        let salary = 0;
+
+        quantitiesData?.forEach(({ attributes: quantityAttributes }) => {
+          const productPrice = quantityAttributes?.product?.data?.attributes?.price;
+          if (!quantityAttributes || !productPrice) return;
+          const quantity = quantityAttributes?.quantity;
+          salary += quantity * productPrice;
+        });
+
+        salary = Number(salary.toFixed(2));
+
+        newSalaries.push({ employeeName, salary });
+      });
+
+      setSalaries(newSalaries);
       return;
     }
 
