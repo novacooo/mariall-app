@@ -71,7 +71,8 @@
     "menu": "Menu"
   },
   "texts": {
-    "currency": "zł"
+    "currency": "zł",
+    "noProducts": "Brak produktów"
   },
   "inputs": {
     "email": "Adres email",

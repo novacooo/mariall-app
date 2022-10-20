@@ -71,7 +71,8 @@
     "menu": "Menu"
   },
   "texts": {
-    "currency": "PLN"
+    "currency": "PLN",
+    "noProducts": "No products"
   },
   "inputs": {
     "email": "Email",

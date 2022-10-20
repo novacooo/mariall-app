@@ -26,7 +26,7 @@ const PageTemplate = ({ name, children }: PageTemplateProps) => {
     <VStack flexGrow={1} px={[4, 10, 10, 16]} pt={[8, 12, 16, 20]} pb={8} spacing={[8, 10, 12, 14]}>
       <HStack spacing={5} divider={<StackDivider />}>
         {colorMode === 'light' ? <LogoLight height={logoHeight} /> : <LogoDark height={logoHeight} />}
-        <Heading as="h3" size="md">
+        <Heading as="h2" size="md">
           {name}
         </Heading>
       </HStack>

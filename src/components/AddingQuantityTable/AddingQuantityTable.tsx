@@ -8,6 +8,7 @@ import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } fr
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
 import { getImageUrl } from 'helpers';
+import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 
 export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];
@@ -37,7 +38,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
-    const [productsWithQuantities, setProductsWithQuantities] = useState<IProductWithQuantities[]>([]);
+    const [productsWithQuantities, setProductsWithQuantities] = useState<IProductWithQuantities[]>();
 
     const [getProducts] = useGetProductsLazyQuery({
       onError: (error) => errorToast(error),
@@ -123,7 +124,9 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
       void fetchData();
     }, [workerId, year, month]);
 
-    if (productsWithQuantities.length === 0) return <Spinner />;
+    if (!productsWithQuantities) return <Spinner />;
+
+    if (productsWithQuantities.length === 0) return <NoItemsInformation text={t('texts.noProducts')} />;
 
     return (
       <Box borderWidth={1} rounded="md">

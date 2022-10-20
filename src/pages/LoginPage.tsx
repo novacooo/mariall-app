@@ -187,7 +187,7 @@ const LoginPage = () => {
         bgColor={bgColor}
         w={['100%', '80%', '60%', '48%', '36%', '20%']}
       >
-        <Heading as="h3" size="md" textAlign="center" color={adaptiveAccentColor}>
+        <Heading as="h1" size="md" textAlign="center" color={adaptiveAccentColor}>
           {t('headers.signIn')}
         </Heading>
         <FormControl isRequired isInvalid={!isEmailValid || !isEmailCompleted}>

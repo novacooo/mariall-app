@@ -23,7 +23,7 @@ const PanelTemplate = ({ name, children }: PanelTemplateProps) => (
         }}
         mt={8}
       >
-        <Heading as="h4" size="lg">
+        <Heading as="h3" size="lg">
           {name}
         </Heading>
         {children}
