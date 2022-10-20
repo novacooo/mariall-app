@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
@@ -23,7 +23,7 @@ import {
 
 import { getMonths, getYears, IMonth } from 'helpers';
 import { useAppSelector, useErrorToast } from 'hooks';
-import { useGetEmployeesQuery } from 'graphql/generated/schema';
+import { useGetEmployeesQuery, useGetFilteredSalariesLazyQuery } from 'graphql/generated/schema';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 
@@ -44,6 +44,23 @@ const SalariesTab = () => {
       errorToast(error);
     },
   });
+
+  const [getFilteredSalaries] = useGetFilteredSalariesLazyQuery({
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
+  const fetchData = async (year: number, month: number) => {
+    const getFilteredSalariesResponse = await getFilteredSalaries({ variables: { year, month } });
+    const salariesData = getFilteredSalariesResponse.data?.salaries?.data;
+    console.log(salariesData);
+  };
+
+  useEffect(() => {
+    if (!selectedYear || !selectedMonth) return;
+    void fetchData(selectedYear, selectedMonth.number);
+  }, [selectedYear, selectedMonth]);
 
   const employeesData = getEmployeesQueryData?.employees?.data;
   const years = getYears();

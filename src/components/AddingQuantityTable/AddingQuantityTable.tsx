@@ -77,50 +77,50 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
       setIsAddedAnyQuantity(!isNotAdded);
     };
 
+    const fetchData = async () => {
+      const getProductsResponse = await getProducts();
+      const getQuantitiesResponse = await getQuantities({ variables: { workerId, year, month } });
+
+      const productsData = getProductsResponse.data?.products?.data;
+      const quantitiesData = getQuantitiesResponse.data?.quantities?.data;
+
+      const newProductsWithQuantities: IProductWithQuantities[] = [];
+
+      productsData?.forEach(({ id: productId, attributes: productAttributes }) => {
+        if (!productId || !productAttributes) return;
+
+        if (!productAttributes.active) return;
+
+        const { code: productCode, name: productName, image: productImage } = productAttributes;
+
+        const quantityIndex = quantitiesData?.findIndex(
+          ({ attributes }) => attributes?.product?.data?.id === productId,
+        );
+
+        let quantityId: string | undefined;
+        let quantity: number | undefined;
+
+        if (quantitiesData && quantityIndex !== undefined && quantityIndex !== -1) {
+          quantityId = quantitiesData[quantityIndex].id || undefined;
+          quantity = quantitiesData[quantityIndex].attributes?.quantity;
+        }
+
+        const newProduct: IProductWithQuantities = {
+          productId,
+          productCode,
+          productName,
+          quantityId,
+          quantity,
+          productImageUrl: productImage?.data?.attributes?.url,
+        };
+
+        newProductsWithQuantities.push(newProduct);
+      });
+
+      setProductsWithQuantities(newProductsWithQuantities);
+    };
+
     useEffect(() => {
-      const fetchData = async () => {
-        const getProductsResponse = await getProducts();
-        const getQuantitiesResponse = await getQuantities({ variables: { workerId, year, month } });
-
-        const productsData = getProductsResponse.data?.products?.data;
-        const quantitiesData = getQuantitiesResponse.data?.quantities?.data;
-
-        const newProductsWithQuantities: IProductWithQuantities[] = [];
-
-        productsData?.forEach(({ id: productId, attributes: productAttributes }) => {
-          if (!productId || !productAttributes) return;
-
-          if (!productAttributes.active) return;
-
-          const { code: productCode, name: productName, image: productImage } = productAttributes;
-
-          const quantityIndex = quantitiesData?.findIndex(
-            ({ attributes }) => attributes?.product?.data?.id === productId,
-          );
-
-          let quantityId: string | undefined;
-          let quantity: number | undefined;
-
-          if (quantitiesData && quantityIndex !== undefined && quantityIndex !== -1) {
-            quantityId = quantitiesData[quantityIndex].id || undefined;
-            quantity = quantitiesData[quantityIndex].attributes?.quantity;
-          }
-
-          const newProduct: IProductWithQuantities = {
-            productId,
-            productCode,
-            productName,
-            quantityId,
-            quantity,
-            productImageUrl: productImage?.data?.attributes?.url,
-          };
-
-          newProductsWithQuantities.push(newProduct);
-        });
-
-        setProductsWithQuantities(newProductsWithQuantities);
-      };
-
       void fetchData();
     }, [workerId, year, month]);
 
