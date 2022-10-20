@@ -1,0 +1,25 @@
+query GetEmployeesWithQuantities($year: Int!, $month: Int!) {
+  employees {
+    data {
+      id
+      attributes {
+        firstName
+        lastName
+        quantities(filters: { year: { eq: $year }, month: { eq: $month } }) {
+          data {
+            attributes {
+              quantity
+              product {
+                data {
+                  attributes {
+                    price
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

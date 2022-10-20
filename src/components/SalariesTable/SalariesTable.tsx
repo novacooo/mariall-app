@@ -1,9 +1,11 @@
-import { Box, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
-import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
-import { useGetSalariesLazyQuery } from 'graphql/generated/schema';
-import { useErrorToast } from 'hooks';
 import { useEffect, useState } from 'react';
+import { Box, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+import { checkIsActualMonth } from 'helpers';
+import { useErrorToast } from 'hooks';
+import { useGetEmployeesWithQuantitiesLazyQuery, useGetSalariesLazyQuery } from 'graphql/generated/schema';
+import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 
 interface ISalary {
   employeeName: string;
@@ -29,6 +31,12 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
     },
   });
 
+  const [getEmployeesWithQuantities] = useGetEmployeesWithQuantitiesLazyQuery({
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
   const fetchData = async () => {
     const getSalariesResponse = await getSalaries({ variables: { year, month } });
     const salariesData = getSalariesResponse.data?.salaries?.data;
@@ -47,6 +55,15 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
 
       newSalaries.push({ employeeName, salary });
     });
+
+    if (newSalaries.length === 0 && checkIsActualMonth(year, month)) {
+      const getEmployeesWithQuantitiesResponse = await getEmployeesWithQuantities({ variables: { year, month } });
+      const employeesWithQuantitiesData = getEmployeesWithQuantitiesResponse.data?.employees?.data;
+
+      if (!employeesWithQuantitiesData) return;
+
+      return;
+    }
 
     setSalaries(newSalaries);
   };
@@ -71,7 +88,7 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
           </Thead>
           <Tbody>
             {salaries.map(({ employeeName, salary }) => (
-              <Tr>
+              <Tr key={`${employeeName}-${salary}`}>
                 <Td>{employeeName}</Td>
                 <Td isNumeric>{`${salary} ${t('texts.currency')}`}</Td>
               </Tr>

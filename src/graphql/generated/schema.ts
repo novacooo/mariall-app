@@ -1285,6 +1285,14 @@ export type GetEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetEmployeesQuery = { __typename?: 'Query', employees?: { __typename?: 'EmployeeEntityResponseCollection', data: Array<{ __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null }> } | null };
 
+export type GetEmployeesWithQuantitiesQueryVariables = Exact<{
+  year: Scalars['Int'];
+  month: Scalars['Int'];
+}>;
+
+
+export type GetEmployeesWithQuantitiesQuery = { __typename?: 'Query', employees?: { __typename?: 'EmployeeEntityResponseCollection', data: Array<{ __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null, quantities?: { __typename?: 'QuantityRelationResponseCollection', data: Array<{ __typename?: 'QuantityEntity', attributes?: { __typename?: 'Quantity', quantity: number, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', attributes?: { __typename?: 'Product', price: number } | null } | null } | null } | null }> } | null } | null }> } | null };
+
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1727,6 +1735,62 @@ export function useGetEmployeesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetEmployeesQueryHookResult = ReturnType<typeof useGetEmployeesQuery>;
 export type GetEmployeesLazyQueryHookResult = ReturnType<typeof useGetEmployeesLazyQuery>;
 export type GetEmployeesQueryResult = Apollo.QueryResult<GetEmployeesQuery, GetEmployeesQueryVariables>;
+export const GetEmployeesWithQuantitiesDocument = gql`
+    query GetEmployeesWithQuantities($year: Int!, $month: Int!) {
+  employees {
+    data {
+      id
+      attributes {
+        firstName
+        lastName
+        quantities(filters: {year: {eq: $year}, month: {eq: $month}}) {
+          data {
+            attributes {
+              quantity
+              product {
+                data {
+                  attributes {
+                    price
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetEmployeesWithQuantitiesQuery__
+ *
+ * To run a query within a React component, call `useGetEmployeesWithQuantitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEmployeesWithQuantitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEmployeesWithQuantitiesQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *      month: // value for 'month'
+ *   },
+ * });
+ */
+export function useGetEmployeesWithQuantitiesQuery(baseOptions: Apollo.QueryHookOptions<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>(GetEmployeesWithQuantitiesDocument, options);
+      }
+export function useGetEmployeesWithQuantitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>(GetEmployeesWithQuantitiesDocument, options);
+        }
+export type GetEmployeesWithQuantitiesQueryHookResult = ReturnType<typeof useGetEmployeesWithQuantitiesQuery>;
+export type GetEmployeesWithQuantitiesLazyQueryHookResult = ReturnType<typeof useGetEmployeesWithQuantitiesLazyQuery>;
+export type GetEmployeesWithQuantitiesQueryResult = Apollo.QueryResult<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>;
 export const GetProductsDocument = gql`
     query GetProducts {
   products(filters: {deleted: {eq: false}}) {
