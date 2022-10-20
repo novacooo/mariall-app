@@ -1,11 +1,14 @@
-query GetSalaries($year: Int!, $month: Int!) {
-  salaries(filters: { year: { eq: $year }, month: { eq: $month } }) {
+mutation UpdateSalary($salaryId: ID!, $salary: Float!) {
+  updateSalary(id: $salaryId, data: { salary: $salary }) {
     data {
       id
       attributes {
         salary
+        year
+        month
         employee {
           data {
+            id
             attributes {
               firstName
               lastName

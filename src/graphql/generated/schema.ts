@@ -1265,6 +1265,14 @@ export type UpdateQuantityMutationVariables = Exact<{
 
 export type UpdateQuantityMutation = { __typename?: 'Mutation', updateQuantity?: { __typename?: 'QuantityEntityResponse', data?: { __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number } | null } | null } | null };
 
+export type UpdateSalaryMutationVariables = Exact<{
+  salaryId: Scalars['ID'];
+  salary: Scalars['Float'];
+}>;
+
+
+export type UpdateSalaryMutation = { __typename?: 'Mutation', updateSalary?: { __typename?: 'SalaryEntityResponse', data?: { __typename?: 'SalaryEntity', id?: string | null, attributes?: { __typename?: 'Salary', salary: number, year: number, month: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null } | null } | null } | null } | null } | null };
+
 export type UploadFileMutationVariables = Exact<{
   file: Scalars['Upload'];
 }>;
@@ -1297,7 +1305,7 @@ export type GetSalariesQueryVariables = Exact<{
 }>;
 
 
-export type GetSalariesQuery = { __typename?: 'Query', salaries?: { __typename?: 'SalaryEntityResponseCollection', data: Array<{ __typename?: 'SalaryEntity', attributes?: { __typename?: 'Salary', salary: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null } | null } | null } | null }> } | null };
+export type GetSalariesQuery = { __typename?: 'Query', salaries?: { __typename?: 'SalaryEntityResponseCollection', data: Array<{ __typename?: 'SalaryEntity', id?: string | null, attributes?: { __typename?: 'Salary', salary: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null } | null } | null } | null }> } | null };
 
 export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1578,6 +1586,56 @@ export function useUpdateQuantityMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateQuantityMutationHookResult = ReturnType<typeof useUpdateQuantityMutation>;
 export type UpdateQuantityMutationResult = Apollo.MutationResult<UpdateQuantityMutation>;
 export type UpdateQuantityMutationOptions = Apollo.BaseMutationOptions<UpdateQuantityMutation, UpdateQuantityMutationVariables>;
+export const UpdateSalaryDocument = gql`
+    mutation UpdateSalary($salaryId: ID!, $salary: Float!) {
+  updateSalary(id: $salaryId, data: {salary: $salary}) {
+    data {
+      id
+      attributes {
+        salary
+        year
+        month
+        employee {
+          data {
+            id
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export type UpdateSalaryMutationFn = Apollo.MutationFunction<UpdateSalaryMutation, UpdateSalaryMutationVariables>;
+
+/**
+ * __useUpdateSalaryMutation__
+ *
+ * To run a mutation, you first call `useUpdateSalaryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSalaryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSalaryMutation, { data, loading, error }] = useUpdateSalaryMutation({
+ *   variables: {
+ *      salaryId: // value for 'salaryId'
+ *      salary: // value for 'salary'
+ *   },
+ * });
+ */
+export function useUpdateSalaryMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSalaryMutation, UpdateSalaryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSalaryMutation, UpdateSalaryMutationVariables>(UpdateSalaryDocument, options);
+      }
+export type UpdateSalaryMutationHookResult = ReturnType<typeof useUpdateSalaryMutation>;
+export type UpdateSalaryMutationResult = Apollo.MutationResult<UpdateSalaryMutation>;
+export type UpdateSalaryMutationOptions = Apollo.BaseMutationOptions<UpdateSalaryMutation, UpdateSalaryMutationVariables>;
 export const UploadFileDocument = gql`
     mutation UploadFile($file: Upload!) {
   upload(file: $file) {
@@ -1771,6 +1829,7 @@ export const GetSalariesDocument = gql`
     query GetSalaries($year: Int!, $month: Int!) {
   salaries(filters: {year: {eq: $year}, month: {eq: $month}}) {
     data {
+      id
       attributes {
         salary
         employee {

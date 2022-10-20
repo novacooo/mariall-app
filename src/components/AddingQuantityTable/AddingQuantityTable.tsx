@@ -35,9 +35,12 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
   ({ workerId, year, month, setIsAddedAnyQuantity }, ref) => {
     const { t } = useTranslation();
     const errorToast = useErrorToast();
+
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
+
     const headerBgColor = useColorModeValue('white', 'gray.800');
     const headerTextColor = useColorModeValue('gray.500', 'gray.400');
+
     const [productsWithQuantities, setProductsWithQuantities] = useState<IProductWithQuantities[]>();
 
     const [getProducts] = useGetProductsLazyQuery({
