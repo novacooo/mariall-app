@@ -1,0 +1,17 @@
+query GetFilteredSalaries($year: Int!, $month: Int!) {
+  salaries(filters: { year: { eq: $year }, month: { eq: $month } }) {
+    data {
+      attributes {
+        salary
+        employee {
+          data {
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }
+}

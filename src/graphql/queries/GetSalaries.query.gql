@@ -1,0 +1,17 @@
+query GetSalaries {
+  salaries {
+    data {
+      attributes {
+        salary
+        employee {
+          data {
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }
+}

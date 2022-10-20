@@ -147,7 +147,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = Employee | I18NLocale | Product | Quantity | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Employee | I18NLocale | Product | Quantity | Salary | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -264,6 +264,7 @@ export type Mutation = {
   createEmployee?: Maybe<EmployeeEntityResponse>;
   createProduct?: Maybe<ProductEntityResponse>;
   createQuantity?: Maybe<QuantityEntityResponse>;
+  createSalary?: Maybe<SalaryEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
   createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
@@ -273,6 +274,7 @@ export type Mutation = {
   deleteEmployee?: Maybe<EmployeeEntityResponse>;
   deleteProduct?: Maybe<ProductEntityResponse>;
   deleteQuantity?: Maybe<QuantityEntityResponse>;
+  deleteSalary?: Maybe<SalaryEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
@@ -294,6 +296,7 @@ export type Mutation = {
   updateFileInfo: UploadFileEntityResponse;
   updateProduct?: Maybe<ProductEntityResponse>;
   updateQuantity?: Maybe<QuantityEntityResponse>;
+  updateSalary?: Maybe<SalaryEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
   updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
@@ -323,6 +326,11 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateQuantityArgs = {
   data: QuantityInput;
+};
+
+
+export type MutationCreateSalaryArgs = {
+  data: SalaryInput;
 };
 
 
@@ -357,6 +365,11 @@ export type MutationDeleteProductArgs = {
 
 
 export type MutationDeleteQuantityArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteSalaryArgs = {
   id: Scalars['ID'];
 };
 
@@ -441,6 +454,12 @@ export type MutationUpdateProductArgs = {
 
 export type MutationUpdateQuantityArgs = {
   data: QuantityInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateSalaryArgs = {
+  data: SalaryInput;
   id: Scalars['ID'];
 };
 
@@ -620,6 +639,8 @@ export type Query = {
   products?: Maybe<ProductEntityResponseCollection>;
   quantities?: Maybe<QuantityEntityResponseCollection>;
   quantity?: Maybe<QuantityEntityResponse>;
+  salaries?: Maybe<SalaryEntityResponseCollection>;
+  salary?: Maybe<SalaryEntityResponse>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -679,6 +700,18 @@ export type QueryQuantityArgs = {
 };
 
 
+export type QuerySalariesArgs = {
+  filters?: InputMaybe<SalaryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QuerySalaryArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type QueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -729,6 +762,53 @@ export type QueryUsersPermissionsUsersArgs = {
 export type ResponseCollectionMeta = {
   __typename?: 'ResponseCollectionMeta';
   pagination: Pagination;
+};
+
+export type Salary = {
+  __typename?: 'Salary';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  employee?: Maybe<EmployeeEntityResponse>;
+  month: Scalars['Int'];
+  salary: Scalars['Float'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  year: Scalars['Int'];
+};
+
+export type SalaryEntity = {
+  __typename?: 'SalaryEntity';
+  attributes?: Maybe<Salary>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type SalaryEntityResponse = {
+  __typename?: 'SalaryEntityResponse';
+  data?: Maybe<SalaryEntity>;
+};
+
+export type SalaryEntityResponseCollection = {
+  __typename?: 'SalaryEntityResponseCollection';
+  data: Array<SalaryEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type SalaryFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<SalaryFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  employee?: InputMaybe<EmployeeFiltersInput>;
+  id?: InputMaybe<IdFilterInput>;
+  month?: InputMaybe<IntFilterInput>;
+  not?: InputMaybe<SalaryFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<SalaryFiltersInput>>>;
+  salary?: InputMaybe<FloatFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+  year?: InputMaybe<IntFilterInput>;
+};
+
+export type SalaryInput = {
+  employee?: InputMaybe<Scalars['ID']>;
+  month?: InputMaybe<Scalars['Int']>;
+  salary?: InputMaybe<Scalars['Float']>;
+  year?: InputMaybe<Scalars['Int']>;
 };
 
 export type StringFilterInput = {
@@ -1197,6 +1277,14 @@ export type GetEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetEmployeesQuery = { __typename?: 'Query', employees?: { __typename?: 'EmployeeEntityResponseCollection', data: Array<{ __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null }> } | null };
 
+export type GetFilteredSalariesQueryVariables = Exact<{
+  year: Scalars['Int'];
+  month: Scalars['Int'];
+}>;
+
+
+export type GetFilteredSalariesQuery = { __typename?: 'Query', salaries?: { __typename?: 'SalaryEntityResponseCollection', data: Array<{ __typename?: 'SalaryEntity', attributes?: { __typename?: 'Salary', salary: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null } | null } | null } | null }> } | null };
+
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1210,6 +1298,11 @@ export type GetQuantitiesQueryVariables = Exact<{
 
 
 export type GetQuantitiesQuery = { __typename?: 'Query', quantities?: { __typename?: 'QuantityEntityResponseCollection', data: Array<{ __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null } | null } | null } | null }> } | null };
+
+export type GetSalariesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSalariesQuery = { __typename?: 'Query', salaries?: { __typename?: 'SalaryEntityResponseCollection', data: Array<{ __typename?: 'SalaryEntity', attributes?: { __typename?: 'Salary', salary: number, employee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null } | null } | null } | null } | null }> } | null };
 
 export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1581,6 +1674,54 @@ export function useGetEmployeesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetEmployeesQueryHookResult = ReturnType<typeof useGetEmployeesQuery>;
 export type GetEmployeesLazyQueryHookResult = ReturnType<typeof useGetEmployeesLazyQuery>;
 export type GetEmployeesQueryResult = Apollo.QueryResult<GetEmployeesQuery, GetEmployeesQueryVariables>;
+export const GetFilteredSalariesDocument = gql`
+    query GetFilteredSalaries($year: Int!, $month: Int!) {
+  salaries(filters: {year: {eq: $year}, month: {eq: $month}}) {
+    data {
+      attributes {
+        salary
+        employee {
+          data {
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetFilteredSalariesQuery__
+ *
+ * To run a query within a React component, call `useGetFilteredSalariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFilteredSalariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFilteredSalariesQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *      month: // value for 'month'
+ *   },
+ * });
+ */
+export function useGetFilteredSalariesQuery(baseOptions: Apollo.QueryHookOptions<GetFilteredSalariesQuery, GetFilteredSalariesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFilteredSalariesQuery, GetFilteredSalariesQueryVariables>(GetFilteredSalariesDocument, options);
+      }
+export function useGetFilteredSalariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFilteredSalariesQuery, GetFilteredSalariesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFilteredSalariesQuery, GetFilteredSalariesQueryVariables>(GetFilteredSalariesDocument, options);
+        }
+export type GetFilteredSalariesQueryHookResult = ReturnType<typeof useGetFilteredSalariesQuery>;
+export type GetFilteredSalariesLazyQueryHookResult = ReturnType<typeof useGetFilteredSalariesLazyQuery>;
+export type GetFilteredSalariesQueryResult = Apollo.QueryResult<GetFilteredSalariesQuery, GetFilteredSalariesQueryVariables>;
 export const GetProductsDocument = gql`
     query GetProducts {
   products(filters: {deleted: {eq: false}}) {
@@ -1679,6 +1820,52 @@ export function useGetQuantitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetQuantitiesQueryHookResult = ReturnType<typeof useGetQuantitiesQuery>;
 export type GetQuantitiesLazyQueryHookResult = ReturnType<typeof useGetQuantitiesLazyQuery>;
 export type GetQuantitiesQueryResult = Apollo.QueryResult<GetQuantitiesQuery, GetQuantitiesQueryVariables>;
+export const GetSalariesDocument = gql`
+    query GetSalaries {
+  salaries {
+    data {
+      attributes {
+        salary
+        employee {
+          data {
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSalariesQuery__
+ *
+ * To run a query within a React component, call `useGetSalariesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSalariesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSalariesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSalariesQuery(baseOptions?: Apollo.QueryHookOptions<GetSalariesQuery, GetSalariesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSalariesQuery, GetSalariesQueryVariables>(GetSalariesDocument, options);
+      }
+export function useGetSalariesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSalariesQuery, GetSalariesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSalariesQuery, GetSalariesQueryVariables>(GetSalariesDocument, options);
+        }
+export type GetSalariesQueryHookResult = ReturnType<typeof useGetSalariesQuery>;
+export type GetSalariesLazyQueryHookResult = ReturnType<typeof useGetSalariesLazyQuery>;
+export type GetSalariesQueryResult = Apollo.QueryResult<GetSalariesQuery, GetSalariesQueryVariables>;
 export const GetUserInfoDocument = gql`
     query GetUserInfo {
   me {
