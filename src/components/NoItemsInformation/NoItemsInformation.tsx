@@ -11,11 +11,11 @@ const NoItemsInformation = ({ text }: NoItemsInformationProps) => {
   const color = useColorModeValue('gray.500', 'gray.400');
 
   return (
-    <Center flexDirection="column" gap={6} py={12} bgColor={bgColor} rounded="md">
+    <Center flexDirection="column" gap={6} py={12} px={4} bgColor={bgColor} rounded="md">
       <Center w={28} h={28} bgColor={bgColorIcon} rounded="full">
         <Icon boxSize={10} as={FiDatabase} color={color} />
       </Center>
-      <Heading as="h4" size="md" color={color}>
+      <Heading as="h4" size="md" textAlign="center" color={color}>
         {text}
       </Heading>
     </Center>

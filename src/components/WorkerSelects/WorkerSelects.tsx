@@ -133,7 +133,7 @@ const WorkerSelects = forwardRef<WorkerSelectsHandle, WorkerSelectsProps>(
             color={selectedWorker ? selectAccentText : undefined}
             disabled={disabled}
           >
-            {selectedWorker?.name || t('selects.chooseWorker')}
+            {selectedWorker?.name || t('selects.chooseEmployee')}
           </MenuButton>
           <MenuList maxH={60} overflow="hidden" overflowY="auto">
             <MenuOptionGroup type="radio">

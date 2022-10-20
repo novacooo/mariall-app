@@ -72,7 +72,8 @@
   },
   "texts": {
     "currency": "zł",
-    "noProducts": "Brak produktów"
+    "noProducts": "Brak produktów",
+    "noSalaries": "Brak wypłat"
   },
   "inputs": {
     "email": "Adres email",
@@ -83,7 +84,7 @@
     "productImage": "Zdjęcie produktu"
   },
   "selects": {
-    "chooseWorker": "Wybierz pracownika",
+    "chooseEmployee": "Wybierz pracownika",
     "chooseYear": "Wybierz rok",
     "chooseMonth": "Wybierz miesiąc"
   },
@@ -121,7 +122,9 @@
     "productCode": "Kod",
     "productName": "Nazwa",
     "productQuantity": "Ilość",
-    "productAdding": "Dodawanie"
+    "productAdding": "Dodawanie",
+    "salariesEmployee": "Employee",
+    "salariesSalary": "Salary"
   },
   "alerts": {
     "headers": {

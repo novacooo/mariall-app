@@ -72,7 +72,8 @@
   },
   "texts": {
     "currency": "PLN",
-    "noProducts": "No products"
+    "noProducts": "No products",
+    "noSalaries": "No salaries"
   },
   "inputs": {
     "email": "Email",
@@ -83,7 +84,7 @@
     "productImage": "Product price"
   },
   "selects": {
-    "chooseWorker": "Choose worker",
+    "chooseEmployee": "Choose employee",
     "chooseYear": "Choose year",
     "chooseMonth": "Choose month"
   },
@@ -121,7 +122,9 @@
     "productCode": "Code",
     "productName": "Name",
     "productQuantity": "Quantity",
-    "productAdding": "Adding"
+    "productAdding": "Adding",
+    "salariesEmployee": "Pracownik",
+    "salariesSalary": "Wypłata"
   },
   "alerts": {
     "headers": {
