@@ -66,10 +66,12 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
         const { firstName, lastName } = employeeAttributes;
         const quantitiesData = employeeAttributes.quantities?.data;
 
+        if (!quantitiesData || quantitiesData.length === 0) return;
+
         const employeeName = lastName ? `${firstName} ${lastName}` : firstName;
         let salary = 0;
 
-        quantitiesData?.forEach(({ attributes: quantityAttributes }) => {
+        quantitiesData.forEach(({ attributes: quantityAttributes }) => {
           const productPrice = quantityAttributes?.product?.data?.attributes?.price;
           if (!quantityAttributes || !productPrice) return;
           const quantity = quantityAttributes?.quantity;
