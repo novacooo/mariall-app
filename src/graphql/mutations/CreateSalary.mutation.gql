@@ -1,0 +1,7 @@
+mutation CreateSalary($employeeId: ID!, $year: Int!, $month: Int!, $salary: Float!) {
+  createSalary(data: { employee: $employeeId, year: $year, month: $month, salary: $salary }) {
+    data {
+      id
+    }
+  }
+}
