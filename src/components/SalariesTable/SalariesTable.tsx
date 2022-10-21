@@ -99,7 +99,18 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
         salariesToSet[foundIndex] = { ...salariesToSet[foundIndex], salaryId };
       });
 
-      console.log(salariesToSet);
+      salariesToSet.forEach(({ employeeId, salaryId, salary }) => {
+        if (!employeeId) return;
+
+        if (salaryId) {
+          promises.push(updateSalary({ variables: { salaryId, salary } }));
+          return;
+        }
+
+        promises.push(createSalary({ variables: { employeeId, year, month, salary } }));
+      });
+
+      await Promise.all(promises);
 
       setSalaries(salariesToSet);
       return;
