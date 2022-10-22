@@ -1247,6 +1247,13 @@ export type DeleteProductMutationVariables = Exact<{
 
 export type DeleteProductMutation = { __typename?: 'Mutation', updateProduct?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', deleted: boolean } | null } | null } | null };
 
+export type DeleteSalaryMutationVariables = Exact<{
+  salaryId: Scalars['ID'];
+}>;
+
+
+export type DeleteSalaryMutation = { __typename?: 'Mutation', deleteSalary?: { __typename?: 'SalaryEntityResponse', data?: { __typename?: 'SalaryEntity', id?: string | null } | null } | null };
+
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -1514,6 +1521,41 @@ export function useDeleteProductMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProductMutationHookResult = ReturnType<typeof useDeleteProductMutation>;
 export type DeleteProductMutationResult = Apollo.MutationResult<DeleteProductMutation>;
 export type DeleteProductMutationOptions = Apollo.BaseMutationOptions<DeleteProductMutation, DeleteProductMutationVariables>;
+export const DeleteSalaryDocument = gql`
+    mutation DeleteSalary($salaryId: ID!) {
+  deleteSalary(id: $salaryId) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export type DeleteSalaryMutationFn = Apollo.MutationFunction<DeleteSalaryMutation, DeleteSalaryMutationVariables>;
+
+/**
+ * __useDeleteSalaryMutation__
+ *
+ * To run a mutation, you first call `useDeleteSalaryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSalaryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSalaryMutation, { data, loading, error }] = useDeleteSalaryMutation({
+ *   variables: {
+ *      salaryId: // value for 'salaryId'
+ *   },
+ * });
+ */
+export function useDeleteSalaryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSalaryMutation, DeleteSalaryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSalaryMutation, DeleteSalaryMutationVariables>(DeleteSalaryDocument, options);
+      }
+export type DeleteSalaryMutationHookResult = ReturnType<typeof useDeleteSalaryMutation>;
+export type DeleteSalaryMutationResult = Apollo.MutationResult<DeleteSalaryMutation>;
+export type DeleteSalaryMutationOptions = Apollo.BaseMutationOptions<DeleteSalaryMutation, DeleteSalaryMutationVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($email: String!, $password: String!) {
   login(input: {identifier: $email, password: $password}) {

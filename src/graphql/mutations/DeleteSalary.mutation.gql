@@ -1,0 +1,7 @@
+mutation DeleteSalary($salaryId: ID!) {
+  deleteSalary(id: $salaryId) {
+    data {
+      id
+    }
+  }
+}

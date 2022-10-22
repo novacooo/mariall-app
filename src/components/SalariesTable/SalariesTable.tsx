@@ -6,6 +6,7 @@ import { checkIsActualMonth } from 'helpers';
 import { useErrorToast } from 'hooks';
 import {
   useCreateSalaryMutation,
+  useDeleteSalaryMutation,
   useGetEmployeesWithQuantitiesLazyQuery,
   useGetSalariesLazyQuery,
   useUpdateSalaryMutation,
@@ -13,7 +14,7 @@ import {
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 
 interface ISalary {
-  employeeId?: string;
+  employeeId: string;
   employeeName: string;
   salaryId?: string;
   salary: number;
@@ -56,77 +57,108 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
     },
   });
 
+  const [deleteSalary] = useDeleteSalaryMutation({
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
+  const calculateSalaries = async () => {
+    const getSalariesResponse = await getSalaries({ variables: { year, month } });
+    const salariesData = getSalariesResponse.data?.salaries?.data;
+
+    const getEmployeesWithQuantitiesResponse = await getEmployeesWithQuantities({ variables: { year, month } });
+    const employeesWithQuantitiesData = getEmployeesWithQuantitiesResponse.data?.employees?.data;
+
+    const salariesToSet: ISalary[] = [];
+    const salariesToDelete: string[] = [];
+
+    const promises: ReturnType<typeof updateSalary | typeof createSalary>[] = [];
+
+    // Calculate salaries
+    employeesWithQuantitiesData?.forEach(({ id: employeeId, attributes: employeeAttributes }) => {
+      if (!employeeId || !employeeAttributes) return;
+
+      const { firstName, lastName } = employeeAttributes;
+      const quantitiesData = employeeAttributes.quantities?.data;
+
+      if (!quantitiesData || quantitiesData.length === 0) return;
+
+      const employeeName = lastName ? `${firstName} ${lastName}` : firstName;
+      let salary = 0;
+
+      quantitiesData.forEach(({ attributes: quantityAttributes }) => {
+        const productPrice = quantityAttributes?.product?.data?.attributes?.price;
+        if (!quantityAttributes || !productPrice) return;
+
+        const quantity = quantityAttributes?.quantity;
+        salary += quantity * productPrice;
+      });
+
+      salary = Number(salary.toFixed(2));
+
+      salariesToSet.push({ employeeId, employeeName, salary });
+    });
+
+    // If salary exist set salary id
+    salariesData?.forEach(({ id: salaryId, attributes: salaryAttributes }) => {
+      const employeeId = salaryAttributes?.employee?.data?.id;
+      if (!salaryId || !salaryAttributes || !employeeId) return;
+
+      const foundIndex = salariesToSet.findIndex((salary) => salary.employeeId === employeeId);
+
+      // If salary no longer exist add it to delete queue
+      if (foundIndex === -1) {
+        salariesToDelete.push(salaryId);
+        return;
+      }
+
+      salariesToSet[foundIndex] = { ...salariesToSet[foundIndex], salaryId };
+    });
+
+    // Update or create salaries
+    salariesToSet.forEach(({ employeeId, salaryId, salary }) => {
+      if (salaryId) {
+        promises.push(updateSalary({ variables: { salaryId, salary } }));
+        return;
+      }
+
+      promises.push(createSalary({ variables: { employeeId, year, month, salary } }));
+    });
+
+    // Delete salaries
+    salariesToDelete.forEach((salaryId) => {
+      promises.push(deleteSalary({ variables: { salaryId } }));
+    });
+
+    await Promise.all(promises);
+
+    setSalaries(salariesToSet);
+  };
+
   const fetchData = async () => {
+    if (checkIsActualMonth(year, month)) {
+      await calculateSalaries();
+      return;
+    }
+
     const getSalariesResponse = await getSalaries({ variables: { year, month } });
     const salariesData = getSalariesResponse.data?.salaries?.data;
 
     const salariesToSet: ISalary[] = [];
 
-    if (checkIsActualMonth(year, month)) {
-      const getEmployeesWithQuantitiesResponse = await getEmployeesWithQuantities({ variables: { year, month } });
-      const employeesWithQuantitiesData = getEmployeesWithQuantitiesResponse.data?.employees?.data;
-
-      const promises: ReturnType<typeof updateSalary | typeof createSalary>[] = [];
-
-      employeesWithQuantitiesData?.forEach(({ id: employeeId, attributes: employeeAttributes }) => {
-        if (!employeeId || !employeeAttributes) return;
-
-        const { firstName, lastName } = employeeAttributes;
-        const quantitiesData = employeeAttributes.quantities?.data;
-
-        if (!quantitiesData || quantitiesData.length === 0) return;
-
-        const employeeName = lastName ? `${firstName} ${lastName}` : firstName;
-        let salary = 0;
-
-        quantitiesData.forEach(({ attributes: quantityAttributes }) => {
-          const productPrice = quantityAttributes?.product?.data?.attributes?.price;
-          if (!quantityAttributes || !productPrice) return;
-          const quantity = quantityAttributes?.quantity;
-          salary += quantity * productPrice;
-        });
-
-        salary = Number(salary.toFixed(2));
-
-        salariesToSet.push({ employeeId, employeeName, salary });
-      });
-
-      salariesData?.forEach(({ id: salaryId, attributes: salaryAttributes }) => {
-        const employeeId = salaryAttributes?.employee?.data?.id;
-        if (!salaryId || !salaryAttributes || !employeeId) return;
-        const foundIndex = salariesToSet.findIndex((salary) => salary.employeeId === employeeId);
-        if (foundIndex === -1) return;
-        salariesToSet[foundIndex] = { ...salariesToSet[foundIndex], salaryId };
-      });
-
-      salariesToSet.forEach(({ employeeId, salaryId, salary }) => {
-        if (!employeeId) return;
-
-        if (salaryId) {
-          promises.push(updateSalary({ variables: { salaryId, salary } }));
-          return;
-        }
-
-        promises.push(createSalary({ variables: { employeeId, year, month, salary } }));
-      });
-
-      await Promise.all(promises);
-
-      setSalaries(salariesToSet);
-      return;
-    }
-
     salariesData?.forEach(({ attributes: salaryAttributes }) => {
+      const employeeId = salaryAttributes?.employee?.data?.id;
       const employeeAttributes = salaryAttributes?.employee?.data?.attributes;
 
-      if (!salaryAttributes || !employeeAttributes) return;
+      if (!salaryAttributes || !employeeId || !employeeAttributes) return;
 
       const { salary } = salaryAttributes;
       const { firstName, lastName } = employeeAttributes;
 
       const employeeName = lastName ? `${firstName} ${lastName}` : firstName;
 
-      salariesToSet.push({ employeeName, salary });
+      salariesToSet.push({ employeeId, employeeName, salary });
     });
 
     setSalaries(salariesToSet);
@@ -151,8 +183,8 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {salaries.map(({ employeeName, salary }) => (
-              <Tr key={`${employeeName}-${salary}`}>
+            {salaries.map(({ employeeId, employeeName, salary }) => (
+              <Tr key={`${employeeId}-${employeeName}-${salary}`}>
                 <Td>{employeeName}</Td>
                 <Td isNumeric>{`${salary} ${t('texts.currency')}`}</Td>
               </Tr>
