@@ -23,6 +23,7 @@ const AddProductCard = ({ onClick }: AddProductCardProps) => {
       justify="center"
       p={4}
       w={['full', 44]}
+      minH={52}
       borderWidth={2}
       borderStyle="dashed"
       borderColor={borderColor}
