@@ -128,7 +128,13 @@
     "productQuantity": "Quantity",
     "productAdding": "Adding",
     "salariesEmployee": "Pracownik",
-    "salariesSalary": "Wypłata"
+    "salariesSalary": "Wypłata",
+    "summariesProductId": "ID produktu",
+    "summariesProductCode": "Kod produktu",
+    "summariesProductName": "Nazwa produktu",
+    "summariesProductPrice": "Koszt produktu",
+    "summariesProductQuantity": "Ilość sztuk",
+    "summariesTotalValue": "Łączna wartość"
   },
   "alerts": {
     "headers": {

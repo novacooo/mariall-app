@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Spinner } from '@chakra-ui/react';
+import { Box, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 
 import { useErrorToast } from 'hooks';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
@@ -8,9 +8,11 @@ import { useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
 
 interface ISummary {
   productId: string;
+  productCode: string;
   productName: string;
-  productQuantity: number;
   productPrice: number;
+  productQuantity: number;
+  totalValue: number;
 }
 
 interface SummariesTableProps {
@@ -23,6 +25,8 @@ interface SummariesTableProps {
 const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableProps) => {
   const { t } = useTranslation();
   const errorToast = useErrorToast();
+
+  const bgColor = useColorModeValue('white', 'gray.800');
 
   const [summaries, setSummaries] = useState<ISummary[]>([]);
 
@@ -46,9 +50,42 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
   if (summaries.length === 0) return <NoItemsInformation text={t('texts.noSummary')} />;
 
   return (
-    <div>
-      <p>SummariesTable</p>
-    </div>
+    <Box w="full" overflowX="auto" bgColor={bgColor} borderWidth={1} rounded="md">
+      <TableContainer>
+        <Table variant="striped">
+          <Thead>
+            <Tr>
+              <Th>{t('tables.summariesProductId')}</Th>
+              <Th>{t('tables.summariesProductCode')}</Th>
+              <Th>{t('tables.summariesProductName')}</Th>
+              {showPrices && (
+                <>
+                  <Th isNumeric>{t('tables.summariesProductPrice')}</Th>
+                  <Th isNumeric>{t('tables.summariesProductQuantity')}</Th>
+                  <Th isNumeric>{t('tables.summariesTotalValue')}</Th>
+                </>
+              )}
+            </Tr>
+          </Thead>
+          <Tbody>
+            {summaries.map(({ productId, productCode, productName, productPrice, productQuantity, totalValue }) => (
+              <Tr key={`${productId}-${productCode}`}>
+                <Td>{productId}</Td>
+                <Td>{productCode}</Td>
+                <Td>{productName}</Td>
+                {showPrices && (
+                  <>
+                    <Td isNumeric>{productPrice}</Td>
+                    <Td isNumeric>{productQuantity}</Td>
+                    <Td isNumeric>{`${totalValue} ${t('texts.currency')}`}</Td>
+                  </>
+                )}
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

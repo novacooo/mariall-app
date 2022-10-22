@@ -128,7 +128,13 @@
     "productQuantity": "Ilość",
     "productAdding": "Dodawanie",
     "salariesEmployee": "Employee",
-    "salariesSalary": "Salary"
+    "salariesSalary": "Salary",
+    "summariesProductId": "Product ID",
+    "summariesProductCode": "Product code",
+    "summariesProductName": "Product name",
+    "summariesProductPrice": "Product price",
+    "summariesProductQuantity": "Quantity",
+    "summariesTotalValue": "Total value"
   },
   "alerts": {
     "headers": {
