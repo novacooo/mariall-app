@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
-import { Spinner, Text } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 
 import WorkerSelects, { IWorkerSelectsData, WorkerSelectsHandle } from 'components/WorkerSelects/WorkerSelects';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
 import { useErrorToast } from 'hooks';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
+import SummariesTable from 'components/SummariesTable/SummariesTable';
 
 const PrintingSummariesTab = () => {
   const errorToast = useErrorToast();
@@ -29,7 +30,13 @@ const PrintingSummariesTab = () => {
       ) : (
         <Spinner />
       )}
-      {workerSelectsData && <Text>Selected</Text>}
+      {workerSelectsData && (
+        <SummariesTable
+          employeeId={workerSelectsData.worker.id}
+          year={workerSelectsData.year}
+          month={workerSelectsData.month.number}
+        />
+      )}
     </ProtectedTabTemplate>
   );
 };
