@@ -1329,7 +1329,7 @@ export type GetQuantitiesQueryVariables = Exact<{
 }>;
 
 
-export type GetQuantitiesQuery = { __typename?: 'Query', quantities?: { __typename?: 'QuantityEntityResponseCollection', data: Array<{ __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null } | null } | null } | null }> } | null };
+export type GetQuantitiesQuery = { __typename?: 'Query', quantities?: { __typename?: 'QuantityEntityResponseCollection', data: Array<{ __typename?: 'QuantityEntity', id?: string | null, attributes?: { __typename?: 'Quantity', quantity: number, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', code: string, name: string, price: number } | null } | null } | null } | null }> } | null };
 
 export type GetSalariesQueryVariables = Exact<{
   year: Scalars['Int'];
@@ -1986,6 +1986,11 @@ export const GetQuantitiesDocument = gql`
         product {
           data {
             id
+            attributes {
+              code
+              name
+              price
+            }
           }
         }
       }

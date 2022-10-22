@@ -28,7 +28,7 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
 
   const bgColor = useColorModeValue('white', 'gray.800');
 
-  const [summaries, setSummaries] = useState<ISummary[]>([]);
+  const [summaries, setSummaries] = useState<ISummary[]>();
 
   const [getQuantities] = useGetQuantitiesLazyQuery({
     onError: (error) => errorToast(error),
@@ -38,7 +38,23 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
     const getQuantitiesResponse = await getQuantities({ variables: { workerId: employeeId, year, month } });
     const quantitiesData = getQuantitiesResponse.data?.quantities?.data;
 
-    console.log(quantitiesData);
+    const newSummaries: ISummary[] = [];
+
+    quantitiesData?.forEach(({ attributes: quantityAttributes }) => {
+      const productId = quantityAttributes?.product?.data?.id;
+      const productAttributes = quantityAttributes?.product?.data?.attributes;
+
+      if (!quantityAttributes || !productId || !productAttributes) return;
+
+      const { quantity: productQuantity } = quantityAttributes;
+      const { code: productCode, name: productName, price: productPrice } = productAttributes;
+
+      const totalValue = Number((productPrice * productQuantity).toFixed(2));
+
+      newSummaries.push({ productId, productCode, productName, productPrice, productQuantity, totalValue });
+    });
+
+    setSummaries(newSummaries);
   };
 
   useEffect(() => {
@@ -52,7 +68,7 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
   return (
     <Box w="full" overflowX="auto" bgColor={bgColor} borderWidth={1} rounded="md">
       <TableContainer>
-        <Table variant="striped">
+        <Table variant="striped" size="sm">
           <Thead>
             <Tr>
               <Th>{t('tables.summariesProductId')}</Th>
@@ -75,7 +91,7 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
                 <Td>{productName}</Td>
                 {showPrices && (
                   <>
-                    <Td isNumeric>{productPrice}</Td>
+                    <Td isNumeric>{`${productPrice} ${t('texts.currency')}`}</Td>
                     <Td isNumeric>{productQuantity}</Td>
                     <Td isNumeric>{`${totalValue} ${t('texts.currency')}`}</Td>
                   </>

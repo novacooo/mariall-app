@@ -7,6 +7,11 @@ query GetQuantities($workerId: ID!, $year: Int!, $month: Int!) {
         product {
           data {
             id
+            attributes {
+              code
+              name
+              price
+            }
           }
         }
       }
