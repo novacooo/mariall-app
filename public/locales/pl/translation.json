@@ -127,14 +127,17 @@
     "productName": "Nazwa",
     "productQuantity": "Ilość",
     "productAdding": "Dodawanie",
-    "salariesEmployee": "Employee",
-    "salariesSalary": "Salary",
-    "summariesProductId": "Product ID",
-    "summariesProductCode": "Product code",
-    "summariesProductName": "Product name",
-    "summariesProductPrice": "Product price",
-    "summariesProductQuantity": "Quantity",
-    "summariesTotalValue": "Total value"
+    "salariesEmployee": "Pracownik",
+    "salariesSalary": "Wypłata",
+    "summariesProductId": "ID produktu",
+    "summariesProductCode": "Kod produktu",
+    "summariesProductName": "Nazwa produktu",
+    "summariesProductPrice": "Cena produktu",
+    "summariesProductQuantity": "Ilość sztuk",
+    "summariesTotalValue": "Łączna wartość",
+    "summariesQuantitiesSum": "Suma sztuk",
+    "summariesPricesSum": "Suma cen",
+    "summariesTotalValuesSum": "Suma wartości"
   },
   "alerts": {
     "headers": {

@@ -1,6 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Spinner,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 import { useErrorToast } from 'hooks';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
@@ -13,6 +25,12 @@ interface ISummary {
   productPrice: number;
   productQuantity: number;
   totalValue: number;
+}
+
+interface ISums {
+  pricesSum: number;
+  quantitiesSum: number;
+  totalValuesSum: number;
 }
 
 interface SummariesTableProps {
@@ -29,6 +47,7 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
   const bgColor = useColorModeValue('white', 'gray.800');
 
   const [summaries, setSummaries] = useState<ISummary[]>();
+  const [sums, setSums] = useState<ISums>();
 
   const [getQuantities] = useGetQuantitiesLazyQuery({
     onError: (error) => errorToast(error),
@@ -57,9 +76,28 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
     setSummaries(newSummaries);
   };
 
+  const calculateSums = () => {
+    let pricesSum = 0;
+    let quantitiesSum = 0;
+    let totalValuesSum = 0;
+
+    summaries?.forEach(({ productPrice, productQuantity, totalValue }) => {
+      pricesSum += productPrice;
+      quantitiesSum += productQuantity;
+      totalValuesSum += totalValue;
+    });
+
+    setSums({ pricesSum, quantitiesSum, totalValuesSum });
+  };
+
   useEffect(() => {
     void fetchData();
   }, [employeeId, year, month]);
+
+  useEffect(() => {
+    if (!summaries || summaries.length === 0) return;
+    calculateSums();
+  }, [summaries]);
 
   if (!summaries) return <Spinner />;
 
@@ -74,10 +112,10 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
               <Th>{t('tables.summariesProductId')}</Th>
               <Th>{t('tables.summariesProductCode')}</Th>
               <Th>{t('tables.summariesProductName')}</Th>
+              <Th isNumeric>{t('tables.summariesProductQuantity')}</Th>
               {showPrices && (
                 <>
                   <Th isNumeric>{t('tables.summariesProductPrice')}</Th>
-                  <Th isNumeric>{t('tables.summariesProductQuantity')}</Th>
                   <Th isNumeric>{t('tables.summariesTotalValue')}</Th>
                 </>
               )}
@@ -89,16 +127,34 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
                 <Td>{productId}</Td>
                 <Td>{productCode}</Td>
                 <Td>{productName}</Td>
+                <Td isNumeric>{productQuantity}</Td>
                 {showPrices && (
                   <>
                     <Td isNumeric>{`${productPrice} ${t('texts.currency')}`}</Td>
-                    <Td isNumeric>{productQuantity}</Td>
                     <Td isNumeric>{`${totalValue} ${t('texts.currency')}`}</Td>
                   </>
                 )}
               </Tr>
             ))}
           </Tbody>
+          {sums && (
+            <Tfoot>
+              <Tr>
+                <Th />
+                <Th />
+                <Th />
+                <Th isNumeric>{`${t('tables.summariesQuantitiesSum')}: ${sums.quantitiesSum}`}</Th>
+                {showPrices && (
+                  <>
+                    <Th isNumeric>{`${t('tables.summariesPricesSum')}: ${sums.pricesSum} ${t('texts.currency')}`}</Th>
+                    <Th isNumeric>{`${t('tables.summariesTotalValuesSum')}: ${sums.totalValuesSum} ${t(
+                      'texts.currency',
+                    )}`}</Th>
+                  </>
+                )}
+              </Tr>
+            </Tfoot>
+          )}
         </Table>
       </TableContainer>
     </Box>
