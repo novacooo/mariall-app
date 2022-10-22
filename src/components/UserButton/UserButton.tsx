@@ -4,7 +4,6 @@ import {
   HStack,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Text,
@@ -14,7 +13,7 @@ import {
 import { selectUserEmail } from 'features/user/userSlice';
 import { useAppSelector, useSignOut } from 'hooks';
 import { useTranslation } from 'react-i18next';
-import { FiChevronDown, FiLogOut, FiSettings } from 'react-icons/fi';
+import { FiChevronDown, FiLogOut } from 'react-icons/fi';
 
 const UserButton = () => {
   const { t } = useTranslation();
@@ -41,10 +40,10 @@ const UserButton = () => {
         </MenuButton>
       </Tooltip>
       <MenuList>
-        <MenuItem icon={<FiSettings />} fontSize="sm">
+        {/* <MenuItem icon={<FiSettings />} fontSize="sm">
           {t('buttons.userSettings')}
         </MenuItem>
-        <MenuDivider />
+        <MenuDivider /> */}
         <MenuItem icon={<FiLogOut />} fontSize="sm" color={logoutTextColor} onClick={handleSignOutButtonClick}>
           {t('buttons.signOut')}
         </MenuItem>
