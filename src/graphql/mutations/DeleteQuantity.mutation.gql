@@ -1,0 +1,7 @@
+mutation DeleteQuantity($quantityId: ID!) {
+  deleteQuantity(id: $quantityId) {
+    data {
+      id
+    }
+  }
+}

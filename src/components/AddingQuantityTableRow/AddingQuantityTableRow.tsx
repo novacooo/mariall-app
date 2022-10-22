@@ -1,9 +1,12 @@
-import { Box, Center, Flex, IconButton, Input, Text, useColorModeValue } from '@chakra-ui/react';
-import { selectThemeAccentColor } from 'features/theme/themeSlice';
-import { useAppSelector, usePrevious } from 'hooks';
 import { useImperativeHandle, forwardRef, useState, ChangeEvent, useEffect } from 'react';
+import { Box, Center, Flex, IconButton, Input, Text, useColorModeValue } from '@chakra-ui/react';
 import { FiMinus, FiPlus } from 'react-icons/fi';
+
+import { useAppSelector, usePrevious } from 'hooks';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import PlaceholderImage from 'assets/images/placeholder.jpg';
+import { selectUserRole } from 'features/user/userSlice';
+import { UserRole } from 'constants/UserRole';
 
 export interface IQuantity {
   productId: string;
@@ -32,6 +35,7 @@ interface AddingQuantityTableRowProps {
 const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQuantityTableRowProps>(
   ({ image, productId, productCode, productName, quantityId, quantity, onValueChange }, ref) => {
     const themeAccentColor = useAppSelector(selectThemeAccentColor);
+    const userRole = useAppSelector(selectUserRole);
 
     const [count, setCount] = useState(0);
     const previousCount = usePrevious(count);
@@ -56,7 +60,11 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
     }));
 
     const handleMinusClick = () => {
-      setCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+      if (userRole !== UserRole.AUTHENTICATED && userRole !== UserRole.ADMINISTRATOR) {
+        setCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+      }
+
+      setCount((prevCount) => (prevCount - 1 + quantity >= 0 ? prevCount - 1 : prevCount));
     };
 
     const handlePlusClick = () => {
@@ -64,10 +72,20 @@ const AddingQuantityTableRow = forwardRef<AddingQuantityTableRowHandle, AddingQu
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-      let number = parseInt(e.target.value, 10);
+      const { value } = e.target;
+
+      if (value === '') {
+        setCount(0);
+        return;
+      }
+
+      let number = parseInt(value, 10);
 
       if (number > 99) number = 99;
-      if (number < 0) number = 0;
+
+      if (userRole !== UserRole.AUTHENTICATED && userRole !== UserRole.ADMINISTRATOR) {
+        if (number < 0) number = 0;
+      }
 
       setCount(number);
     };

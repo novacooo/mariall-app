@@ -1247,6 +1247,13 @@ export type DeleteProductMutationVariables = Exact<{
 
 export type DeleteProductMutation = { __typename?: 'Mutation', updateProduct?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', id?: string | null, attributes?: { __typename?: 'Product', deleted: boolean } | null } | null } | null };
 
+export type DeleteQuantityMutationVariables = Exact<{
+  quantityId: Scalars['ID'];
+}>;
+
+
+export type DeleteQuantityMutation = { __typename?: 'Mutation', deleteQuantity?: { __typename?: 'QuantityEntityResponse', data?: { __typename?: 'QuantityEntity', id?: string | null } | null } | null };
+
 export type DeleteSalaryMutationVariables = Exact<{
   salaryId: Scalars['ID'];
 }>;
@@ -1521,6 +1528,41 @@ export function useDeleteProductMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProductMutationHookResult = ReturnType<typeof useDeleteProductMutation>;
 export type DeleteProductMutationResult = Apollo.MutationResult<DeleteProductMutation>;
 export type DeleteProductMutationOptions = Apollo.BaseMutationOptions<DeleteProductMutation, DeleteProductMutationVariables>;
+export const DeleteQuantityDocument = gql`
+    mutation DeleteQuantity($quantityId: ID!) {
+  deleteQuantity(id: $quantityId) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export type DeleteQuantityMutationFn = Apollo.MutationFunction<DeleteQuantityMutation, DeleteQuantityMutationVariables>;
+
+/**
+ * __useDeleteQuantityMutation__
+ *
+ * To run a mutation, you first call `useDeleteQuantityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteQuantityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteQuantityMutation, { data, loading, error }] = useDeleteQuantityMutation({
+ *   variables: {
+ *      quantityId: // value for 'quantityId'
+ *   },
+ * });
+ */
+export function useDeleteQuantityMutation(baseOptions?: Apollo.MutationHookOptions<DeleteQuantityMutation, DeleteQuantityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteQuantityMutation, DeleteQuantityMutationVariables>(DeleteQuantityDocument, options);
+      }
+export type DeleteQuantityMutationHookResult = ReturnType<typeof useDeleteQuantityMutation>;
+export type DeleteQuantityMutationResult = Apollo.MutationResult<DeleteQuantityMutation>;
+export type DeleteQuantityMutationOptions = Apollo.BaseMutationOptions<DeleteQuantityMutation, DeleteQuantityMutationVariables>;
 export const DeleteSalaryDocument = gql`
     mutation DeleteSalary($salaryId: ID!) {
   deleteSalary(id: $salaryId) {

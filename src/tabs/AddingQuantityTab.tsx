@@ -16,7 +16,12 @@ import { ISuccessToastPayload, useAppSelector, useAppToast, useErrorToast } from
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCcw, FiSave } from 'react-icons/fi';
-import { useCreateQuantityMutation, useGetEmployeesQuery, useUpdateQuantityMutation } from 'graphql/generated/schema';
+import {
+  useCreateQuantityMutation,
+  useDeleteQuantityMutation,
+  useGetEmployeesQuery,
+  useUpdateQuantityMutation,
+} from 'graphql/generated/schema';
 import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTableRow';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useDebouncedCallback } from 'use-debounce';
@@ -83,6 +88,12 @@ const AddingQuantityTab = () => {
     },
   });
 
+  const [deleteQuantity] = useDeleteQuantityMutation({
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
   const handleResetButtonClick = () => {
     if (!tableRef.current) return;
 
@@ -110,6 +121,13 @@ const AddingQuantityTab = () => {
     setIsSending(true);
 
     quantities.forEach(({ productId, quantityId, quantity }) => {
+      // Delete quantity if equals 0
+      if (quantityId && quantity === 0) {
+        promises.push(deleteQuantity({ variables: { quantityId } }));
+        return;
+      }
+
+      // Update quantity if exist
       if (quantityId) {
         promises.push(
           updateQuantity({
@@ -119,10 +137,10 @@ const AddingQuantityTab = () => {
             },
           }),
         );
-
         return;
       }
 
+      // Create if not exist
       promises.push(
         createQuantity({
           variables: {
