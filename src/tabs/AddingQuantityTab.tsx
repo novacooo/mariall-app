@@ -26,6 +26,8 @@ import { IQuantity } from 'components/AddingQuantityTableRow/AddingQuantityTable
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import { useDebouncedCallback } from 'use-debounce';
 import WorkerSelects, { IWorkerSelectsData, WorkerSelectsHandle } from 'components/WorkerSelects/WorkerSelects';
+import BetweenWrapper from 'components/BetweenWrapper/BetweenWrapper';
+import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
 
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
@@ -183,18 +185,7 @@ const AddingQuantityTab = () => {
 
   return (
     <Flex direction="column" gap={6}>
-      <Flex
-        justify="space-between"
-        gap={{
-          base: 3,
-          md: 4,
-        }}
-        direction={{
-          base: 'column',
-          md: 'row',
-        }}
-        wrap="wrap"
-      >
+      <BetweenWrapper>
         {getEmployeesQueryData ? (
           <WorkerSelects
             ref={workerSelectsRef}
@@ -206,26 +197,16 @@ const AddingQuantityTab = () => {
           <Spinner />
         )}
         {workerSelectsData && (
-          <Flex
-            wrap="wrap"
-            gap={{
-              base: 3,
-              md: 4,
-            }}
-            direction={{
-              base: 'column',
-              md: 'row',
-            }}
-          >
+          <ButtonsWrapper>
             <Button rightIcon={<FiRefreshCcw />} onClick={handleResetButtonClick}>
               {t('buttons.resetChanges')}
             </Button>
             <Button colorScheme={themeAccentColor} onClick={handleSaveButtonClick} rightIcon={<FiSave />}>
               {t('buttons.saveChanges')}
             </Button>
-          </Flex>
+          </ButtonsWrapper>
         )}
-      </Flex>
+      </BetweenWrapper>
       {workerSelectsData && (
         <AddingQuantityTable
           workerId={workerSelectsData.worker.id}

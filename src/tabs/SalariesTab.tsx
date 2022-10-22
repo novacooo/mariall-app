@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   Button,
-  Flex,
   Menu,
   MenuButton,
   MenuItemOption,
@@ -17,6 +16,7 @@ import { useAppSelector } from 'hooks';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import SalariesTable from 'components/SalariesTable/SalariesTable';
+import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
 
 const SalariesTab = () => {
   const { t } = useTranslation();
@@ -33,17 +33,7 @@ const SalariesTab = () => {
 
   return (
     <ProtectedTabTemplate>
-      <Flex
-        wrap="wrap"
-        gap={{
-          base: 3,
-          md: 4,
-        }}
-        direction={{
-          base: 'column',
-          md: 'row',
-        }}
-      >
+      <ButtonsWrapper>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />} color={selectedYear ? selectAccentText : undefined}>
             {selectedYear || t('selects.chooseYear')}
@@ -78,7 +68,7 @@ const SalariesTab = () => {
             </MenuList>
           </Menu>
         )}
-      </Flex>
+      </ButtonsWrapper>
       {selectedYear && selectedMonth && <SalariesTable year={selectedYear} month={selectedMonth.number} />}
     </ProtectedTabTemplate>
   );

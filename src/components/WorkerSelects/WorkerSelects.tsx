@@ -1,6 +1,5 @@
 import {
   Button,
-  Flex,
   Menu,
   MenuButton,
   MenuItemOption,
@@ -18,6 +17,7 @@ import { monthNames } from 'constants/monthNames';
 import { UserRole } from 'constants/UserRole';
 import { selectUserRole } from 'features/user/userSlice';
 import { getMonths, getYears, IMonth } from 'helpers';
+import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
 
 interface IWorker {
   id: string;
@@ -115,17 +115,7 @@ const WorkerSelects = forwardRef<WorkerSelectsHandle, WorkerSelectsProps>(
     if (!employeesData) return null;
 
     return (
-      <Flex
-        wrap="wrap"
-        gap={{
-          base: 3,
-          md: 4,
-        }}
-        direction={{
-          base: 'column',
-          md: 'row',
-        }}
-      >
+      <ButtonsWrapper>
         <Menu>
           <MenuButton
             as={Button}
@@ -196,7 +186,7 @@ const WorkerSelects = forwardRef<WorkerSelectsHandle, WorkerSelectsProps>(
             </MenuList>
           </Menu>
         )}
-      </Flex>
+      </ButtonsWrapper>
     );
   },
 );

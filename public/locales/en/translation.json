@@ -55,7 +55,10 @@
     "cancel": "Cancel",
     "deleteProduct": "Delete product",
     "uploadImage": "Upload image",
-    "addNewProduct": "Add new product"
+    "addNewProduct": "Add new product",
+    "hidePrices": "Hide prices",
+    "showPrices": "Show prices",
+    "printSummary": "Print summary"
   },
   "loading": {
     "signInButton": "Signing in...",

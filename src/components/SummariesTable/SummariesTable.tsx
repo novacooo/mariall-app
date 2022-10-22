@@ -6,9 +6,10 @@ interface SummariesTableProps {
   employeeId: string;
   year: number;
   month: number;
+  showPrices?: boolean;
 }
 
-const SummariesTable = ({ employeeId, year, month }: SummariesTableProps) => {
+const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableProps) => {
   const errorToast = useErrorToast();
 
   const [getQuantities] = useGetQuantitiesLazyQuery({
