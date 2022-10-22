@@ -76,7 +76,8 @@
   "texts": {
     "currency": "zł",
     "noProducts": "Brak produktów",
-    "noSalaries": "Brak wypłat"
+    "noSalaries": "Brak wypłat",
+    "noSummary": "Brak podsumowania"
   },
   "inputs": {
     "email": "Adres email",

@@ -76,7 +76,8 @@
   "texts": {
     "currency": "PLN",
     "noProducts": "No products",
-    "noSalaries": "No salaries"
+    "noSalaries": "No salaries",
+    "noSummary": "No summary"
   },
   "inputs": {
     "email": "Email",

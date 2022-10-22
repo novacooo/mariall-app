@@ -1,6 +1,17 @@
-import { useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Spinner } from '@chakra-ui/react';
+
 import { useErrorToast } from 'hooks';
-import { useEffect } from 'react';
+import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
+import { useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
+
+interface ISummary {
+  productId: string;
+  productName: string;
+  productQuantity: number;
+  productPrice: number;
+}
 
 interface SummariesTableProps {
   employeeId: string;
@@ -10,7 +21,10 @@ interface SummariesTableProps {
 }
 
 const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableProps) => {
+  const { t } = useTranslation();
   const errorToast = useErrorToast();
+
+  const [summaries, setSummaries] = useState<ISummary[]>([]);
 
   const [getQuantities] = useGetQuantitiesLazyQuery({
     onError: (error) => errorToast(error),
@@ -26,6 +40,10 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
   useEffect(() => {
     void fetchData();
   }, [employeeId, year, month]);
+
+  if (!summaries) return <Spinner />;
+
+  if (summaries.length === 0) return <NoItemsInformation text={t('texts.noSummary')} />;
 
   return (
     <div>
