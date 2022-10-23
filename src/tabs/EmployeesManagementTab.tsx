@@ -70,7 +70,7 @@ const EmployeesManagementTab = () => {
   };
 
   const handleDeleteEmployeeModalClose = () => {
-    setSelectedEmployee(undefined);
+    if (!isEmployeeDrawerOpen) setSelectedEmployee(undefined);
     onDeleteModalClose();
   };
 
@@ -86,7 +86,7 @@ const EmployeesManagementTab = () => {
 
   return (
     <ProtectedTabTemplate>
-      <VStack maxW={{ md: 500 }} align="stretch" divider={<StackDivider />}>
+      <VStack align="stretch" divider={<StackDivider />}>
         {employeesData.map(({ id, attributes }) => {
           if (!id || !attributes) return null;
 
