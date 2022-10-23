@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { Spinner, StackDivider, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, Spinner, StackDivider, useDisclosure, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { FiPlus } from 'react-icons/fi';
 
-import { useAppToast, useErrorToast } from 'hooks';
+import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { useDeleteEmployeeMutation, useGetEmployeesQuery } from 'graphql/generated/schema';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import EmployeeRow from 'components/EmployeeRow/EmployeeRow';
 import EmployeeDrawer, { IDrawerEmployee } from 'components/EmployeeDrawer/EmployeeDrawer';
 import DeleteEmployeeModal from 'components/DeleteEmployeeModal/DeleteEmployeeModal';
+import { selectThemeAccentColor } from 'features/theme/themeSlice';
 
 const EmployeesManagementTab = () => {
   const errorToast = useErrorToast();
@@ -21,6 +23,8 @@ const EmployeesManagementTab = () => {
     onClose: onEmployeeDrawerClose,
   } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+
+  const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
   const [selectedEmployee, setSelectedEmployee] = useState<IDrawerEmployee>();
   const [isDeleting, setIsDeleting] = useState<boolean>();
@@ -86,6 +90,9 @@ const EmployeesManagementTab = () => {
 
   return (
     <ProtectedTabTemplate>
+      <Button alignSelf={{ md: 'flex-end' }} colorScheme={themeAccentColor} rightIcon={<FiPlus />}>
+        {t('buttons.addEmployee')}
+      </Button>
       <VStack align="stretch" divider={<StackDivider />}>
         {employeesData.map(({ id, attributes }) => {
           if (!id || !attributes) return null;

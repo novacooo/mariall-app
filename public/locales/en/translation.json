@@ -61,6 +61,7 @@
     "hidePrices": "Hide prices",
     "showPrices": "Show prices",
     "printSummary": "Print summary",
+    "addEmployee": "Add employee",
     "deleteEmployee": "Delete employee"
   },
   "loading": {
