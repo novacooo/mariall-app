@@ -1,0 +1,11 @@
+mutation UpdateEmployee($employeeId: ID!, $firstName: String!, $lastName: String) {
+  updateEmployee(id: $employeeId, data: { firstName: $firstName, lastName: $lastName }) {
+    data {
+      id
+      attributes {
+        firstName
+        lastName
+      }
+    }
+  }
+}
