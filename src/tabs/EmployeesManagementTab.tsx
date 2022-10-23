@@ -1,4 +1,4 @@
-import { HStack, Spinner } from '@chakra-ui/react';
+import { Spinner, StackDivider, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { useErrorToast } from 'hooks';
@@ -27,7 +27,7 @@ const EmployeesManagementTab = () => {
 
   return (
     <ProtectedTabTemplate>
-      <HStack>
+      <VStack maxW={{ md: 500 }} align="stretch" divider={<StackDivider />}>
         {employeesData.map(({ id, attributes }) => {
           if (!id || !attributes) return null;
 
@@ -37,7 +37,7 @@ const EmployeesManagementTab = () => {
 
           return <EmployeeCard key={id} employee={employee} />;
         })}
-      </HStack>
+      </VStack>
     </ProtectedTabTemplate>
   );
 };

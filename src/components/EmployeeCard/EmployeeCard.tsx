@@ -1,38 +1,31 @@
-import { HStack, useColorModeValue, Text } from '@chakra-ui/react';
+import { HStack, Text, IconButton, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { IWorker } from 'components/WorkerSelects/WorkerSelects';
-import { selectThemeAccentColor } from 'features/theme/themeSlice';
-import { useAppSelector } from 'hooks';
+import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 interface EmployeeCardProps {
   employee: IWorker;
 }
 
 const EmployeeCard = ({ employee }: EmployeeCardProps) => {
-  const themeAccentColor = useAppSelector(selectThemeAccentColor);
+  const { t } = useTranslation();
 
-  const bg = useColorModeValue('white', 'gray.800');
-  const accentColor = useColorModeValue(`${themeAccentColor}.600`, `${themeAccentColor}.200`);
+  const trashIconColor = useColorModeValue('red.500', 'red.400');
 
   return (
-    <HStack
-      spacing={4}
-      p={4}
-      w={['full', 'auto']}
-      bg={bg}
-      borderWidth={1}
-      rounded="md"
-      transition="border-color 0.2s, transform 0.2s"
-      role="group"
-      _hover={{
-        cursor: 'pointer',
-        borderColor: accentColor,
-        transform: 'scale(1.02)',
-      }}
-    >
-      <Text fontSize="sm" textAlign="center" textTransform="uppercase" fontWeight="semibold" noOfLines={1}>
+    <HStack spacing={4} p={2} justify="space-between">
+      <Text fontSize="sm" fontWeight="semibold">
         {employee.name}
       </Text>
+      <HStack spacing={3}>
+        <Tooltip label={t('tooltips.editEmployee')}>
+          <IconButton aria-label={t('tooltips.editEmployee')} icon={<FiEdit2 />} />
+        </Tooltip>
+        <Tooltip label={t('tooltips.deleteEmployee')}>
+          <IconButton aria-label={t('tooltips.deleteEmployee')} color={trashIconColor} icon={<FiTrash2 />} />
+        </Tooltip>
+      </HStack>
     </HStack>
   );
 };
