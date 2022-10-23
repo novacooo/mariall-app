@@ -16,7 +16,7 @@ import { GetEmployeesQuery } from 'graphql/generated/schema';
 import { monthNames } from 'constants/monthNames';
 import { UserRole } from 'constants/UserRole';
 import { selectUserRole } from 'features/user/userSlice';
-import { getMonths, getYears, IMonth } from 'helpers';
+import { getEmployeeName, getMonths, getYears, IMonth } from 'helpers';
 import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 
@@ -134,7 +134,7 @@ const WorkerSelects = forwardRef<WorkerSelectsHandle, WorkerSelectsProps>(
                 if (!id || !attributes) return null;
 
                 const { firstName, lastName } = attributes;
-                const workerName = lastName ? `${firstName} ${lastName}` : firstName;
+                const workerName = getEmployeeName(firstName, lastName);
 
                 const worker: IWorker = { id, name: workerName };
 

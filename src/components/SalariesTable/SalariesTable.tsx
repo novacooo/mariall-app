@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { checkIsActualMonth } from 'helpers';
+import { checkIsActualMonth, getEmployeeName } from 'helpers';
 import { useErrorToast } from 'hooks';
 import {
   useCreateSalaryMutation,
@@ -84,7 +84,7 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
 
       if (!quantitiesData || quantitiesData.length === 0) return;
 
-      const employeeName = lastName ? `${firstName} ${lastName}` : firstName;
+      const employeeName = getEmployeeName(firstName, lastName);
       let salary = 0;
 
       quantitiesData.forEach(({ attributes: quantityAttributes }) => {
@@ -156,7 +156,7 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
       const { salary } = salaryAttributes;
       const { firstName, lastName } = employeeAttributes;
 
-      const employeeName = lastName ? `${firstName} ${lastName}` : firstName;
+      const employeeName = getEmployeeName(firstName, lastName);
 
       salariesToSet.push({ employeeId, employeeName, salary });
     });

@@ -4,3 +4,4 @@ export * from './checkIsFileImage';
 export * from './getYears';
 export * from './getMonths';
 export * from './checkIsActualMonth';
+export * from './getEmployeeName';
