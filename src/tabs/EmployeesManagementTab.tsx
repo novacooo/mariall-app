@@ -43,10 +43,15 @@ const EmployeesManagementTab = () => {
 
   const sendDeleteProduct = async () => {
     if (!selectedEmployee) return;
+
     setIsDeleting(true);
+
     await deleteEmployee({ variables: { employeeId: selectedEmployee.id } });
+
     setIsDeleting(false);
+
     onDeleteModalClose();
+    onEmployeeDrawerClose();
   };
 
   const handleEmployeeDrawerOpen = (employee: IDrawerEmployee) => {
