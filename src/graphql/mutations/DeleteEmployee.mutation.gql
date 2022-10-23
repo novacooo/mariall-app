@@ -1,0 +1,10 @@
+mutation DeleteEmployee($employeeId: ID!) {
+  updateEmployee(id: $employeeId, data: { deleted: true }) {
+    data {
+      id
+      attributes {
+        deleted
+      }
+    }
+  }
+}

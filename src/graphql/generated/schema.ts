@@ -69,6 +69,7 @@ export type DateTimeFilterInput = {
 export type Employee = {
   __typename?: 'Employee';
   createdAt?: Maybe<Scalars['DateTime']>;
+  deleted: Scalars['Boolean'];
   firstName: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
   quantities?: Maybe<QuantityRelationResponseCollection>;
@@ -102,6 +103,7 @@ export type EmployeeEntityResponseCollection = {
 export type EmployeeFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<EmployeeFiltersInput>>>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
+  deleted?: InputMaybe<BooleanFilterInput>;
   firstName?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   lastName?: InputMaybe<StringFilterInput>;
@@ -112,6 +114,7 @@ export type EmployeeFiltersInput = {
 };
 
 export type EmployeeInput = {
+  deleted?: InputMaybe<Scalars['Boolean']>;
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   quantities?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -1240,6 +1243,13 @@ export type CreateSalaryMutationVariables = Exact<{
 
 export type CreateSalaryMutation = { __typename?: 'Mutation', createSalary?: { __typename?: 'SalaryEntityResponse', data?: { __typename?: 'SalaryEntity', id?: string | null } | null } | null };
 
+export type DeleteEmployeeMutationVariables = Exact<{
+  employeeId: Scalars['ID'];
+}>;
+
+
+export type DeleteEmployeeMutation = { __typename?: 'Mutation', updateEmployee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', deleted: boolean } | null } | null } | null };
+
 export type DeleteProductMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -1499,6 +1509,44 @@ export function useCreateSalaryMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateSalaryMutationHookResult = ReturnType<typeof useCreateSalaryMutation>;
 export type CreateSalaryMutationResult = Apollo.MutationResult<CreateSalaryMutation>;
 export type CreateSalaryMutationOptions = Apollo.BaseMutationOptions<CreateSalaryMutation, CreateSalaryMutationVariables>;
+export const DeleteEmployeeDocument = gql`
+    mutation DeleteEmployee($employeeId: ID!) {
+  updateEmployee(id: $employeeId, data: {deleted: true}) {
+    data {
+      id
+      attributes {
+        deleted
+      }
+    }
+  }
+}
+    `;
+export type DeleteEmployeeMutationFn = Apollo.MutationFunction<DeleteEmployeeMutation, DeleteEmployeeMutationVariables>;
+
+/**
+ * __useDeleteEmployeeMutation__
+ *
+ * To run a mutation, you first call `useDeleteEmployeeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteEmployeeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteEmployeeMutation, { data, loading, error }] = useDeleteEmployeeMutation({
+ *   variables: {
+ *      employeeId: // value for 'employeeId'
+ *   },
+ * });
+ */
+export function useDeleteEmployeeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteEmployeeMutation, DeleteEmployeeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteEmployeeMutation, DeleteEmployeeMutationVariables>(DeleteEmployeeDocument, options);
+      }
+export type DeleteEmployeeMutationHookResult = ReturnType<typeof useDeleteEmployeeMutation>;
+export type DeleteEmployeeMutationResult = Apollo.MutationResult<DeleteEmployeeMutation>;
+export type DeleteEmployeeMutationOptions = Apollo.BaseMutationOptions<DeleteEmployeeMutation, DeleteEmployeeMutationVariables>;
 export const DeleteProductDocument = gql`
     mutation DeleteProduct($id: ID!) {
   updateProduct(id: $id, data: {deleted: true}) {
