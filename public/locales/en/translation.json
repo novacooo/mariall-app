@@ -76,6 +76,7 @@
   },
   "texts": {
     "currency": "PLN",
+    "noEmployees": "No employees",
     "noProducts": "No products",
     "noSalaries": "No salaries",
     "noSummary": "No summary",

@@ -76,6 +76,7 @@
   },
   "texts": {
     "currency": "zł",
+    "noEmployees": "Brak pracowników",
     "noProducts": "Brak produktów",
     "noSalaries": "Brak wypłat",
     "noSummary": "Brak podsumowania",

@@ -18,6 +18,7 @@ import { UserRole } from 'constants/UserRole';
 import { selectUserRole } from 'features/user/userSlice';
 import { getMonths, getYears, IMonth } from 'helpers';
 import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
+import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 
 export interface IWorker {
   id: string;
@@ -113,6 +114,8 @@ const WorkerSelects = forwardRef<WorkerSelectsHandle, WorkerSelectsProps>(
     const employeesData = getEmployeesQueryData.employees?.data;
 
     if (!employeesData) return null;
+
+    if (employeesData.length === 0) return <NoItemsInformation text={t('texts.noEmployees')} />;
 
     return (
       <ButtonsWrapper>
