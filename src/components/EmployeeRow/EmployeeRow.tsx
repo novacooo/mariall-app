@@ -6,9 +6,11 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 interface EmployeeRowProps {
   employee: IWorker;
+  onEditButtonClick?: () => void;
+  onTrashButtonClick?: () => void;
 }
 
-const EmployeeRow = ({ employee }: EmployeeRowProps) => {
+const EmployeeRow = ({ employee, onEditButtonClick, onTrashButtonClick }: EmployeeRowProps) => {
   const { t } = useTranslation();
 
   const trashIconColor = useColorModeValue('red.500', 'red.400');
@@ -20,10 +22,15 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
       </Text>
       <HStack spacing={3}>
         <Tooltip label={t('tooltips.editEmployee')}>
-          <IconButton aria-label={t('tooltips.editEmployee')} icon={<FiEdit2 />} />
+          <IconButton aria-label={t('tooltips.editEmployee')} icon={<FiEdit2 />} onClick={onEditButtonClick} />
         </Tooltip>
         <Tooltip label={t('tooltips.deleteEmployee')}>
-          <IconButton aria-label={t('tooltips.deleteEmployee')} color={trashIconColor} icon={<FiTrash2 />} />
+          <IconButton
+            aria-label={t('tooltips.deleteEmployee')}
+            color={trashIconColor}
+            icon={<FiTrash2 />}
+            onClick={onTrashButtonClick}
+          />
         </Tooltip>
       </HStack>
     </HStack>

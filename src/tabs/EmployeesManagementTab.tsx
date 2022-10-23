@@ -1,4 +1,4 @@
-import { Spinner, StackDivider, VStack } from '@chakra-ui/react';
+import { Spinner, StackDivider, useDisclosure, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { useErrorToast } from 'hooks';
@@ -8,16 +8,36 @@ import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation
 import { IWorker } from 'components/WorkerSelects/WorkerSelects';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import EmployeeRow from 'components/EmployeeRow/EmployeeRow';
+import { useState } from 'react';
+import EmployeeDrawer from 'components/EmployeeDrawer/EmployeeDrawer';
 
 const EmployeesManagementTab = () => {
   const errorToast = useErrorToast();
   const { t } = useTranslation();
+
+  const {
+    isOpen: isEmployeeDrawerOpen,
+    onOpen: onEmployeeDrawerOpen,
+    onClose: onEmployeeDrawerClose,
+  } = useDisclosure();
+
+  const [selectedEmployee, setSelectedEmployee] = useState<IWorker>();
 
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
     onError: (error) => {
       errorToast(error);
     },
   });
+
+  const handleEmployeeDrawerOpen = (employee: IWorker) => {
+    setSelectedEmployee(employee);
+    onEmployeeDrawerOpen();
+  };
+
+  const handleEmployeeDrawerClose = () => {
+    setSelectedEmployee(undefined);
+    onEmployeeDrawerClose();
+  };
 
   const employeesData = getEmployeesQueryData?.employees?.data;
 
@@ -35,9 +55,12 @@ const EmployeesManagementTab = () => {
           const employeeName = getEmployeeName(firstName, lastName);
           const employee: IWorker = { id, name: employeeName };
 
-          return <EmployeeRow key={id} employee={employee} />;
+          return (
+            <EmployeeRow key={id} employee={employee} onEditButtonClick={() => handleEmployeeDrawerOpen(employee)} />
+          );
         })}
       </VStack>
+      <EmployeeDrawer employee={selectedEmployee} isOpen={isEmployeeDrawerOpen} onClose={handleEmployeeDrawerClose} />
     </ProtectedTabTemplate>
   );
 };

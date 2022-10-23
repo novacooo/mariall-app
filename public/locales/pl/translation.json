@@ -60,7 +60,8 @@
     "addNewProduct": "Dodaj nowy produkt",
     "hidePrices": "Schowaj ceny",
     "showPrices": "Pokaż ceny",
-    "printSummary": "Wydrukuj podsumowanie"
+    "printSummary": "Wydrukuj podsumowanie",
+    "deleteEmployee": "Usuń pracownika"
   },
   "loading": {
     "signInButton": "Logowanie...",
@@ -180,7 +181,8 @@
   "drawers": {
     "headers": {
       "productEdition": "Edycja produktu",
-      "addingProduct": "Dodawanie produktu"
+      "addingProduct": "Dodawanie produktu",
+      "editEmployee": "Edytuj pracownika"
     }
   },
   "modals": {

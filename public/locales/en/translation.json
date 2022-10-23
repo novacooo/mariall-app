@@ -60,7 +60,8 @@
     "addNewProduct": "Add new product",
     "hidePrices": "Hide prices",
     "showPrices": "Show prices",
-    "printSummary": "Print summary"
+    "printSummary": "Print summary",
+    "deleteEmployee": "Delete employee"
   },
   "loading": {
     "signInButton": "Signing in...",
@@ -180,7 +181,8 @@
   "drawers": {
     "headers": {
       "productEdition": "Product edition",
-      "addingProduct": "Adding a product"
+      "addingProduct": "Adding a product",
+      "editEmployee": "Edit employee"
     }
   },
   "modals": {
