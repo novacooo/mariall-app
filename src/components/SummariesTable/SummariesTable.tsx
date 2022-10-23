@@ -115,6 +115,9 @@ const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSumm
       totalValuesSum += totalValue;
     });
 
+    pricesSum = Number(pricesSum.toFixed(2));
+    totalValuesSum = Number(totalValuesSum.toFixed(2));
+
     setSums({ pricesSum, quantitiesSum, totalValuesSum });
   };
 
@@ -146,7 +149,6 @@ const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSumm
         <Table variant="striped" size="sm">
           <Thead>
             <Tr>
-              <Th>{t('tables.summariesProductId')}</Th>
               <Th>{t('tables.summariesProductCode')}</Th>
               <Th>{t('tables.summariesProductName')}</Th>
               <Th isNumeric>{t('tables.summariesProductQuantity')}</Th>
@@ -159,9 +161,8 @@ const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSumm
             </Tr>
           </Thead>
           <Tbody>
-            {summaries.map(({ productId, productCode, productName, productPrice, productQuantity, totalValue }) => (
-              <Tr key={`${productId}-${productCode}`}>
-                <Td>{productId}</Td>
+            {summaries.map(({ productCode, productName, productPrice, productQuantity, totalValue }) => (
+              <Tr key={productCode}>
                 <Td>{productCode}</Td>
                 <Td maxW={32} overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
                   {productName}
@@ -179,7 +180,6 @@ const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSumm
           {sums && (
             <Tfoot>
               <Tr>
-                <Th />
                 <Th />
                 <Th />
                 <Th isNumeric>{sums.quantitiesSum}</Th>

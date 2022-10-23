@@ -1,4 +1,4 @@
-import { Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import Sidebar from 'components/Sidebar/Sidebar';
 import TopBar from 'components/TopBar/TopBar';
 import { ReactNode } from 'react';
@@ -11,7 +11,13 @@ interface PanelTemplateProps {
 const PanelTemplate = ({ name, children }: PanelTemplateProps) => (
   <>
     <TopBar />
-    <Flex flexGrow={1}>
+    <Box
+      display={{
+        base: 'block',
+        md: 'flex',
+      }}
+      flexGrow={1}
+    >
       <Sidebar width={250} />
       <Flex
         direction="column"
@@ -28,7 +34,7 @@ const PanelTemplate = ({ name, children }: PanelTemplateProps) => (
         </Heading>
         {children}
       </Flex>
-    </Flex>
+    </Box>
   </>
 );
 
