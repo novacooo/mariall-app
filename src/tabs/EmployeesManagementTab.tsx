@@ -7,7 +7,7 @@ import { useGetEmployeesQuery } from 'graphql/generated/schema';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 import { IWorker } from 'components/WorkerSelects/WorkerSelects';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
-import EmployeeCard from 'components/EmployeeCard/EmployeeCard';
+import EmployeeRow from 'components/EmployeeRow/EmployeeRow';
 
 const EmployeesManagementTab = () => {
   const errorToast = useErrorToast();
@@ -35,7 +35,7 @@ const EmployeesManagementTab = () => {
           const employeeName = getEmployeeName(firstName, lastName);
           const employee: IWorker = { id, name: employeeName };
 
-          return <EmployeeCard key={id} employee={employee} />;
+          return <EmployeeRow key={id} employee={employee} />;
         })}
       </VStack>
     </ProtectedTabTemplate>

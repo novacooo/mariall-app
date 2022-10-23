@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { IWorker } from 'components/WorkerSelects/WorkerSelects';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
-interface EmployeeCardProps {
+interface EmployeeRowProps {
   employee: IWorker;
 }
 
-const EmployeeCard = ({ employee }: EmployeeCardProps) => {
+const EmployeeRow = ({ employee }: EmployeeRowProps) => {
   const { t } = useTranslation();
 
   const trashIconColor = useColorModeValue('red.500', 'red.400');
@@ -30,4 +30,4 @@ const EmployeeCard = ({ employee }: EmployeeCardProps) => {
   );
 };
 
-export default EmployeeCard;
+export default EmployeeRow;
