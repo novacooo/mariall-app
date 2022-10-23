@@ -63,7 +63,8 @@
   "loading": {
     "signInButton": "Logowanie...",
     "saving": "Zapisywanie...",
-    "deleting": "Usuwanie..."
+    "deleting": "Usuwanie...",
+    "printing": "Drukowanie..."
   },
   "headers": {
     "signIn": "Zaloguj się",
@@ -77,7 +78,11 @@
     "currency": "zł",
     "noProducts": "Brak produktów",
     "noSalaries": "Brak wypłat",
-    "noSummary": "Brak podsumowania"
+    "noSummary": "Brak podsumowania",
+    "employee": "Pracownik",
+    "year": "Rok",
+    "month": "Miesiąc",
+    "monthSummary": "Podsumowanie miesiąca"
   },
   "inputs": {
     "email": "Adres email",

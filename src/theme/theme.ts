@@ -21,6 +21,26 @@ const styles = {
       backgroundColor: 'blackAlpha.200',
       borderRadius: '50px',
     },
+    '.show-on-print-only': {
+      display: 'none',
+    },
+    '@media print': {
+      '.show-on-print-only': {
+        display: 'block !important',
+      },
+      '*': {
+        borderColor: '#f2f2f2 !important',
+      },
+      th: {
+        color: '#666666 !important',
+      },
+      td: {
+        color: '#000000 !important',
+      },
+      'tr:nth-of-type(odd) td': {
+        backgroundColor: '#f2f2f2 !important',
+      },
+    },
   },
 };
 

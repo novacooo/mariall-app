@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -12,11 +12,16 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  Text,
+  Flex,
+  Heading,
 } from '@chakra-ui/react';
 
 import { useErrorToast } from 'hooks';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 import { useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
+import { IWorker } from 'components/WorkerSelects/WorkerSelects';
+import { IMonth } from 'helpers';
 
 interface ISummary {
   productId: string;
@@ -33,14 +38,30 @@ interface ISums {
   totalValuesSum: number;
 }
 
-interface SummariesTableProps {
-  employeeId: string;
-  year: number;
-  month: number;
-  showPrices?: boolean;
+interface PrintInfoRowProps {
+  header: string;
+  info: string | number;
 }
 
-const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableProps) => {
+interface SummariesTableProps {
+  employee: IWorker;
+  year: number;
+  month: IMonth;
+  showPrices?: boolean;
+  tableRef?: RefObject<HTMLDivElement>;
+  setIsSummary?: (param: boolean) => void;
+}
+
+const PrintInfoText = ({ header, info }: PrintInfoRowProps) => (
+  <Text fontSize="sm">
+    <Text as="span" mr={1} fontWeight="semibold">
+      {`${header}:`}
+    </Text>
+    {info}
+  </Text>
+);
+
+const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSummary }: SummariesTableProps) => {
   const { t } = useTranslation();
   const errorToast = useErrorToast();
 
@@ -54,7 +75,13 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
   });
 
   const fetchData = async () => {
-    const getQuantitiesResponse = await getQuantities({ variables: { workerId: employeeId, year, month } });
+    const getQuantitiesResponse = await getQuantities({
+      variables: {
+        workerId: employee.id,
+        year,
+        month: month.number,
+      },
+    });
     const quantitiesData = getQuantitiesResponse.data?.quantities?.data;
 
     const newSummaries: ISummary[] = [];
@@ -73,6 +100,7 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
       newSummaries.push({ productId, productCode, productName, productPrice, productQuantity, totalValue });
     });
 
+    if (setIsSummary && newSummaries.length !== 0) setIsSummary(true);
     setSummaries(newSummaries);
   };
 
@@ -91,8 +119,9 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
   };
 
   useEffect(() => {
+    if (setIsSummary) setIsSummary(false);
     void fetchData();
-  }, [employeeId, year, month]);
+  }, [employee, year, month]);
 
   useEffect(() => {
     if (!summaries || summaries.length === 0) return;
@@ -105,7 +134,15 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
 
   return (
     <Box w="full" overflowX="auto" bgColor={bgColor} borderWidth={1} rounded="md">
-      <TableContainer>
+      <TableContainer ref={tableRef}>
+        <Flex className="show-on-print-only" display="none" m={4} direction="column" gap={1}>
+          <Heading as="h4" size="sm" textAlign="center">
+            {t('texts.monthSummary')}
+          </Heading>
+          <PrintInfoText header={t('texts.employee')} info={employee.name} />
+          <PrintInfoText header={t('texts.year')} info={year} />
+          <PrintInfoText header={t('texts.month')} info={t(`months.${month.name}`)} />
+        </Flex>
         <Table variant="striped" size="sm">
           <Thead>
             <Tr>
@@ -126,7 +163,9 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
               <Tr key={`${productId}-${productCode}`}>
                 <Td>{productId}</Td>
                 <Td>{productCode}</Td>
-                <Td>{productName}</Td>
+                <Td maxW={32} overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
+                  {productName}
+                </Td>
                 <Td isNumeric>{productQuantity}</Td>
                 {showPrices && (
                   <>
@@ -143,13 +182,11 @@ const SummariesTable = ({ employeeId, year, month, showPrices }: SummariesTableP
                 <Th />
                 <Th />
                 <Th />
-                <Th isNumeric>{`${t('tables.summariesQuantitiesSum')}: ${sums.quantitiesSum}`}</Th>
+                <Th isNumeric>{sums.quantitiesSum}</Th>
                 {showPrices && (
                   <>
-                    <Th isNumeric>{`${t('tables.summariesPricesSum')}: ${sums.pricesSum} ${t('texts.currency')}`}</Th>
-                    <Th isNumeric>{`${t('tables.summariesTotalValuesSum')}: ${sums.totalValuesSum} ${t(
-                      'texts.currency',
-                    )}`}</Th>
+                    <Th isNumeric>{`${sums.pricesSum} ${t('texts.currency')}`}</Th>
+                    <Th isNumeric>{`${sums.totalValuesSum} ${t('texts.currency')}`}</Th>
                   </>
                 )}
               </Tr>

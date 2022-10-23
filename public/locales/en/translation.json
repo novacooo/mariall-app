@@ -63,7 +63,8 @@
   "loading": {
     "signInButton": "Signing in...",
     "saving": "Saving...",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "printing": "Printing..."
   },
   "headers": {
     "signIn": "Sign in",
@@ -77,7 +78,11 @@
     "currency": "PLN",
     "noProducts": "No products",
     "noSalaries": "No salaries",
-    "noSummary": "No summary"
+    "noSummary": "No summary",
+    "employee": "Employee",
+    "year": "Year",
+    "month": "Month",
+    "monthSummary": "Month summary"
   },
   "inputs": {
     "email": "Email",

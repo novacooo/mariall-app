@@ -2,8 +2,9 @@ import { useRef, useState } from 'react';
 import { Button, Spinner } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FiEye, FiEyeOff, FiPrinter } from 'react-icons/fi';
+import { useReactToPrint } from 'react-to-print';
 
-import WorkerSelects, { IWorkerSelectsData, WorkerSelectsHandle } from 'components/WorkerSelects/WorkerSelects';
+import WorkerSelects, { IWorkerSelectsData } from 'components/WorkerSelects/WorkerSelects';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
 import { useAppSelector, useErrorToast } from 'hooks';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
@@ -16,12 +17,14 @@ const PrintingSummariesTab = () => {
   const errorToast = useErrorToast();
   const { t } = useTranslation();
 
-  const workerSelectsRef = useRef<WorkerSelectsHandle>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
   const [showPrices, setShowPrices] = useState<boolean>(false);
   const [workerSelectsData, setWorkerSelectsData] = useState<IWorkerSelectsData>();
+  const [isSummary, setIsSummary] = useState<boolean>(false);
+  const [isPrintLoading, setIsPrintLoading] = useState<boolean>(false);
 
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
     onError: (error) => {
@@ -29,27 +32,25 @@ const PrintingSummariesTab = () => {
     },
   });
 
+  const handlePrintButtonClick = useReactToPrint({
+    content: () => tableRef.current,
+    onBeforeGetContent: () => setIsPrintLoading(true),
+    onAfterPrint: () => setIsPrintLoading(false),
+  });
+
   const handleShowPricesButtonClick = () => {
     setShowPrices((prevState) => !prevState);
-  };
-
-  const handlePrintButtonClick = () => {
-    // handle click
   };
 
   return (
     <ProtectedTabTemplate>
       <BetweenWrapper>
         {getEmployeesQueryData ? (
-          <WorkerSelects
-            ref={workerSelectsRef}
-            getEmployeesQueryData={getEmployeesQueryData}
-            setWorkerSelectsData={setWorkerSelectsData}
-          />
+          <WorkerSelects getEmployeesQueryData={getEmployeesQueryData} setWorkerSelectsData={setWorkerSelectsData} />
         ) : (
           <Spinner />
         )}
-        {workerSelectsData && (
+        {workerSelectsData && isSummary && (
           <ButtonsWrapper>
             <Button
               rightIcon={showPrices ? <FiEyeOff size={16} /> : <FiEye size={16} />}
@@ -57,7 +58,13 @@ const PrintingSummariesTab = () => {
             >
               {showPrices ? t('buttons.hidePrices') : t('buttons.showPrices')}
             </Button>
-            <Button colorScheme={themeAccentColor} onClick={handlePrintButtonClick} rightIcon={<FiPrinter />}>
+            <Button
+              colorScheme={themeAccentColor}
+              onClick={handlePrintButtonClick}
+              rightIcon={<FiPrinter />}
+              isLoading={isPrintLoading}
+              loadingText={t('loading.printing')}
+            >
               {t('buttons.printSummary')}
             </Button>
           </ButtonsWrapper>
@@ -65,10 +72,12 @@ const PrintingSummariesTab = () => {
       </BetweenWrapper>
       {workerSelectsData && (
         <SummariesTable
-          employeeId={workerSelectsData.worker.id}
+          employee={workerSelectsData.worker}
           year={workerSelectsData.year}
-          month={workerSelectsData.month.number}
+          month={workerSelectsData.month}
           showPrices={showPrices}
+          setIsSummary={setIsSummary}
+          tableRef={tableRef}
         />
       )}
     </ProtectedTabTemplate>

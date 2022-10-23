@@ -19,7 +19,7 @@ import { selectUserRole } from 'features/user/userSlice';
 import { getMonths, getYears, IMonth } from 'helpers';
 import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
 
-interface IWorker {
+export interface IWorker {
   id: string;
   name: string;
 }
