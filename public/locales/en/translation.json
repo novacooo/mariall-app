@@ -133,7 +133,8 @@
     "productImageWrongType": "Wrong file format! Acceptable formats are .jpg and .png",
     "employeeFirstNameTooShort": "The employee's name is too short!",
     "employeeLastNameTooShort": "The employee's last name is too short!",
-    "notCompletedEmployeeFirstName": "You have to enter the name of the employee!"
+    "notCompletedEmployeeFirstName": "You have to enter the name of the employee!",
+    "notCompletedEmployeeLastName": "You have to enter the last name of the employee!"
   },
   "tables": {
     "productImage": "Image",

@@ -133,7 +133,8 @@
     "productImageWrongType": "Błędny format pliku! Dopuszczalne formaty to .jpg oraz .png",
     "employeeFirstNameTooShort": "Imię pracownika jest za krótkie!",
     "employeeLastNameTooShort": "Nazwisko pracownika jest za krótkie!",
-    "notCompletedEmployeeFirstName": "Muisz podać imię pracownika!"
+    "notCompletedEmployeeFirstName": "Muisz podać imię pracownika!",
+    "notCompletedEmployeeLastName": "Muisz podać nazwisko pracownika!"
   },
   "tables": {
     "productImage": "Zdjęcie",

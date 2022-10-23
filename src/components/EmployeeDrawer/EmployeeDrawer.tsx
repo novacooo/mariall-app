@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Button,
   Drawer,
@@ -20,9 +21,9 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useAppToast, useErrorToast } from 'hooks';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
-import { useState } from 'react';
+import { useUpdateEmployeeMutation } from 'graphql/generated/schema';
 
 export interface IDrawerEmployee {
   id: string;
@@ -31,7 +32,7 @@ export interface IDrawerEmployee {
 }
 interface IEmployeeValues {
   employeeValueFirstName: string;
-  employeeValueLastName?: string;
+  employeeValueLastName: string;
 }
 
 interface EmployeeDrawerProps {
@@ -43,6 +44,8 @@ interface EmployeeDrawerProps {
 
 const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: EmployeeDrawerProps) => {
   const { t } = useTranslation();
+  const appToast = useAppToast();
+  const errorToast = useErrorToast();
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
@@ -50,8 +53,33 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
 
   const [isSending, setIsSending] = useState<boolean>();
 
-  const sendUpdateEmployee = (values: IEmployeeValues) => {
-    console.table(values);
+  const [updateEmployee] = useUpdateEmployeeMutation({
+    onCompleted: () => {
+      appToast({
+        title: t('toasts.titles.updateProductSuccess'),
+        description: t('toasts.descriptions.updateProductSuccess'),
+      });
+    },
+    onError: (error) => errorToast(error),
+  });
+
+  const sendUpdateEmployee = async (values: IEmployeeValues) => {
+    if (!employee) return;
+
+    const { employeeValueFirstName, employeeValueLastName } = values;
+
+    setIsSending(true);
+
+    await updateEmployee({
+      variables: {
+        employeeId: employee.id,
+        firstName: employeeValueFirstName,
+        lastName: employeeValueLastName || '',
+      },
+    });
+
+    setIsSending(false);
+    onClose();
   };
 
   const initialEmployeeValues: IEmployeeValues = {
@@ -64,7 +92,10 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
       .string()
       .min(2, t('errors.employeeFirstNameTooShort'))
       .required(t('errors.notCompletedEmployeeFirstName')),
-    employeeValueLastName: yup.string().min(2, t('errors.employeeLastNameTooShort')),
+    employeeValueLastName: yup
+      .string()
+      .min(2, t('errors.employeeLastNameTooShort'))
+      .required(t('errors.notCompletedEmployeeLastName')),
   });
 
   const formik = useFormik<IEmployeeValues>({
