@@ -169,7 +169,9 @@
       "incorrectLoginCredentials": "Błędne dane logowania!",
       "quantitiesAddSuccess": "Udało się!",
       "updateProductSuccess": "Udało się!",
-      "deleteProductSuccess": "Usunięto!"
+      "deleteProductSuccess": "Usunięto!",
+      "updateEmployeeSuccess": "Udało się!",
+      "deleteEmployeeSuccess": "Usunięto!"
     },
     "descriptions": {
       "somethingWentWrong": "Ups... coś poszło nie tak. Komunikat błędu:",
@@ -177,7 +179,9 @@
       "incorrectLoginCredentials": "Podałeś błędne dane logowania. Nie udało się zalogować.",
       "quantitiesAddSuccess": "Ilości zostały dodane pomyślnie.",
       "updateProductSuccess": "Zmiany zostały zapisane!",
-      "deleteProductSuccess": "Produkt został usunięty pomyślnie!"
+      "deleteProductSuccess": "Produkt został usunięty pomyślnie!",
+      "updateEmployeeSuccess": "Zmiany zostały zapisane!",
+      "deleteEmployeeSuccess": "Pracownik został usunięty pomyślnie!"
     }
   },
   "indicators": {

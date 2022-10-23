@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Spinner, StackDivider, useDisclosure, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { useErrorToast } from 'hooks';
-import { useGetEmployeesQuery } from 'graphql/generated/schema';
+import { useAppToast, useErrorToast } from 'hooks';
+import { useDeleteEmployeeMutation, useGetEmployeesQuery } from 'graphql/generated/schema';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import EmployeeRow from 'components/EmployeeRow/EmployeeRow';
@@ -12,6 +12,7 @@ import DeleteEmployeeModal from 'components/DeleteEmployeeModal/DeleteEmployeeMo
 
 const EmployeesManagementTab = () => {
   const errorToast = useErrorToast();
+  const appToast = useAppToast();
   const { t } = useTranslation();
 
   const {
@@ -30,6 +31,24 @@ const EmployeesManagementTab = () => {
     },
   });
 
+  const [deleteEmployee] = useDeleteEmployeeMutation({
+    onCompleted: () => {
+      appToast({
+        title: t('toasts.titles.deleteEmployeeSuccess'),
+        description: t('toasts.descriptions.deleteEmployeeSuccess'),
+      });
+    },
+    onError: (error) => errorToast(error),
+  });
+
+  const sendDeleteProduct = async () => {
+    if (!selectedEmployee) return;
+    setIsDeleting(true);
+    await deleteEmployee({ variables: { employeeId: selectedEmployee.id } });
+    setIsDeleting(false);
+    onDeleteModalClose();
+  };
+
   const handleEmployeeDrawerOpen = (employee: IDrawerEmployee) => {
     setSelectedEmployee(employee);
     onEmployeeDrawerOpen();
@@ -40,12 +59,18 @@ const EmployeesManagementTab = () => {
     onEmployeeDrawerClose();
   };
 
-  const handleDeleteButtonClick = () => {
+  const handleDeleteEmployeeModalOpen = (employee: IDrawerEmployee) => {
+    setSelectedEmployee(employee);
     onDeleteModalOpen();
   };
 
+  const handleDeleteEmployeeModalClose = () => {
+    setSelectedEmployee(undefined);
+    onDeleteModalClose();
+  };
+
   const handleModalDeleteButtonClick = () => {
-    // delete logic
+    void sendDeleteProduct();
   };
 
   const employeesData = getEmployeesQueryData?.employees?.data;
@@ -68,7 +93,7 @@ const EmployeesManagementTab = () => {
               key={id}
               employee={employee}
               onEditButtonClick={() => handleEmployeeDrawerOpen(employee)}
-              onTrashButtonClick={handleDeleteButtonClick}
+              onTrashButtonClick={() => handleDeleteEmployeeModalOpen(employee)}
             />
           );
         })}
@@ -77,12 +102,12 @@ const EmployeesManagementTab = () => {
         employee={selectedEmployee}
         isOpen={isEmployeeDrawerOpen}
         onClose={handleEmployeeDrawerClose}
-        onDeleteButtonClick={handleDeleteButtonClick}
+        onDeleteButtonClick={handleDeleteEmployeeModalOpen}
       />
       <DeleteEmployeeModal
         isOpen={isDeleteModalOpen}
         isLoading={isDeleting}
-        onClose={onDeleteModalClose}
+        onClose={handleDeleteEmployeeModalClose}
         onDeleteButtonClick={handleModalDeleteButtonClick}
       />
     </ProtectedTabTemplate>

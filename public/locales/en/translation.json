@@ -169,7 +169,9 @@
       "incorrectLoginCredentials": "Incorrect login credentials!",
       "quantitiesAddSuccess": "Success!",
       "updateProductSuccess": "Update success!",
-      "deleteProductSuccess": "Delete success!"
+      "deleteProductSuccess": "Delete success!",
+      "updateEmployeeSuccess": "Update success!",
+      "deleteEmployeeSuccess": "Delete success!"
     },
     "descriptions": {
       "somethingWentWrong": "Ups... something went wrong. Error message:",
@@ -177,7 +179,9 @@
       "incorrectLoginCredentials": "You entered incorrect login credentials. Login failed.",
       "quantitiesAddSuccess": "The quantities have been added successfully.",
       "updateProductSuccess": "Changes have been saved!",
-      "deleteProductSuccess": "The product has been successfully deleted!"
+      "deleteProductSuccess": "The product has been successfully deleted!",
+      "updateEmployeeSuccess": "Changes have been saved!",
+      "deleteEmployeeSuccess": "The employee has been successfully deleted!"
     }
   },
   "indicators": {

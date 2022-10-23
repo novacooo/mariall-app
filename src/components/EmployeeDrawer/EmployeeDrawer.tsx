@@ -39,7 +39,7 @@ interface EmployeeDrawerProps {
   employee: IDrawerEmployee | undefined;
   isOpen: boolean;
   onClose: () => void;
-  onDeleteButtonClick?: () => void;
+  onDeleteButtonClick: (values: IDrawerEmployee) => void;
 }
 
 const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: EmployeeDrawerProps) => {
@@ -56,8 +56,8 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
   const [updateEmployee] = useUpdateEmployeeMutation({
     onCompleted: () => {
       appToast({
-        title: t('toasts.titles.updateProductSuccess'),
-        description: t('toasts.descriptions.updateProductSuccess'),
+        title: t('toasts.titles.updateEmployeeSuccess'),
+        description: t('toasts.descriptions.updateEmployeeSuccess'),
       });
     },
     onError: (error) => errorToast(error),
@@ -106,6 +106,11 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
       void sendUpdateEmployee(values);
     },
   });
+
+  const handleDeleteButtonClick = () => {
+    if (!employee) return;
+    onDeleteButtonClick(employee);
+  };
 
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -162,7 +167,7 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
               </form>
             </DrawerBody>
             <DrawerFooter flexDirection="column" alignItems="stretch" gap={4}>
-              <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost" onClick={onDeleteButtonClick}>
+              <Button rightIcon={<FiTrash2 />} colorScheme="red" variant="ghost" onClick={handleDeleteButtonClick}>
                 {t('buttons.deleteEmployee')}
               </Button>
             </DrawerFooter>

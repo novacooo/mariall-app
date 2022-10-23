@@ -1932,7 +1932,7 @@ export type UploadFileMutationResult = Apollo.MutationResult<UploadFileMutation>
 export type UploadFileMutationOptions = Apollo.BaseMutationOptions<UploadFileMutation, UploadFileMutationVariables>;
 export const GetEmployeesDocument = gql`
     query GetEmployees {
-  employees {
+  employees(filters: {deleted: {eq: false}}) {
     data {
       id
       attributes {
