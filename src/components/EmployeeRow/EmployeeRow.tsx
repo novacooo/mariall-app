@@ -1,11 +1,12 @@
 import { HStack, Text, IconButton, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { IWorker } from 'components/WorkerSelects/WorkerSelects';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { IDrawerEmployee } from 'components/EmployeeDrawer/EmployeeDrawer';
+import { getEmployeeName } from 'helpers';
 
 interface EmployeeRowProps {
-  employee: IWorker;
+  employee: IDrawerEmployee;
   onEditButtonClick?: () => void;
   onTrashButtonClick?: () => void;
 }
@@ -15,10 +16,12 @@ const EmployeeRow = ({ employee, onEditButtonClick, onTrashButtonClick }: Employ
 
   const trashIconColor = useColorModeValue('red.500', 'red.400');
 
+  const employeeName = getEmployeeName(employee.firstName, employee.lastName);
+
   return (
     <HStack spacing={4} p={2} justify="space-between">
       <Text fontSize="sm" fontWeight="semibold">
-        {employee.name}
+        {employeeName}
       </Text>
       <HStack spacing={3}>
         <Tooltip label={t('tooltips.editEmployee')}>

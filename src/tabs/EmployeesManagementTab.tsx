@@ -3,13 +3,11 @@ import { Spinner, StackDivider, useDisclosure, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { useErrorToast } from 'hooks';
-import { getEmployeeName } from 'helpers';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
-import { IWorker } from 'components/WorkerSelects/WorkerSelects';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import EmployeeRow from 'components/EmployeeRow/EmployeeRow';
-import EmployeeDrawer from 'components/EmployeeDrawer/EmployeeDrawer';
+import EmployeeDrawer, { IDrawerEmployee } from 'components/EmployeeDrawer/EmployeeDrawer';
 import DeleteEmployeeModal from 'components/DeleteEmployeeModal/DeleteEmployeeModal';
 
 const EmployeesManagementTab = () => {
@@ -23,7 +21,7 @@ const EmployeesManagementTab = () => {
   } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
 
-  const [selectedEmployee, setSelectedEmployee] = useState<IWorker>();
+  const [selectedEmployee, setSelectedEmployee] = useState<IDrawerEmployee>();
   const [isDeleting, setIsDeleting] = useState<boolean>();
 
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
@@ -32,7 +30,7 @@ const EmployeesManagementTab = () => {
     },
   });
 
-  const handleEmployeeDrawerOpen = (employee: IWorker) => {
+  const handleEmployeeDrawerOpen = (employee: IDrawerEmployee) => {
     setSelectedEmployee(employee);
     onEmployeeDrawerOpen();
   };
@@ -63,8 +61,7 @@ const EmployeesManagementTab = () => {
           if (!id || !attributes) return null;
 
           const { firstName, lastName } = attributes;
-          const employeeName = getEmployeeName(firstName, lastName);
-          const employee: IWorker = { id, name: employeeName };
+          const employee: IDrawerEmployee = { id, firstName, lastName };
 
           return (
             <EmployeeRow

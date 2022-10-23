@@ -94,7 +94,9 @@
     "productName": "Product name",
     "productCode": "Product code",
     "productPrice": "Product price",
-    "productImage": "Product price"
+    "productImage": "Product price",
+    "employeeFirstName": "Employee first name",
+    "employeeLastName": "Employee last name"
   },
   "selects": {
     "chooseEmployee": "Choose employee",
@@ -128,7 +130,10 @@
     "productCodeTooLong": "The product code is too long!",
     "productPriceTooSmall": "The product price is too small!",
     "productPriceWrongPattern": "The price can be up to two digits after the decimal point!",
-    "productImageWrongType": "Wrong file format! Acceptable formats are .jpg and .png"
+    "productImageWrongType": "Wrong file format! Acceptable formats are .jpg and .png",
+    "employeeFirstNameTooShort": "The employee's name is too short!",
+    "employeeLastNameTooShort": "The employee's last name is too short!",
+    "notCompletedEmployeeFirstName": "You have to enter the name of the employee!"
   },
   "tables": {
     "productImage": "Image",

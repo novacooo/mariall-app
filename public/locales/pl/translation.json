@@ -94,7 +94,9 @@
     "productName": "Nazwa produktu",
     "productCode": "Kod produktu",
     "productPrice": "Cena produktu",
-    "productImage": "Zdjęcie produktu"
+    "productImage": "Zdjęcie produktu",
+    "employeeFirstName": "Imię pracownika",
+    "employeeLastName": "Imię pracownika"
   },
   "selects": {
     "chooseEmployee": "Wybierz pracownika",
@@ -128,7 +130,10 @@
     "productCodeTooLong": "Kod produktu jest za długi!",
     "productPriceTooSmall": "Cena produktu jest zbyt mała!",
     "productPriceWrongPattern": "Cena może mieć maksymalnie dwie cyfry po przecinku!",
-    "productImageWrongType": "Błędny format pliku! Dopuszczalne formaty to .jpg oraz .png"
+    "productImageWrongType": "Błędny format pliku! Dopuszczalne formaty to .jpg oraz .png",
+    "employeeFirstNameTooShort": "Imię pracownika jest za krótkie!",
+    "employeeLastNameTooShort": "Nazwisko pracownika jest za krótkie!",
+    "notCompletedEmployeeFirstName": "Muisz podać imię pracownika!"
   },
   "tables": {
     "productImage": "Zdjęcie",
