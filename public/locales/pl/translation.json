@@ -187,10 +187,12 @@
   },
   "modals": {
     "headers": {
-      "deleteProduct": "Usuwanie produktu"
+      "deleteProduct": "Usuwanie produktu",
+      "deleteEmployee": "Usuwanie pracownika"
     },
     "descriptions": {
-      "deleteProduct": "Czy na pewno chcesz usunąć ten produkt?"
+      "deleteProduct": "Czy na pewno chcesz usunąć ten produkt?",
+      "deleteEmployee": "Czy na pewno chcesz usunąć tego pracownika?"
     }
   },
   "labels": {

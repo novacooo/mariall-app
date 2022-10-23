@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Spinner, StackDivider, useDisclosure, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,8 +9,8 @@ import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation
 import { IWorker } from 'components/WorkerSelects/WorkerSelects';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import EmployeeRow from 'components/EmployeeRow/EmployeeRow';
-import { useState } from 'react';
 import EmployeeDrawer from 'components/EmployeeDrawer/EmployeeDrawer';
+import DeleteEmployeeModal from 'components/DeleteEmployeeModal/DeleteEmployeeModal';
 
 const EmployeesManagementTab = () => {
   const errorToast = useErrorToast();
@@ -20,8 +21,10 @@ const EmployeesManagementTab = () => {
     onOpen: onEmployeeDrawerOpen,
     onClose: onEmployeeDrawerClose,
   } = useDisclosure();
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
 
   const [selectedEmployee, setSelectedEmployee] = useState<IWorker>();
+  const [isDeleting, setIsDeleting] = useState<boolean>();
 
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
     onError: (error) => {
@@ -37,6 +40,14 @@ const EmployeesManagementTab = () => {
   const handleEmployeeDrawerClose = () => {
     setSelectedEmployee(undefined);
     onEmployeeDrawerClose();
+  };
+
+  const handleDeleteButtonClick = () => {
+    onDeleteModalOpen();
+  };
+
+  const handleModalDeleteButtonClick = () => {
+    // delete logic
   };
 
   const employeesData = getEmployeesQueryData?.employees?.data;
@@ -56,11 +67,27 @@ const EmployeesManagementTab = () => {
           const employee: IWorker = { id, name: employeeName };
 
           return (
-            <EmployeeRow key={id} employee={employee} onEditButtonClick={() => handleEmployeeDrawerOpen(employee)} />
+            <EmployeeRow
+              key={id}
+              employee={employee}
+              onEditButtonClick={() => handleEmployeeDrawerOpen(employee)}
+              onTrashButtonClick={handleDeleteButtonClick}
+            />
           );
         })}
       </VStack>
-      <EmployeeDrawer employee={selectedEmployee} isOpen={isEmployeeDrawerOpen} onClose={handleEmployeeDrawerClose} />
+      <EmployeeDrawer
+        employee={selectedEmployee}
+        isOpen={isEmployeeDrawerOpen}
+        onClose={handleEmployeeDrawerClose}
+        onDeleteButtonClick={handleDeleteButtonClick}
+      />
+      <DeleteEmployeeModal
+        isOpen={isDeleteModalOpen}
+        isLoading={isDeleting}
+        onClose={onDeleteModalClose}
+        onDeleteButtonClick={handleModalDeleteButtonClick}
+      />
     </ProtectedTabTemplate>
   );
 };

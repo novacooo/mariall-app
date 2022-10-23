@@ -187,10 +187,12 @@
   },
   "modals": {
     "headers": {
-      "deleteProduct": "Delete product"
+      "deleteProduct": "Delete product",
+      "deleteEmployee": "Delete employee"
     },
     "descriptions": {
-      "deleteProduct": "Are you sure you want to remove this product?"
+      "deleteProduct": "Are you sure you want to remove this product?",
+      "deleteEmployee": "Are you sure you want to remove this employee?"
     }
   },
   "labels": {
