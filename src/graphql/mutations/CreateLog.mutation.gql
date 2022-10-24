@@ -1,0 +1,20 @@
+mutation CreateLog($date: DateTime!, $type: ENUM_LOG_TYPE!, $description: String!, $userId: ID!) {
+  createLog(data: { date: $date, type: $type, description: $description, users_permissions_user: $userId }) {
+    data {
+      id
+      attributes {
+        date
+        type
+        description
+        users_permissions_user {
+          data {
+            id
+            attributes {
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+query GetLogs {
+  logs {
+    data {
+      id
+      attributes {
+        date
+        type
+        description
+        users_permissions_user {
+          data {
+            id
+            attributes {
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+}

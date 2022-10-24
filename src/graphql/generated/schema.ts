@@ -66,6 +66,12 @@ export type DateTimeFilterInput = {
   startsWith?: InputMaybe<Scalars['DateTime']>;
 };
 
+export enum Enum_Log_Type {
+  Error = 'error',
+  Info = 'info',
+  Warning = 'warning'
+}
+
 export type Employee = {
   __typename?: 'Employee';
   createdAt?: Maybe<Scalars['DateTime']>;
@@ -150,7 +156,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = Employee | I18NLocale | Product | Quantity | Salary | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Employee | I18NLocale | Log | Product | Quantity | Salary | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -260,11 +266,59 @@ export type JsonFilterInput = {
   startsWith?: InputMaybe<Scalars['JSON']>;
 };
 
+export type Log = {
+  __typename?: 'Log';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  date: Scalars['DateTime'];
+  description: Scalars['String'];
+  type: Enum_Log_Type;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  users_permissions_user?: Maybe<UsersPermissionsUserEntityResponse>;
+};
+
+export type LogEntity = {
+  __typename?: 'LogEntity';
+  attributes?: Maybe<Log>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type LogEntityResponse = {
+  __typename?: 'LogEntityResponse';
+  data?: Maybe<LogEntity>;
+};
+
+export type LogEntityResponseCollection = {
+  __typename?: 'LogEntityResponseCollection';
+  data: Array<LogEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type LogFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<LogFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  date?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  not?: InputMaybe<LogFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<LogFiltersInput>>>;
+  type?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+  users_permissions_user?: InputMaybe<UsersPermissionsUserFiltersInput>;
+};
+
+export type LogInput = {
+  date?: InputMaybe<Scalars['DateTime']>;
+  description?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Enum_Log_Type>;
+  users_permissions_user?: InputMaybe<Scalars['ID']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   /** Change user password. Confirm with the current password. */
   changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createEmployee?: Maybe<EmployeeEntityResponse>;
+  createLog?: Maybe<LogEntityResponse>;
   createProduct?: Maybe<ProductEntityResponse>;
   createQuantity?: Maybe<QuantityEntityResponse>;
   createSalary?: Maybe<SalaryEntityResponse>;
@@ -275,6 +329,7 @@ export type Mutation = {
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteEmployee?: Maybe<EmployeeEntityResponse>;
+  deleteLog?: Maybe<LogEntityResponse>;
   deleteProduct?: Maybe<ProductEntityResponse>;
   deleteQuantity?: Maybe<QuantityEntityResponse>;
   deleteSalary?: Maybe<SalaryEntityResponse>;
@@ -297,6 +352,7 @@ export type Mutation = {
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   updateEmployee?: Maybe<EmployeeEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
+  updateLog?: Maybe<LogEntityResponse>;
   updateProduct?: Maybe<ProductEntityResponse>;
   updateQuantity?: Maybe<QuantityEntityResponse>;
   updateSalary?: Maybe<SalaryEntityResponse>;
@@ -319,6 +375,11 @@ export type MutationChangePasswordArgs = {
 
 export type MutationCreateEmployeeArgs = {
   data: EmployeeInput;
+};
+
+
+export type MutationCreateLogArgs = {
+  data: LogInput;
 };
 
 
@@ -358,6 +419,11 @@ export type MutationCreateUsersPermissionsUserArgs = {
 
 
 export type MutationDeleteEmployeeArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteLogArgs = {
   id: Scalars['ID'];
 };
 
@@ -446,6 +512,12 @@ export type MutationUpdateEmployeeArgs = {
 export type MutationUpdateFileInfoArgs = {
   id: Scalars['ID'];
   info?: InputMaybe<FileInfoInput>;
+};
+
+
+export type MutationUpdateLogArgs = {
+  data: LogInput;
+  id: Scalars['ID'];
 };
 
 
@@ -637,6 +709,8 @@ export type Query = {
   employees?: Maybe<EmployeeEntityResponseCollection>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
+  log?: Maybe<LogEntityResponse>;
+  logs?: Maybe<LogEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
   product?: Maybe<ProductEntityResponse>;
   products?: Maybe<ProductEntityResponseCollection>;
@@ -674,6 +748,18 @@ export type QueryI18NLocaleArgs = {
 
 export type QueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QueryLogArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryLogsArgs = {
+  filters?: InputMaybe<LogFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -1219,6 +1305,16 @@ export type CreateEmployeeMutationVariables = Exact<{
 
 export type CreateEmployeeMutation = { __typename?: 'Mutation', createEmployee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', id?: string | null } | null } | null };
 
+export type CreateLogMutationVariables = Exact<{
+  date: Scalars['DateTime'];
+  type: Enum_Log_Type;
+  description: Scalars['String'];
+  userId: Scalars['ID'];
+}>;
+
+
+export type CreateLogMutation = { __typename?: 'Mutation', createLog?: { __typename?: 'LogEntityResponse', data?: { __typename?: 'LogEntity', id?: string | null, attributes?: { __typename?: 'Log', date: any, type: Enum_Log_Type, description: string, users_permissions_user?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', email: string } | null } | null } | null } | null } | null } | null };
+
 export type CreateProductMutationVariables = Exact<{
   code: Scalars['String'];
   name: Scalars['String'];
@@ -1344,6 +1440,11 @@ export type GetEmployeesWithQuantitiesQueryVariables = Exact<{
 
 export type GetEmployeesWithQuantitiesQuery = { __typename?: 'Query', employees?: { __typename?: 'EmployeeEntityResponseCollection', data: Array<{ __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null, quantities?: { __typename?: 'QuantityRelationResponseCollection', data: Array<{ __typename?: 'QuantityEntity', attributes?: { __typename?: 'Quantity', quantity: number, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', attributes?: { __typename?: 'Product', price: number } | null } | null } | null } | null }> } | null } | null }> } | null };
 
+export type GetLogsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLogsQuery = { __typename?: 'Query', logs?: { __typename?: 'LogEntityResponseCollection', data: Array<{ __typename?: 'LogEntity', id?: string | null, attributes?: { __typename?: 'Log', date: any, type: Enum_Log_Type, description: string, users_permissions_user?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', email: string } | null } | null } | null } | null }> } | null };
+
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1408,6 +1509,59 @@ export function useCreateEmployeeMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateEmployeeMutationHookResult = ReturnType<typeof useCreateEmployeeMutation>;
 export type CreateEmployeeMutationResult = Apollo.MutationResult<CreateEmployeeMutation>;
 export type CreateEmployeeMutationOptions = Apollo.BaseMutationOptions<CreateEmployeeMutation, CreateEmployeeMutationVariables>;
+export const CreateLogDocument = gql`
+    mutation CreateLog($date: DateTime!, $type: ENUM_LOG_TYPE!, $description: String!, $userId: ID!) {
+  createLog(
+    data: {date: $date, type: $type, description: $description, users_permissions_user: $userId}
+  ) {
+    data {
+      id
+      attributes {
+        date
+        type
+        description
+        users_permissions_user {
+          data {
+            id
+            attributes {
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export type CreateLogMutationFn = Apollo.MutationFunction<CreateLogMutation, CreateLogMutationVariables>;
+
+/**
+ * __useCreateLogMutation__
+ *
+ * To run a mutation, you first call `useCreateLogMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLogMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLogMutation, { data, loading, error }] = useCreateLogMutation({
+ *   variables: {
+ *      date: // value for 'date'
+ *      type: // value for 'type'
+ *      description: // value for 'description'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useCreateLogMutation(baseOptions?: Apollo.MutationHookOptions<CreateLogMutation, CreateLogMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateLogMutation, CreateLogMutationVariables>(CreateLogDocument, options);
+      }
+export type CreateLogMutationHookResult = ReturnType<typeof useCreateLogMutation>;
+export type CreateLogMutationResult = Apollo.MutationResult<CreateLogMutation>;
+export type CreateLogMutationOptions = Apollo.BaseMutationOptions<CreateLogMutation, CreateLogMutationVariables>;
 export const CreateProductDocument = gql`
     mutation CreateProduct($code: String!, $name: String!, $image: ID, $price: Float!, $active: Boolean!) {
   createProduct(
@@ -2070,6 +2224,55 @@ export function useGetEmployeesWithQuantitiesLazyQuery(baseOptions?: Apollo.Lazy
 export type GetEmployeesWithQuantitiesQueryHookResult = ReturnType<typeof useGetEmployeesWithQuantitiesQuery>;
 export type GetEmployeesWithQuantitiesLazyQueryHookResult = ReturnType<typeof useGetEmployeesWithQuantitiesLazyQuery>;
 export type GetEmployeesWithQuantitiesQueryResult = Apollo.QueryResult<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>;
+export const GetLogsDocument = gql`
+    query GetLogs {
+  logs {
+    data {
+      id
+      attributes {
+        date
+        type
+        description
+        users_permissions_user {
+          data {
+            id
+            attributes {
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetLogsQuery__
+ *
+ * To run a query within a React component, call `useGetLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLogsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLogsQuery(baseOptions?: Apollo.QueryHookOptions<GetLogsQuery, GetLogsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLogsQuery, GetLogsQueryVariables>(GetLogsDocument, options);
+      }
+export function useGetLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLogsQuery, GetLogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLogsQuery, GetLogsQueryVariables>(GetLogsDocument, options);
+        }
+export type GetLogsQueryHookResult = ReturnType<typeof useGetLogsQuery>;
+export type GetLogsLazyQueryHookResult = ReturnType<typeof useGetLogsLazyQuery>;
+export type GetLogsQueryResult = Apollo.QueryResult<GetLogsQuery, GetLogsQueryVariables>;
 export const GetProductsDocument = gql`
     query GetProducts {
   products(filters: {deleted: {eq: false}}) {
