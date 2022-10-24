@@ -69,7 +69,8 @@
     "signInButton": "Signing in...",
     "saving": "Saving...",
     "deleting": "Deleting...",
-    "printing": "Printing..."
+    "printing": "Printing...",
+    "recalculating": "Recalculating..."
   },
   "headers": {
     "signIn": "Sign in",

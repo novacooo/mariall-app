@@ -31,12 +31,21 @@ const SalariesTab = () => {
 
   const [selectedYear, setSelectedYear] = useState<number>();
   const [selectedMonth, setSelectedMonth] = useState<IMonth>();
+  const [isRecalculating, setIsRecalculating] = useState<boolean>(false);
 
   const years = getYears();
   const months = getMonths();
 
+  const recalculate = async () => {
+    if (!salariesTableRef.current) return;
+
+    setIsRecalculating(true);
+    await salariesTableRef.current.recalculateSalaries();
+    setIsRecalculating(false);
+  };
+
   const handleRecalculateButtonClick = () => {
-    salariesTableRef.current?.recalculateSalaries();
+    void recalculate();
   };
 
   return (
@@ -79,7 +88,12 @@ const SalariesTab = () => {
           )}
         </ButtonsWrapper>
         {selectedYear && selectedMonth && !checkIsActualMonth(selectedYear, selectedMonth.number) && (
-          <Button rightIcon={<FiRefreshCcw />} onClick={handleRecalculateButtonClick}>
+          <Button
+            rightIcon={<FiRefreshCcw />}
+            onClick={handleRecalculateButtonClick}
+            isLoading={isRecalculating}
+            loadingText={t('loading.recalculating')}
+          >
             {t('buttons.recalculateSalaries')}
           </Button>
         )}

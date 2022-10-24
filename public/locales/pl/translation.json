@@ -69,7 +69,8 @@
     "signInButton": "Logowanie...",
     "saving": "Zapisywanie...",
     "deleting": "Usuwanie...",
-    "printing": "Drukowanie..."
+    "printing": "Drukowanie...",
+    "recalculating": "Przeliczanie..."
   },
   "headers": {
     "signIn": "Zaloguj się",

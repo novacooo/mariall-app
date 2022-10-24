@@ -21,7 +21,7 @@ interface ISalary {
 }
 
 export interface SalariesTableHandle {
-  recalculateSalaries: () => void;
+  recalculateSalaries: () => Promise<void>;
 }
 
 interface SalariesTableProps {
@@ -169,9 +169,7 @@ const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ yea
   };
 
   useImperativeHandle(ref, () => ({
-    recalculateSalaries: () => {
-      void calculateSalaries();
-    },
+    recalculateSalaries: calculateSalaries,
   }));
 
   useEffect(() => {
