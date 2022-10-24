@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FiEye, FiEyeOff, FiPrinter } from 'react-icons/fi';
 import { useReactToPrint } from 'react-to-print';
 
-import WorkerSelects, { IWorkerSelectsData } from 'components/WorkerSelects/WorkerSelects';
+import WorkerSelects, { IWorkerSelectsData, WorkerSelectsHandle } from 'components/WorkerSelects/WorkerSelects';
 import { useGetEmployeesQuery } from 'graphql/generated/schema';
 import { useAppSelector, useErrorToast } from 'hooks';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
@@ -18,6 +18,7 @@ const PrintingSummariesTab = () => {
   const { t } = useTranslation();
 
   const tableRef = useRef<HTMLDivElement>(null);
+  const workerSelectsRef = useRef<WorkerSelectsHandle>(null);
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
 
@@ -27,6 +28,9 @@ const PrintingSummariesTab = () => {
   const [isPrintLoading, setIsPrintLoading] = useState<boolean>(false);
 
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
+    onCompleted: () => {
+      workerSelectsRef.current?.resetSelects();
+    },
     onError: (error) => {
       errorToast(error);
     },
@@ -46,7 +50,11 @@ const PrintingSummariesTab = () => {
     <ProtectedTabTemplate>
       <BetweenWrapper>
         {getEmployeesQueryData ? (
-          <WorkerSelects getEmployeesQueryData={getEmployeesQueryData} setWorkerSelectsData={setWorkerSelectsData} />
+          <WorkerSelects
+            ref={workerSelectsRef}
+            getEmployeesQueryData={getEmployeesQueryData}
+            setWorkerSelectsData={setWorkerSelectsData}
+          />
         ) : (
           <Spinner />
         )}

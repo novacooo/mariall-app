@@ -31,6 +31,7 @@ import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
 
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
+
   const tableRef = useRef<AddingQuantityTableHandle>(null);
   const workerSelectsRef = useRef<WorkerSelectsHandle>(null);
 
