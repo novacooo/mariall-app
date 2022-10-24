@@ -1,0 +1,7 @@
+mutation CreateEmployee($firstName: String!, $lastName: String!) {
+  createEmployee(data: { firstName: $firstName, lastName: $lastName }) {
+    data {
+      id
+    }
+  }
+}

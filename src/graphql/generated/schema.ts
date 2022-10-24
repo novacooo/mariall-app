@@ -1211,6 +1211,14 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type CreateEmployeeMutationVariables = Exact<{
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+}>;
+
+
+export type CreateEmployeeMutation = { __typename?: 'Mutation', createEmployee?: { __typename?: 'EmployeeEntityResponse', data?: { __typename?: 'EmployeeEntity', id?: string | null } | null } | null };
+
 export type CreateProductMutationVariables = Exact<{
   code: Scalars['String'];
   name: Scalars['String'];
@@ -1364,6 +1372,42 @@ export type GetUserInfoQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUserInfoQuery = { __typename?: 'Query', me?: { __typename?: 'UsersPermissionsMe', id: string, email?: string | null, role?: { __typename?: 'UsersPermissionsMeRole', name: string } | null } | null };
 
 
+export const CreateEmployeeDocument = gql`
+    mutation CreateEmployee($firstName: String!, $lastName: String!) {
+  createEmployee(data: {firstName: $firstName, lastName: $lastName}) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export type CreateEmployeeMutationFn = Apollo.MutationFunction<CreateEmployeeMutation, CreateEmployeeMutationVariables>;
+
+/**
+ * __useCreateEmployeeMutation__
+ *
+ * To run a mutation, you first call `useCreateEmployeeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEmployeeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createEmployeeMutation, { data, loading, error }] = useCreateEmployeeMutation({
+ *   variables: {
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *   },
+ * });
+ */
+export function useCreateEmployeeMutation(baseOptions?: Apollo.MutationHookOptions<CreateEmployeeMutation, CreateEmployeeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateEmployeeMutation, CreateEmployeeMutationVariables>(CreateEmployeeDocument, options);
+      }
+export type CreateEmployeeMutationHookResult = ReturnType<typeof useCreateEmployeeMutation>;
+export type CreateEmployeeMutationResult = Apollo.MutationResult<CreateEmployeeMutation>;
+export type CreateEmployeeMutationOptions = Apollo.BaseMutationOptions<CreateEmployeeMutation, CreateEmployeeMutationVariables>;
 export const CreateProductDocument = gql`
     mutation CreateProduct($code: String!, $name: String!, $image: ID, $price: Float!, $active: Boolean!) {
   createProduct(
