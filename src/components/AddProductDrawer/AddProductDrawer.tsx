@@ -1,12 +1,4 @@
-import {
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-} from '@chakra-ui/react';
+import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay } from '@chakra-ui/react';
 import ProductForm, { IProductValues } from 'components/ProductForm/ProductForm';
 import { GetProductsDocument, useCreateProductMutation, useUploadFileMutation } from 'graphql/generated/schema';
 import { useAppToast, useErrorToast } from 'hooks';
@@ -40,8 +32,8 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
     refetchQueries: [GetProductsDocument],
     onCompleted: () => {
       appToast({
-        title: t('toasts.titles.quantitiesAddSuccess'),
-        description: t('toasts.descriptions.quantitiesAddSuccess'),
+        title: t('toasts.titles.createProductSuccess'),
+        description: t('toasts.descriptions.createProductSuccess'),
       });
     },
     onError: (error) => {
@@ -88,7 +80,6 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
             isLoadingSaveButton={isSending}
           />
         </DrawerBody>
-        <DrawerFooter flexDirection="column" alignItems="stretch" gap={4} />
       </DrawerContent>
     </Drawer>
   );

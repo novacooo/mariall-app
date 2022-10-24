@@ -11,6 +11,7 @@ import EmployeeRow from 'components/EmployeeRow/EmployeeRow';
 import EmployeeDrawer, { IDrawerEmployee } from 'components/EmployeeDrawer/EmployeeDrawer';
 import DeleteEmployeeModal from 'components/DeleteEmployeeModal/DeleteEmployeeModal';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import AddEmployeeDrawer from 'components/AddEmployeeDrawer/AddEmployeeDrawer';
 
 const EmployeesManagementTab = () => {
   const errorToast = useErrorToast();
@@ -18,10 +19,16 @@ const EmployeesManagementTab = () => {
   const { t } = useTranslation();
 
   const {
+    isOpen: isAddEmployeeDrawerOpen,
+    onOpen: onAddEmployeeDrawerOpen,
+    onClose: onAddEmployeeDrawerClose,
+  } = useDisclosure();
+  const {
     isOpen: isEmployeeDrawerOpen,
     onOpen: onEmployeeDrawerOpen,
     onClose: onEmployeeDrawerClose,
   } = useDisclosure();
+
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
@@ -58,6 +65,14 @@ const EmployeesManagementTab = () => {
     onEmployeeDrawerClose();
   };
 
+  const handleAddEmployeeDrawerOpen = () => {
+    onAddEmployeeDrawerOpen();
+  };
+
+  const handleAddEmployeeDrawerClose = () => {
+    onAddEmployeeDrawerClose();
+  };
+
   const handleEmployeeDrawerOpen = (employee: IDrawerEmployee) => {
     setSelectedEmployee(employee);
     onEmployeeDrawerOpen();
@@ -90,7 +105,12 @@ const EmployeesManagementTab = () => {
 
   return (
     <ProtectedTabTemplate>
-      <Button alignSelf={{ md: 'flex-end' }} colorScheme={themeAccentColor} rightIcon={<FiPlus />}>
+      <Button
+        alignSelf={{ md: 'flex-end' }}
+        colorScheme={themeAccentColor}
+        rightIcon={<FiPlus />}
+        onClick={handleAddEmployeeDrawerOpen}
+      >
         {t('buttons.addEmployee')}
       </Button>
       <VStack align="stretch" divider={<StackDivider />}>
@@ -110,6 +130,7 @@ const EmployeesManagementTab = () => {
           );
         })}
       </VStack>
+      <AddEmployeeDrawer isOpen={isAddEmployeeDrawerOpen} onClose={handleAddEmployeeDrawerClose} />
       <EmployeeDrawer
         employee={selectedEmployee}
         isOpen={isEmployeeDrawerOpen}

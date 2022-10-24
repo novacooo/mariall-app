@@ -63,7 +63,7 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
       variables: {
         employeeId: employee.id,
         firstName: employeeValueFirstName,
-        lastName: employeeValueLastName || '',
+        lastName: employeeValueLastName,
       },
     });
 

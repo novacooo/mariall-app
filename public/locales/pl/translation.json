@@ -97,7 +97,7 @@
     "productPrice": "Cena produktu",
     "productImage": "Zdjęcie produktu",
     "employeeFirstName": "Imię pracownika",
-    "employeeLastName": "Imię pracownika"
+    "employeeLastName": "Nazwisko pracownika"
   },
   "selects": {
     "chooseEmployee": "Wybierz pracownika",
@@ -170,8 +170,10 @@
       "incorrectLoginCredentials": "Błędne dane logowania!",
       "quantitiesAddSuccess": "Udało się!",
       "updateProductSuccess": "Udało się!",
+      "createProductSuccess": "Udało się!",
       "deleteProductSuccess": "Usunięto!",
       "updateEmployeeSuccess": "Udało się!",
+      "createEmployeeSuccess": "Udało się!",
       "deleteEmployeeSuccess": "Usunięto!"
     },
     "descriptions": {
@@ -180,8 +182,10 @@
       "incorrectLoginCredentials": "Podałeś błędne dane logowania. Nie udało się zalogować.",
       "quantitiesAddSuccess": "Ilości zostały dodane pomyślnie.",
       "updateProductSuccess": "Zmiany zostały zapisane!",
+      "createProductSuccess": "Produkt został dodany pomyślnie!",
       "deleteProductSuccess": "Produkt został usunięty pomyślnie!",
       "updateEmployeeSuccess": "Zmiany zostały zapisane!",
+      "createEmployeeSuccess": "Pracownik został dodany pomyślnie!",
       "deleteEmployeeSuccess": "Pracownik został usunięty pomyślnie!"
     }
   },
