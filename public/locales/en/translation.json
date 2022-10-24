@@ -62,7 +62,8 @@
     "showPrices": "Show prices",
     "printSummary": "Print summary",
     "addEmployee": "Add employee",
-    "deleteEmployee": "Delete employee"
+    "deleteEmployee": "Delete employee",
+    "recalculateSalaries": "Force recalculate"
   },
   "loading": {
     "signInButton": "Signing in...",

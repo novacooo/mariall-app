@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { Box, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,12 +20,16 @@ interface ISalary {
   salary: number;
 }
 
+export interface SalariesTableHandle {
+  recalculateSalaries: () => void;
+}
+
 interface SalariesTableProps {
   year: number;
   month: number;
 }
 
-const SalariesTable = ({ year, month }: SalariesTableProps) => {
+const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ year, month }, ref) => {
   const errorToast = useErrorToast();
   const { t } = useTranslation();
 
@@ -164,6 +168,12 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
     setSalaries(salariesToSet);
   };
 
+  useImperativeHandle(ref, () => ({
+    recalculateSalaries: () => {
+      void calculateSalaries();
+    },
+  }));
+
   useEffect(() => {
     void fetchData();
   }, [year, month]);
@@ -194,6 +204,6 @@ const SalariesTable = ({ year, month }: SalariesTableProps) => {
       </TableContainer>
     </Box>
   );
-};
+});
 
 export default SalariesTable;

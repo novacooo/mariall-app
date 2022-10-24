@@ -62,7 +62,8 @@
     "showPrices": "Pokaż ceny",
     "printSummary": "Wydrukuj podsumowanie",
     "addEmployee": "Dodaj pracownika",
-    "deleteEmployee": "Usuń pracownika"
+    "deleteEmployee": "Usuń pracownika",
+    "recalculateSalaries": "Wymuś przeliczenie"
   },
   "loading": {
     "signInButton": "Logowanie...",
