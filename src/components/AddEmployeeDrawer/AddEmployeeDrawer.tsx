@@ -55,7 +55,7 @@ const AddEmployeeDrawer = ({ isOpen, onClose }: AddEmployeeDrawerProps) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{t('drawers.headers.editEmployee')}</DrawerHeader>
+        <DrawerHeader>{t('drawers.headers.addEmployee')}</DrawerHeader>
         <DrawerBody>
           <EmployeeForm initialValues={initialEmployeeValues} isLoadingSaveButton={isSending} onSubmit={handleSubmit} />
         </DrawerBody>

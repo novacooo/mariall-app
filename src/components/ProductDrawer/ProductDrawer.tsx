@@ -132,7 +132,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{t('drawers.headers.productEdition')}</DrawerHeader>
+        <DrawerHeader>{t('drawers.headers.editProduct')}</DrawerHeader>
         {product ? (
           <>
             <DrawerBody>

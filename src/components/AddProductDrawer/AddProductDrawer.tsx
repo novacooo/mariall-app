@@ -72,7 +72,7 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{t('drawers.headers.addingProduct')}</DrawerHeader>
+        <DrawerHeader>{t('drawers.headers.addProduct')}</DrawerHeader>
         <DrawerBody>
           <ProductForm
             initialProductValues={initialProductValues}

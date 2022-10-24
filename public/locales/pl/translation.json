@@ -195,9 +195,10 @@
   },
   "drawers": {
     "headers": {
-      "productEdition": "Edycja produktu",
-      "addingProduct": "Dodawanie produktu",
-      "editEmployee": "Edytuj pracownika"
+      "editProduct": "Edycja produktu",
+      "addProduct": "Dodawanie produktu",
+      "editEmployee": "Edycja pracownika",
+      "addEmployee": "Dodawanie pracownika"
     }
   },
   "modals": {
