@@ -1,10 +1,17 @@
-import { HStack, Spinner, StackDivider, Text, VStack } from '@chakra-ui/react';
+import { Spinner, StackDivider, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { useGetLogsQuery } from 'graphql/generated/schema';
+import { Enum_Log_Type, useGetLogsQuery } from 'graphql/generated/schema';
 import { useErrorToast } from 'hooks';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
+import LogRow from 'components/LogRow/LogRow';
+
+const getRandomType = (index: number) => {
+  if (index % 4 === 0) return Enum_Log_Type.Warning;
+  if (index % 9 === 0) return Enum_Log_Type.Error;
+  return Enum_Log_Type.Info;
+};
 
 const LogsTab = () => {
   const { t } = useTranslation();
@@ -24,7 +31,7 @@ const LogsTab = () => {
 
   return (
     <ProtectedTabTemplate>
-      <VStack align="flex-start" divider={<StackDivider />}>
+      <VStack spacing={1}>
         {logsData.map(({ id, attributes: logAttributes }) => {
           const userAttributes = logAttributes?.users_permissions_user?.data?.attributes;
 
@@ -32,16 +39,16 @@ const LogsTab = () => {
 
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const { date, type, description } = logAttributes;
+          const { email } = userAttributes;
 
           const logDate = new Date(date as string);
 
           return (
-            <HStack spacing={4}>
-              <Text>{date}</Text>
-              <Text>{type}</Text>
-              <Text>{description}</Text>
-              <Text>{userAttributes.email}</Text>
-            </HStack>
+            <>
+              {[...Array.from(Array(100).keys())].map((el) => (
+                <LogRow key={el} date={logDate} type={getRandomType(el)} description={description} email={email} />
+              ))}
+            </>
           );
         })}
       </VStack>
