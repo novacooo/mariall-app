@@ -46,7 +46,9 @@
     "changeLanguage": "Change language",
     "signOut": "Sign out",
     "editEmployee": "Edit employee",
-    "deleteEmployee": "Delete employee"
+    "deleteEmployee": "Delete employee",
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
   },
   "buttons": {
     "userSettings": "User settings",

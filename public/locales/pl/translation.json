@@ -46,7 +46,9 @@
     "changeLanguage": "Zmień język",
     "signOut": "Wyloguj się",
     "editEmployee": "Edytuj pracownika",
-    "deleteEmployee": "Usuń pracownika"
+    "deleteEmployee": "Usuń pracownika",
+    "previousPage": "Poprzednia strona",
+    "nextPage": "Następna strona"
   },
   "buttons": {
     "userSettings": "Ustawienia użytkownika",

@@ -7,11 +7,12 @@ import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 import LogRow from 'components/LogRow/LogRow';
 import { useSearchParams } from 'react-router-dom';
+import LogsPagination from 'components/LogsPagination/LogsPagination';
 
 const LogsTab = () => {
   const { t } = useTranslation();
   const errorToast = useErrorToast();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { data: getLogsQueryData } = useGetLogsQuery({
     variables: {
@@ -24,6 +25,7 @@ const LogsTab = () => {
   });
 
   const logsData = getLogsQueryData?.logs?.data;
+  const pageNumber = Number(searchParams.get('page')) || 1;
 
   if (!logsData) return <Spinner />;
 
@@ -31,6 +33,7 @@ const LogsTab = () => {
 
   return (
     <ProtectedTabTemplate>
+      <LogsPagination page={pageNumber} />
       <VStack spacing={1}>
         {logsData.map(({ id, attributes: logAttributes }) => {
           const userAttributes = logAttributes?.users_permissions_user?.data?.attributes;
@@ -46,6 +49,7 @@ const LogsTab = () => {
           return <LogRow key={id} date={logDate} type={type} description={description} email={email} />;
         })}
       </VStack>
+      {logsData.length === 100 && <LogsPagination page={pageNumber} />}
     </ProtectedTabTemplate>
   );
 };
