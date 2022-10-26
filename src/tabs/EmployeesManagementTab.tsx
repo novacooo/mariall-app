@@ -12,11 +12,14 @@ import EmployeeDrawer, { IDrawerEmployee } from 'components/EmployeeDrawer/Emplo
 import DeleteEmployeeModal from 'components/DeleteEmployeeModal/DeleteEmployeeModal';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
 import AddEmployeeDrawer from 'components/AddEmployeeDrawer/AddEmployeeDrawer';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 const EmployeesManagementTab = () => {
   const errorToast = useErrorToast();
   const appToast = useAppToast();
   const { t } = useTranslation();
+  const logger = useLogger();
 
   const {
     isOpen: isAddEmployeeDrawerOpen,
@@ -39,6 +42,7 @@ const EmployeesManagementTab = () => {
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się pobrać pracowników. Error: ${getErrorMessage(error)}`);
     },
   });
 
@@ -49,7 +53,10 @@ const EmployeesManagementTab = () => {
         description: t('toasts.descriptions.deleteEmployeeSuccess'),
       });
     },
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+      logger.sendErrorLog(`Nie udało się usunąć pracownika. Error: ${getErrorMessage(error)}`);
+    },
   });
 
   const sendDeleteProduct = async () => {

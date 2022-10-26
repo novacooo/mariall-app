@@ -27,11 +27,14 @@ import { useAppDispatch, useAppSelector, useAppToast, useErrorToast } from 'hook
 import { useGetUserInfoLazyQuery, useLoginUserMutation } from 'graphql/generated/schema';
 import { RoleType } from 'types';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const logger = useLogger();
 
   const isLogged = useAppSelector(selectUserIsLogged);
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
@@ -72,8 +75,11 @@ const LoginPage = () => {
     },
     onError: (error) => {
       errorToast(error);
+
       setEmailValue('');
       setPasswordValue('');
+
+      logger.sendErrorLog(`Nie udało się pobrać informacji o użytkowniku. Error: ${getErrorMessage(error)}`);
     },
   });
 
@@ -83,7 +89,7 @@ const LoginPage = () => {
       dispatch(setUserJwtToken(jwt));
       void getUserInfo();
     },
-    onError: () => {
+    onError: (error) => {
       appToast({
         title: t('toasts.titles.incorrectLoginCredentials'),
         description: t('toasts.descriptions.incorrectLoginCredentials'),
@@ -92,6 +98,8 @@ const LoginPage = () => {
 
       setEmailValue('');
       setPasswordValue('');
+
+      logger.sendErrorLog(`Nie udało się zalogować. Error: ${getErrorMessage(error)}`);
     },
   });
 

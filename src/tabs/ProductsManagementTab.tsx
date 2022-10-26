@@ -4,8 +4,9 @@ import AddProductDrawer from 'components/AddProductDrawer/AddProductDrawer';
 import ProductCard from 'components/ProductCard/ProductCard';
 import ProductDrawer, { IDrawerProduct } from 'components/ProductDrawer/ProductDrawer';
 import { useGetProductsQuery } from 'graphql/generated/schema';
-import { getImageUrl } from 'helpers';
+import { getErrorMessage, getImageUrl } from 'helpers';
 import { useErrorToast } from 'hooks';
+import { useLogger } from 'hooks/useLogger';
 import { useState } from 'react';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 
@@ -17,12 +18,14 @@ const ProductsManagementTab = () => {
     onOpen: onAddProductDrawerOpen,
     onClose: onAddProductDrawerClose,
   } = useDisclosure();
+  const logger = useLogger();
 
   const [product, setProduct] = useState<IDrawerProduct>();
 
   const { data: getProductsData } = useGetProductsQuery({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się pobrać produktów. Error: ${getErrorMessage(error)}`);
     },
   });
 

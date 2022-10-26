@@ -4,10 +4,6 @@ import { selectUserId } from 'features/user/userSlice';
 
 import { useAppSelector } from './useAppSelector';
 
-interface ICreateLogPayload {
-  description: string;
-}
-
 export const useLogger = () => {
   const userId = useAppSelector(selectUserId);
 
@@ -26,17 +22,17 @@ export const useLogger = () => {
     });
   };
 
-  const createInfoLog = ({ description }: ICreateLogPayload) => {
+  const sendInfoLog = (description: string) => {
     sendCreateLog(Enum_Log_Type.Info, description);
   };
 
-  const createWarningLog = ({ description }: ICreateLogPayload) => {
+  const sendWarningLog = (description: string) => {
     sendCreateLog(Enum_Log_Type.Warning, description);
   };
 
-  const createErrorLog = ({ description }: ICreateLogPayload) => {
+  const sendErrorLog = (description: string) => {
     sendCreateLog(Enum_Log_Type.Error, description);
   };
 
-  return { createInfoLog, createWarningLog, createErrorLog };
+  return { sendInfoLog, sendWarningLog, sendErrorLog };
 };

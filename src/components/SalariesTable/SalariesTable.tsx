@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { Box, Spinner, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { checkIsActualMonth, getEmployeeName } from 'helpers';
+import { checkIsActualMonth, getEmployeeName, getErrorMessage } from 'helpers';
 import { useErrorToast } from 'hooks';
 import {
   useCreateSalaryMutation,
@@ -12,6 +12,7 @@ import {
   useUpdateSalaryMutation,
 } from 'graphql/generated/schema';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
+import { useLogger } from 'hooks/useLogger';
 
 interface ISalary {
   employeeId: string;
@@ -32,6 +33,7 @@ interface SalariesTableProps {
 const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ year, month }, ref) => {
   const errorToast = useErrorToast();
   const { t } = useTranslation();
+  const logger = useLogger();
 
   const bgColor = useColorModeValue('white', 'gray.800');
 
@@ -40,30 +42,35 @@ const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ yea
   const [getSalaries] = useGetSalariesLazyQuery({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się pobrać wypłat. Error: ${getErrorMessage(error)}`);
     },
   });
 
   const [getEmployeesWithQuantities] = useGetEmployeesWithQuantitiesLazyQuery({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się pobrać pracowników. Error: ${getErrorMessage(error)}`);
     },
   });
 
   const [updateSalary] = useUpdateSalaryMutation({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się zaktualizować wypłaty. Error: ${getErrorMessage(error)}`);
     },
   });
 
   const [createSalary] = useCreateSalaryMutation({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się utworzyć wypłaty. Error: ${getErrorMessage(error)}`);
     },
   });
 
   const [deleteSalary] = useDeleteSalaryMutation({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się usunąć wypłaty. Error: ${getErrorMessage(error)}`);
     },
   });
 

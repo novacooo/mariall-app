@@ -21,7 +21,8 @@ import { useErrorToast } from 'hooks';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 import { useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
 import { IWorker } from 'components/WorkerSelects/WorkerSelects';
-import { IMonth } from 'helpers';
+import { getErrorMessage, IMonth } from 'helpers';
+import { useLogger } from 'hooks/useLogger';
 
 interface ISummary {
   productId: string;
@@ -64,6 +65,7 @@ const PrintInfoText = ({ header, info }: PrintInfoRowProps) => (
 const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSummary }: SummariesTableProps) => {
   const { t } = useTranslation();
   const errorToast = useErrorToast();
+  const logger = useLogger();
 
   const bgColor = useColorModeValue('white', 'gray.800');
 
@@ -71,7 +73,10 @@ const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSumm
   const [sums, setSums] = useState<ISums>();
 
   const [getQuantities] = useGetQuantitiesLazyQuery({
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+      logger.sendErrorLog(`Nie udało się pobrać ilości. Error: ${getErrorMessage(error)}`);
+    },
   });
 
   const fetchData = async () => {

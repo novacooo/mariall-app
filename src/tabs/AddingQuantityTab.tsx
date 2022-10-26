@@ -28,9 +28,12 @@ import { useDebouncedCallback } from 'use-debounce';
 import WorkerSelects, { IWorkerSelectsData, WorkerSelectsHandle } from 'components/WorkerSelects/WorkerSelects';
 import BetweenWrapper from 'components/BetweenWrapper/BetweenWrapper';
 import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 const AddingQuantityTab = () => {
   const { t } = useTranslation();
+  const logger = useLogger();
 
   const tableRef = useRef<AddingQuantityTableHandle>(null);
   const workerSelectsRef = useRef<WorkerSelectsHandle>(null);
@@ -61,6 +64,7 @@ const AddingQuantityTab = () => {
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało pobrać pracowników. Error: ${getErrorMessage(error)}`);
     },
     onCompleted: () => {
       resetEverything();
@@ -76,6 +80,7 @@ const AddingQuantityTab = () => {
     },
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się zaktualizować ilości. Error: ${getErrorMessage(error)}`);
     },
   });
 
@@ -88,12 +93,14 @@ const AddingQuantityTab = () => {
     },
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się utworzyć ilości. Error: ${getErrorMessage(error)}`);
     },
   });
 
   const [deleteQuantity] = useDeleteQuantityMutation({
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się usunąć ilości. Error: ${getErrorMessage(error)}`);
     },
   });
 

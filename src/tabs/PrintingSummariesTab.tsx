@@ -12,10 +12,13 @@ import SummariesTable from 'components/SummariesTable/SummariesTable';
 import BetweenWrapper from 'components/BetweenWrapper/BetweenWrapper';
 import ButtonsWrapper from 'components/ButtonsWrapper/ButtonsWrapper';
 import { selectThemeAccentColor } from 'features/theme/themeSlice';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 const PrintingSummariesTab = () => {
   const errorToast = useErrorToast();
   const { t } = useTranslation();
+  const logger = useLogger();
 
   const tableRef = useRef<HTMLDivElement>(null);
   const workerSelectsRef = useRef<WorkerSelectsHandle>(null);
@@ -33,6 +36,7 @@ const PrintingSummariesTab = () => {
     },
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się pobrać pracowników. Error: ${getErrorMessage(error)}`);
     },
   });
 

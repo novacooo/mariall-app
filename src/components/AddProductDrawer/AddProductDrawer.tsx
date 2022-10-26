@@ -1,7 +1,9 @@
 import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay } from '@chakra-ui/react';
 import ProductForm, { IProductValues } from 'components/ProductForm/ProductForm';
 import { GetProductsDocument, useCreateProductMutation, useUploadFileMutation } from 'graphql/generated/schema';
+import { getErrorMessage } from 'helpers';
 import { useAppToast, useErrorToast } from 'hooks';
+import { useLogger } from 'hooks/useLogger';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,11 +23,15 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
   const { t } = useTranslation();
   const appToast = useAppToast();
   const errorToast = useErrorToast();
+  const logger = useLogger();
 
   const [isSending, setIsSending] = useState<boolean>();
 
   const [uploadFile] = useUploadFileMutation({
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+      logger.sendErrorLog(`Nie udało się wgrać zdjęcia. Error: ${getErrorMessage(error)}`);
+    },
   });
 
   const [createProduct] = useCreateProductMutation({
@@ -38,6 +44,7 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
     },
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się utworzyć produktu. Error: ${getErrorMessage(error)}`);
     },
   });
 

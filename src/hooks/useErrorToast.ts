@@ -1,6 +1,8 @@
 import { useToast } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+import { getErrorMessage } from 'helpers';
+
 export const useErrorToast = () => {
   const { t } = useTranslation();
 
@@ -13,9 +15,7 @@ export const useErrorToast = () => {
   });
 
   const errorToast = (error: unknown) => {
-    let message = 'Unknown Error';
-
-    if (error instanceof Error) message = error.message;
+    const message = getErrorMessage(error);
 
     toast({
       description: `${t('toasts.descriptions.somethingWentWrong')} ${message}`,

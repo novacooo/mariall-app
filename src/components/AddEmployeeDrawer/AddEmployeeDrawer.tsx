@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useAppToast, useErrorToast } from 'hooks';
 import { GetEmployeesDocument, useCreateEmployeeMutation } from 'graphql/generated/schema';
 import EmployeeForm, { IEmployeeValues } from 'components/EmployeeForm/EmployeeForm';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 interface AddEmployeeDrawerProps {
   isOpen: boolean;
@@ -20,19 +22,22 @@ const AddEmployeeDrawer = ({ isOpen, onClose }: AddEmployeeDrawerProps) => {
   const { t } = useTranslation();
   const appToast = useAppToast();
   const errorToast = useErrorToast();
+  const logger = useLogger();
 
   const [isSending, setIsSending] = useState<boolean>();
 
   const [createEmployee] = useCreateEmployeeMutation({
     refetchQueries: [GetEmployeesDocument],
-    onCompleted: () => {
+    onCompleted: (data) => {
       appToast({
         title: t('toasts.titles.createEmployeeSuccess'),
         description: t('toasts.descriptions.createEmployeeSuccess'),
       });
+      logger.sendInfoLog(`Utworzono pracownika ID: ${data.createEmployee?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się utworzyć pracownika. Error: ${getErrorMessage(error)}`);
     },
   });
 

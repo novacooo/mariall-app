@@ -7,8 +7,9 @@ import { useErrorToast } from 'hooks';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetProductsLazyQuery, useGetQuantitiesLazyQuery } from 'graphql/generated/schema';
-import { getImageUrl } from 'helpers';
+import { getErrorMessage, getImageUrl } from 'helpers';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
+import { useLogger } from 'hooks/useLogger';
 
 export interface AddingQuantityTableHandle {
   getQuantities: () => IQuantity[];
@@ -35,6 +36,7 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
   ({ workerId, year, month, setIsAddedAnyQuantity }, ref) => {
     const { t } = useTranslation();
     const errorToast = useErrorToast();
+    const logger = useLogger();
 
     const rowsRefs = useRef<AddingQuantityTableRowHandle[]>([]);
 
@@ -44,11 +46,17 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     const [productsWithQuantities, setProductsWithQuantities] = useState<IProductWithQuantities[]>();
 
     const [getProducts] = useGetProductsLazyQuery({
-      onError: (error) => errorToast(error),
+      onError: (error) => {
+        errorToast(error);
+        logger.sendErrorLog(`Nie udało się pobrać produktów. Error: ${getErrorMessage(error)}`);
+      },
     });
 
     const [getQuantities] = useGetQuantitiesLazyQuery({
-      onError: (error) => errorToast(error),
+      onError: (error) => {
+        errorToast(error);
+        logger.sendErrorLog(`Nie udało się pobrać ilości. Error: ${getErrorMessage(error)}`);
+      },
     });
 
     useImperativeHandle(ref, () => ({

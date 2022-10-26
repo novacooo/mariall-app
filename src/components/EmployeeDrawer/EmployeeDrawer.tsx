@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { useAppToast, useErrorToast } from 'hooks';
 import { useUpdateEmployeeMutation } from 'graphql/generated/schema';
 import EmployeeForm, { IEmployeeValues } from 'components/EmployeeForm/EmployeeForm';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 export interface IDrawerEmployee {
   id: string;
@@ -34,6 +36,7 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
   const { t } = useTranslation();
   const appToast = useAppToast();
   const errorToast = useErrorToast();
+  const logger = useLogger();
 
   const [isSending, setIsSending] = useState<boolean>();
 
@@ -44,7 +47,10 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
         description: t('toasts.descriptions.updateEmployeeSuccess'),
       });
     },
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+      logger.sendErrorLog(`Nie udało się zaktualizować pracownika. Error: ${getErrorMessage(error)}`);
+    },
   });
 
   const initialEmployeeValues: IEmployeeValues = {

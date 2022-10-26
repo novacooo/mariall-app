@@ -9,6 +9,8 @@ import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation
 import LogRow from 'components/LogRow/LogRow';
 import LogsPagination from 'components/LogsPagination/LogsPagination';
 import { routes } from 'routes';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 50;
@@ -17,6 +19,7 @@ const LogsTab = () => {
   const { t } = useTranslation();
   const errorToast = useErrorToast();
   const [searchParams, setSearchParams] = useSearchParams();
+  const logger = useLogger();
 
   const pageParamValue = Number(searchParams.get('page')) || DEFAULT_PAGE;
   const pageSizeParamValue = Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE;
@@ -28,6 +31,7 @@ const LogsTab = () => {
     },
     onError: (error) => {
       errorToast(error);
+      logger.sendErrorLog(`Nie udało się pobrać logów. Error: ${getErrorMessage(error)}`);
     },
   });
 

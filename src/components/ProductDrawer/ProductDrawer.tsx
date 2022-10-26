@@ -18,6 +18,8 @@ import { useAppToast, useErrorToast } from 'hooks';
 import { useDeleteProductMutation, useUpdateProductMutation, useUploadFileMutation } from 'graphql/generated/schema';
 import DeleteProductModal from 'components/DeleteProductModal/DeleteProductModal';
 import ProductForm, { IProductValues } from 'components/ProductForm/ProductForm';
+import { useLogger } from 'hooks/useLogger';
+import { getErrorMessage } from 'helpers';
 
 export interface IDrawerProduct {
   id: string;
@@ -39,12 +41,16 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const appToast = useAppToast();
   const errorToast = useErrorToast();
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const logger = useLogger();
 
   const [isSending, setIsSending] = useState<boolean>();
   const [isDeleting, setIsDeleting] = useState<boolean>();
 
   const [uploadFile] = useUploadFileMutation({
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+      logger.sendErrorLog(`Nie udało się wgrać zdjęcia. Error: ${getErrorMessage(error)}`);
+    },
   });
 
   const [updateProduct] = useUpdateProductMutation({
@@ -54,7 +60,10 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         description: t('toasts.descriptions.updateProductSuccess'),
       });
     },
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+      logger.sendErrorLog(`Nie udało się zaktualizować zdjęcia. Error: ${getErrorMessage(error)}`);
+    },
   });
 
   const [deleteProduct] = useDeleteProductMutation({
@@ -64,7 +73,10 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         description: t('toasts.descriptions.deleteProductSuccess'),
       });
     },
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+      logger.sendErrorLog(`Nie udało się usunąć produktu. Error: ${getErrorMessage(error)}`);
+    },
   });
 
   const initialProductValues: IProductValues = {
