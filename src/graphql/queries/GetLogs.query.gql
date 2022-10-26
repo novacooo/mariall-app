@@ -1,5 +1,5 @@
 query GetLogs($page: Int = 1, $pageSize: Int = 100) {
-  logs(pagination: { page: $page, pageSize: $pageSize }) {
+  logs(pagination: { page: $page, pageSize: $pageSize }, sort: "date:DESC") {
     data {
       id
       attributes {

@@ -2229,7 +2229,7 @@ export type GetEmployeesWithQuantitiesLazyQueryHookResult = ReturnType<typeof us
 export type GetEmployeesWithQuantitiesQueryResult = Apollo.QueryResult<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>;
 export const GetLogsDocument = gql`
     query GetLogs($page: Int = 1, $pageSize: Int = 100) {
-  logs(pagination: {page: $page, pageSize: $pageSize}) {
+  logs(pagination: {page: $page, pageSize: $pageSize}, sort: "date:DESC") {
     data {
       id
       attributes {
