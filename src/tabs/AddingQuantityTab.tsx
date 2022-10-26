@@ -82,7 +82,7 @@ const AddingQuantityTab = () => {
       const id = data.updateQuantity?.data?.id || '';
       const quantity = data?.updateQuantity?.data?.attributes?.quantity || '';
 
-      logger.sendInfoLog(`Dodano ${quantity} do ilośći o ID: ${id}`);
+      logger.sendInfoLog(`Zmieniono na ${quantity} ilość o ID: ${id}`);
     },
     onError: (error) => {
       errorToast(error);
