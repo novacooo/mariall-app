@@ -40,6 +40,9 @@ const EmployeesManagementTab = () => {
   const [isDeleting, setIsDeleting] = useState<boolean>();
 
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
+    onCompleted: () => {
+      logger.sendInfoLog(`Pobrano pracowników.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się pobrać pracowników. Error: ${getErrorMessage(error)}`);
@@ -52,7 +55,7 @@ const EmployeesManagementTab = () => {
         title: t('toasts.titles.deleteEmployeeSuccess'),
         description: t('toasts.descriptions.deleteEmployeeSuccess'),
       });
-      logger.sendInfoLog(`Usunięto pracownika o ID: ${data.updateEmployee?.data?.id || ''}`);
+      logger.sendWarningLog(`Usunięto pracownika o ID: ${data.updateEmployee?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

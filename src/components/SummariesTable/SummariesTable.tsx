@@ -73,6 +73,9 @@ const SummariesTable = ({ employee, year, month, showPrices, tableRef, setIsSumm
   const [sums, setSums] = useState<ISums>();
 
   const [getQuantities] = useGetQuantitiesLazyQuery({
+    onCompleted: () => {
+      logger.sendInfoLog(`Pobrano ilości.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się pobrać ilości. Error: ${getErrorMessage(error)}`);

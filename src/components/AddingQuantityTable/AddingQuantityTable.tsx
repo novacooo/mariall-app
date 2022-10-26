@@ -46,6 +46,9 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     const [productsWithQuantities, setProductsWithQuantities] = useState<IProductWithQuantities[]>();
 
     const [getProducts] = useGetProductsLazyQuery({
+      onCompleted: () => {
+        logger.sendInfoLog(`Pobrano pracowników.`);
+      },
       onError: (error) => {
         errorToast(error);
         logger.sendErrorLog(`Nie udało się pobrać produktów. Error: ${getErrorMessage(error)}`);
@@ -53,6 +56,9 @@ const AddingQuantityTable = forwardRef<AddingQuantityTableHandle, AddingQuantity
     });
 
     const [getQuantities] = useGetQuantitiesLazyQuery({
+      onCompleted: () => {
+        logger.sendInfoLog(`Pobrano ilości.`);
+      },
       onError: (error) => {
         errorToast(error);
         logger.sendErrorLog(`Nie udało się pobrać ilości. Error: ${getErrorMessage(error)}`);

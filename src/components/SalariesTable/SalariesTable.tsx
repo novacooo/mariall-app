@@ -40,6 +40,9 @@ const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ yea
   const [salaries, setSalaries] = useState<ISalary[]>();
 
   const [getSalaries] = useGetSalariesLazyQuery({
+    onCompleted: () => {
+      logger.sendInfoLog(`Pobrano wypłaty.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się pobrać wypłat. Error: ${getErrorMessage(error)}`);
@@ -47,6 +50,9 @@ const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ yea
   });
 
   const [getEmployeesWithQuantities] = useGetEmployeesWithQuantitiesLazyQuery({
+    onCompleted: () => {
+      logger.sendInfoLog(`Pobrano pracowników z ilościami.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się pobrać pracowników. Error: ${getErrorMessage(error)}`);
@@ -54,6 +60,9 @@ const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ yea
   });
 
   const [updateSalary] = useUpdateSalaryMutation({
+    onCompleted: (data) => {
+      logger.sendInfoLog(`Zaktualizowano wypłatę o ID: ${data.updateSalary?.data?.id || ''}.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się zaktualizować wypłaty. Error: ${getErrorMessage(error)}`);
@@ -61,6 +70,9 @@ const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ yea
   });
 
   const [createSalary] = useCreateSalaryMutation({
+    onCompleted: (data) => {
+      logger.sendInfoLog(`Utworzono wypłatę o ID: ${data.createSalary?.data?.id || ''}.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się utworzyć wypłaty. Error: ${getErrorMessage(error)}`);
@@ -68,6 +80,9 @@ const SalariesTable = forwardRef<SalariesTableHandle, SalariesTableProps>(({ yea
   });
 
   const [deleteSalary] = useDeleteSalaryMutation({
+    onCompleted: (data) => {
+      logger.sendWarningLog(`Usunięto wypłatę o ID: ${data.deleteSalary?.data?.id || ''}.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się usunąć wypłaty. Error: ${getErrorMessage(error)}`);

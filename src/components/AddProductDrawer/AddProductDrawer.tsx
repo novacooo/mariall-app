@@ -28,6 +28,9 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
   const [isSending, setIsSending] = useState<boolean>();
 
   const [uploadFile] = useUploadFileMutation({
+    onCompleted: (data) => {
+      logger.sendInfoLog(`Dodano zdjęcie o ID: ${data.upload.data?.id || ''}.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się wgrać zdjęcia. Error: ${getErrorMessage(error)}`);

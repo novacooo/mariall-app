@@ -23,6 +23,9 @@ const ProductsManagementTab = () => {
   const [product, setProduct] = useState<IDrawerProduct>();
 
   const { data: getProductsData } = useGetProductsQuery({
+    onCompleted: () => {
+      logger.sendInfoLog(`Pobrano produkty.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się pobrać produktów. Error: ${getErrorMessage(error)}`);

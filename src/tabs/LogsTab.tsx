@@ -29,6 +29,9 @@ const LogsTab = () => {
       page: pageParamValue,
       pageSize: pageSizeParamValue,
     },
+    onCompleted: () => {
+      logger.sendInfoLog(`Pobrano logi.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się pobrać logów. Error: ${getErrorMessage(error)}`);

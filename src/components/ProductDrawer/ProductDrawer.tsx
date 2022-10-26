@@ -47,6 +47,9 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   const [isDeleting, setIsDeleting] = useState<boolean>();
 
   const [uploadFile] = useUploadFileMutation({
+    onCompleted: (data) => {
+      logger.sendInfoLog(`Dodano zdjęcie o ID: ${data.upload.data?.id || ''}.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się wgrać zdjęcia. Error: ${getErrorMessage(error)}`);
@@ -73,7 +76,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         title: t('toasts.titles.deleteProductSuccess'),
         description: t('toasts.descriptions.deleteProductSuccess'),
       });
-      logger.sendInfoLog(`Usunięto produkt o ID: ${data.updateProduct?.data?.id || ''}`);
+      logger.sendWarningLog(`Usunięto produkt o ID: ${data.updateProduct?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

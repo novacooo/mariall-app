@@ -109,6 +109,9 @@ const AddingQuantityTab = () => {
   });
 
   const [deleteQuantity] = useDeleteQuantityMutation({
+    onCompleted: (data) => {
+      logger.sendWarningLog(`Usunięto ilość o ID: ${data.deleteQuantity?.data?.id || ''}.`);
+    },
     onError: (error) => {
       errorToast(error);
       logger.sendErrorLog(`Nie udało się usunąć ilości. Error: ${getErrorMessage(error)}`);
