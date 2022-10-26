@@ -5,7 +5,6 @@ import { selectUserId } from 'features/user/userSlice';
 import { useAppSelector } from './useAppSelector';
 
 interface ICreateLogPayload {
-  type?: LogType;
   description: string;
 }
 
@@ -14,7 +13,7 @@ export const useLogger = () => {
 
   const [createLogMutation] = useCreateLogMutation();
 
-  const createLog = ({ type = Enum_Log_Type.Info, description }: ICreateLogPayload) => {
+  const sendCreateLog = (type: LogType, description: string) => {
     if (!userId) return;
 
     void createLogMutation({
@@ -27,5 +26,17 @@ export const useLogger = () => {
     });
   };
 
-  return { createLog };
+  const createInfoLog = ({ description }: ICreateLogPayload) => {
+    sendCreateLog(Enum_Log_Type.Info, description);
+  };
+
+  const createWarningLog = ({ description }: ICreateLogPayload) => {
+    sendCreateLog(Enum_Log_Type.Warning, description);
+  };
+
+  const createErrorLog = ({ description }: ICreateLogPayload) => {
+    sendCreateLog(Enum_Log_Type.Error, description);
+  };
+
+  return { createInfoLog, createWarningLog, createErrorLog };
 };
