@@ -59,7 +59,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         title: t('toasts.titles.updateProductSuccess'),
         description: t('toasts.descriptions.updateProductSuccess'),
       });
-      logger.sendInfoLog(`Zaktualizowano produkt ID: ${data.updateProduct?.data?.id || ''}`);
+      logger.sendInfoLog(`Zaktualizowano produkt o ID: ${data.updateProduct?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);
@@ -73,7 +73,7 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
         title: t('toasts.titles.deleteProductSuccess'),
         description: t('toasts.descriptions.deleteProductSuccess'),
       });
-      logger.sendInfoLog(`Usunięto produkt ID: ${data.updateProduct?.data?.id || ''}`);
+      logger.sendInfoLog(`Usunięto produkt o ID: ${data.updateProduct?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

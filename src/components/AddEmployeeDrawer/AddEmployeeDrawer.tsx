@@ -33,7 +33,7 @@ const AddEmployeeDrawer = ({ isOpen, onClose }: AddEmployeeDrawerProps) => {
         title: t('toasts.titles.createEmployeeSuccess'),
         description: t('toasts.descriptions.createEmployeeSuccess'),
       });
-      logger.sendInfoLog(`Utworzono pracownika ID: ${data.createEmployee?.data?.id || ''}`);
+      logger.sendInfoLog(`Utworzono pracownika o ID: ${data.createEmployee?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

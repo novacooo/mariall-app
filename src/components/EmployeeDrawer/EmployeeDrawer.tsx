@@ -46,7 +46,7 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
         title: t('toasts.titles.updateEmployeeSuccess'),
         description: t('toasts.descriptions.updateEmployeeSuccess'),
       });
-      logger.sendInfoLog(`Zaktualizowano pracownika ID: ${data.updateEmployee?.data?.id || ''}`);
+      logger.sendInfoLog(`Zaktualizowano pracownika o ID: ${data.updateEmployee?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

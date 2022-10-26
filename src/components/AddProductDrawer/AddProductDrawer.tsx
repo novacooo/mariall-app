@@ -41,7 +41,7 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
         title: t('toasts.titles.createProductSuccess'),
         description: t('toasts.descriptions.createProductSuccess'),
       });
-      logger.sendInfoLog(`Utworzono produkt ID: ${data.createProduct?.data?.id || ''}`);
+      logger.sendInfoLog(`Utworzono produkt o ID: ${data.createProduct?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);
