@@ -31,7 +31,9 @@ const AddEmployeeDrawer = ({ isOpen, onClose }: AddEmployeeDrawerProps) => {
         description: t('toasts.descriptions.createEmployeeSuccess'),
       });
     },
-    onError: (error) => errorToast(error),
+    onError: (error) => {
+      errorToast(error);
+    },
   });
 
   const handleSubmit = async (values: IEmployeeValues) => {

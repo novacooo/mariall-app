@@ -11,7 +11,7 @@ import LogsPagination from 'components/LogsPagination/LogsPagination';
 import { routes } from 'routes';
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 100;
+const DEFAULT_PAGE_SIZE = 50;
 
 const LogsTab = () => {
   const { t } = useTranslation();
