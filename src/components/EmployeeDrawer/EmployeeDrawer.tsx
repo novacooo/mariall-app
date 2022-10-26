@@ -41,11 +41,12 @@ const EmployeeDrawer = ({ employee, isOpen, onClose, onDeleteButtonClick }: Empl
   const [isSending, setIsSending] = useState<boolean>();
 
   const [updateEmployee] = useUpdateEmployeeMutation({
-    onCompleted: () => {
+    onCompleted: (data) => {
       appToast({
         title: t('toasts.titles.updateEmployeeSuccess'),
         description: t('toasts.descriptions.updateEmployeeSuccess'),
       });
+      logger.sendInfoLog(`Zaktualizowano pracownika ID: ${data.updateEmployee?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

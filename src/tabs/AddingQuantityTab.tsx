@@ -68,15 +68,21 @@ const AddingQuantityTab = () => {
     },
     onCompleted: () => {
       resetEverything();
+      logger.sendInfoLog(`Pobrano pracowników.`);
     },
   });
 
   const [updateQuantity] = useUpdateQuantityMutation({
-    onCompleted: () => {
+    onCompleted: (data) => {
       debouncedAppToast({
         title: t('toasts.titles.quantitiesAddSuccess'),
         description: t('toasts.descriptions.quantitiesAddSuccess'),
       });
+
+      const id = data.updateQuantity?.data?.id || '';
+      const quantity = data?.updateQuantity?.data?.attributes?.quantity || '';
+
+      logger.sendInfoLog(`Dodano ${quantity} do ilośći o ID: ${id}`);
     },
     onError: (error) => {
       errorToast(error);
@@ -85,11 +91,16 @@ const AddingQuantityTab = () => {
   });
 
   const [createQuantity] = useCreateQuantityMutation({
-    onCompleted: () => {
+    onCompleted: (data) => {
       debouncedAppToast({
         title: t('toasts.titles.quantitiesAddSuccess'),
         description: t('toasts.descriptions.quantitiesAddSuccess'),
       });
+
+      const id = data.createQuantity?.data?.id || '';
+      const quantity = data.createQuantity?.data?.attributes?.quantity || '';
+
+      logger.sendInfoLog(`Utworzono nową ilość o ID: ${id}. Dodano ${quantity} sztuk.`);
     },
     onError: (error) => {
       errorToast(error);

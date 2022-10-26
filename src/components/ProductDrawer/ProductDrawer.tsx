@@ -54,11 +54,12 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   });
 
   const [updateProduct] = useUpdateProductMutation({
-    onCompleted: () => {
+    onCompleted: (data) => {
       appToast({
         title: t('toasts.titles.updateProductSuccess'),
         description: t('toasts.descriptions.updateProductSuccess'),
       });
+      logger.sendInfoLog(`Zaktualizowano produkt ID: ${data.updateProduct?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);
@@ -67,11 +68,12 @@ const ProductDrawer = ({ product, isOpen, onClose }: ProductDrawerProps) => {
   });
 
   const [deleteProduct] = useDeleteProductMutation({
-    onCompleted: () => {
+    onCompleted: (data) => {
       appToast({
         title: t('toasts.titles.deleteProductSuccess'),
         description: t('toasts.descriptions.deleteProductSuccess'),
       });
+      logger.sendInfoLog(`Usunięto produkt ID: ${data.updateProduct?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

@@ -33,6 +33,7 @@ const PrintingSummariesTab = () => {
   const { data: getEmployeesQueryData } = useGetEmployeesQuery({
     onCompleted: () => {
       workerSelectsRef.current?.resetSelects();
+      logger.sendInfoLog(`Pobrano pracowników.`);
     },
     onError: (error) => {
       errorToast(error);

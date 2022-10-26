@@ -71,6 +71,8 @@ const LoginPage = () => {
       );
       dispatch(setUserIsLogged(true));
 
+      logger.sendInfoLog(`Zalogowano się na konto.`);
+
       navigate(routes.menu);
     },
     onError: (error) => {

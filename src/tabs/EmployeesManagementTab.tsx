@@ -47,11 +47,12 @@ const EmployeesManagementTab = () => {
   });
 
   const [deleteEmployee] = useDeleteEmployeeMutation({
-    onCompleted: () => {
+    onCompleted: (data) => {
       appToast({
         title: t('toasts.titles.deleteEmployeeSuccess'),
         description: t('toasts.descriptions.deleteEmployeeSuccess'),
       });
+      logger.sendInfoLog(`Usunięto pracownika o ID: ${data.updateEmployee?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);

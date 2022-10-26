@@ -36,11 +36,12 @@ const AddProductDrawer = ({ isOpen, onClose }: AddProductDrawerProps) => {
 
   const [createProduct] = useCreateProductMutation({
     refetchQueries: [GetProductsDocument],
-    onCompleted: () => {
+    onCompleted: (data) => {
       appToast({
         title: t('toasts.titles.createProductSuccess'),
         description: t('toasts.descriptions.createProductSuccess'),
       });
+      logger.sendInfoLog(`Utworzono produkt ID: ${data.createProduct?.data?.id || ''}`);
     },
     onError: (error) => {
       errorToast(error);
