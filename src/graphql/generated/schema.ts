@@ -1440,7 +1440,10 @@ export type GetEmployeesWithQuantitiesQueryVariables = Exact<{
 
 export type GetEmployeesWithQuantitiesQuery = { __typename?: 'Query', employees?: { __typename?: 'EmployeeEntityResponseCollection', data: Array<{ __typename?: 'EmployeeEntity', id?: string | null, attributes?: { __typename?: 'Employee', firstName: string, lastName?: string | null, quantities?: { __typename?: 'QuantityRelationResponseCollection', data: Array<{ __typename?: 'QuantityEntity', attributes?: { __typename?: 'Quantity', quantity: number, product?: { __typename?: 'ProductEntityResponse', data?: { __typename?: 'ProductEntity', attributes?: { __typename?: 'Product', price: number } | null } | null } | null } | null }> } | null } | null }> } | null };
 
-export type GetLogsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetLogsQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+}>;
 
 
 export type GetLogsQuery = { __typename?: 'Query', logs?: { __typename?: 'LogEntityResponseCollection', data: Array<{ __typename?: 'LogEntity', id?: string | null, attributes?: { __typename?: 'Log', date: any, type: Enum_Log_Type, description: string, users_permissions_user?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', email: string } | null } | null } | null } | null }> } | null };
@@ -2225,8 +2228,8 @@ export type GetEmployeesWithQuantitiesQueryHookResult = ReturnType<typeof useGet
 export type GetEmployeesWithQuantitiesLazyQueryHookResult = ReturnType<typeof useGetEmployeesWithQuantitiesLazyQuery>;
 export type GetEmployeesWithQuantitiesQueryResult = Apollo.QueryResult<GetEmployeesWithQuantitiesQuery, GetEmployeesWithQuantitiesQueryVariables>;
 export const GetLogsDocument = gql`
-    query GetLogs {
-  logs {
+    query GetLogs($page: Int = 1, $pageSize: Int = 100) {
+  logs(pagination: {page: $page, pageSize: $pageSize}) {
     data {
       id
       attributes {
@@ -2259,6 +2262,8 @@ export const GetLogsDocument = gql`
  * @example
  * const { data, loading, error } = useGetLogsQuery({
  *   variables: {
+ *      page: // value for 'page'
+ *      pageSize: // value for 'pageSize'
  *   },
  * });
  */

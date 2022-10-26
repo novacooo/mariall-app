@@ -1,23 +1,23 @@
-import { Spinner, StackDivider, VStack } from '@chakra-ui/react';
+import { Spinner, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { Enum_Log_Type, useGetLogsQuery } from 'graphql/generated/schema';
+import { useGetLogsQuery } from 'graphql/generated/schema';
 import { useErrorToast } from 'hooks';
 import ProtectedTabTemplate from 'templates/ProtectedTabTemplate';
 import NoItemsInformation from 'components/NoItemsInformation/NoItemsInformation';
 import LogRow from 'components/LogRow/LogRow';
-
-const getRandomType = (index: number) => {
-  if (index % 4 === 0) return Enum_Log_Type.Warning;
-  if (index % 9 === 0) return Enum_Log_Type.Error;
-  return Enum_Log_Type.Info;
-};
+import { useSearchParams } from 'react-router-dom';
 
 const LogsTab = () => {
   const { t } = useTranslation();
   const errorToast = useErrorToast();
+  const [searchParams] = useSearchParams();
 
   const { data: getLogsQueryData } = useGetLogsQuery({
+    variables: {
+      page: Number(searchParams.get('page')) || undefined,
+      pageSize: Number(searchParams.get('pageSize')) || undefined,
+    },
     onError: (error) => {
       errorToast(error);
     },
@@ -43,13 +43,7 @@ const LogsTab = () => {
 
           const logDate = new Date(date as string);
 
-          return (
-            <>
-              {[...Array.from(Array(100).keys())].map((el) => (
-                <LogRow key={el} date={logDate} type={getRandomType(el)} description={description} email={email} />
-              ))}
-            </>
-          );
+          return <LogRow key={id} date={logDate} type={type} description={description} email={email} />;
         })}
       </VStack>
     </ProtectedTabTemplate>
