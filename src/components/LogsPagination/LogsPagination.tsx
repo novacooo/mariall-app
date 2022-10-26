@@ -6,11 +6,19 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 interface LogsPaginationProps {
   page: number;
+  disabledPreviousButton?: boolean;
+  disabledNextButton?: boolean;
   onPreviousButtonClick?: () => void;
   onNextButtonClick?: () => void;
 }
 
-const LogsPagination = ({ page, onPreviousButtonClick, onNextButtonClick }: LogsPaginationProps) => {
+const LogsPagination = ({
+  page,
+  disabledPreviousButton,
+  disabledNextButton,
+  onPreviousButtonClick,
+  onNextButtonClick,
+}: LogsPaginationProps) => {
   const { t } = useTranslation();
 
   const themeAccentColor = useAppSelector(selectThemeAccentColor);
@@ -20,13 +28,23 @@ const LogsPagination = ({ page, onPreviousButtonClick, onNextButtonClick }: Logs
   return (
     <HStack justify="space-between">
       <Tooltip label={t('tooltips.previousPage')}>
-        <IconButton aria-label={t('tooltips.previousPage')} icon={<FiChevronLeft />} onClick={onPreviousButtonClick} />
+        <IconButton
+          aria-label={t('tooltips.previousPage')}
+          icon={<FiChevronLeft />}
+          disabled={disabledPreviousButton}
+          onClick={onPreviousButtonClick}
+        />
       </Tooltip>
       <Heading as="h4" size="sm" color={color}>
         {page}
       </Heading>
       <Tooltip label={t('tooltips.nextPage')}>
-        <IconButton aria-label={t('tooltips.nextPage')} icon={<FiChevronRight />} onClick={onNextButtonClick} />
+        <IconButton
+          aria-label={t('tooltips.nextPage')}
+          icon={<FiChevronRight />}
+          disabled={disabledNextButton}
+          onClick={onNextButtonClick}
+        />
       </Tooltip>
     </HStack>
   );
