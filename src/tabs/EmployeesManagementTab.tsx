@@ -112,8 +112,6 @@ const EmployeesManagementTab = () => {
 
   if (!employeesData) return <Spinner />;
 
-  if (employeesData.length === 0) return <NoItemsInformation text={t('texts.noEmployees')} />;
-
   return (
     <ProtectedTabTemplate>
       <Button
@@ -124,36 +122,42 @@ const EmployeesManagementTab = () => {
       >
         {t('buttons.addEmployee')}
       </Button>
-      <VStack align="stretch" divider={<StackDivider />}>
-        {employeesData.map(({ id, attributes }) => {
-          if (!id || !attributes) return null;
+      {employeesData.length !== 0 ? (
+        <>
+          <VStack align="stretch" divider={<StackDivider />}>
+            {employeesData.map(({ id, attributes }) => {
+              if (!id || !attributes) return null;
 
-          const { firstName, lastName } = attributes;
-          const employee: IDrawerEmployee = { id, firstName, lastName };
+              const { firstName, lastName } = attributes;
+              const employee: IDrawerEmployee = { id, firstName, lastName };
 
-          return (
-            <EmployeeRow
-              key={id}
-              employee={employee}
-              onEditButtonClick={() => handleEmployeeDrawerOpen(employee)}
-              onTrashButtonClick={() => handleDeleteEmployeeModalOpen(employee)}
-            />
-          );
-        })}
-      </VStack>
+              return (
+                <EmployeeRow
+                  key={id}
+                  employee={employee}
+                  onEditButtonClick={() => handleEmployeeDrawerOpen(employee)}
+                  onTrashButtonClick={() => handleDeleteEmployeeModalOpen(employee)}
+                />
+              );
+            })}
+          </VStack>
+          <EmployeeDrawer
+            employee={selectedEmployee}
+            isOpen={isEmployeeDrawerOpen}
+            onClose={handleEmployeeDrawerClose}
+            onDeleteButtonClick={handleDeleteEmployeeModalOpen}
+          />
+          <DeleteEmployeeModal
+            isOpen={isDeleteModalOpen}
+            isLoading={isDeleting}
+            onClose={handleDeleteEmployeeModalClose}
+            onDeleteButtonClick={handleModalDeleteButtonClick}
+          />
+        </>
+      ) : (
+        <NoItemsInformation text={t('texts.noEmployees')} />
+      )}
       <AddEmployeeDrawer isOpen={isAddEmployeeDrawerOpen} onClose={handleAddEmployeeDrawerClose} />
-      <EmployeeDrawer
-        employee={selectedEmployee}
-        isOpen={isEmployeeDrawerOpen}
-        onClose={handleEmployeeDrawerClose}
-        onDeleteButtonClick={handleDeleteEmployeeModalOpen}
-      />
-      <DeleteEmployeeModal
-        isOpen={isDeleteModalOpen}
-        isLoading={isDeleting}
-        onClose={handleDeleteEmployeeModalClose}
-        onDeleteButtonClick={handleModalDeleteButtonClick}
-      />
     </ProtectedTabTemplate>
   );
 };
